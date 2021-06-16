@@ -1,5 +1,8 @@
 package fr.eni.encheres.dal;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bo.Utilisateur;
 
 public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
@@ -19,13 +23,16 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 	private static final String sqlDelete = "delete from utilisateurs where no_utilisateur=?";
 	private static final String sqlUpdate = "update UTILISATEURS set pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?,credit=?, administrateur =? where no_utilisateur=?";
 	
-	public void insert(Utilisateur data ) {
-		/*
-		 * if(data==null) { BusinessException businessException = new
-		 * BusinessException();
-		 * businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL); throw
-		 * businessException; }
-		 */
+	public void insert(Utilisateur data ) throws BusinessException {
+		if(data==null)
+		{
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
+			throw businessException;
+		}
+		
+		 
+		 
 		Connection cnx = null;
 		PreparedStatement stmt =null;
 		ResultSet resultSet = null;
@@ -59,6 +66,10 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			} catch (SQLException e) 
 		{
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_ECHEC);
+			throw businessException;
+			
 		}finally {
 			try {
 				if (stmt != null) {
@@ -68,15 +79,15 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 					cnx.close();
 				}
 			
-		}catch (SQLException e) {
+				}catch (SQLException e) {
 			e.printStackTrace();
-		}
+			}
 		
 		}
 		
 	}
 	
-	public Utilisateur selectById(int id) {
+	public Utilisateur selectById(int id)  throws BusinessException{
 		PreparedStatement stmt =null;
 		ResultSet resultSet=null;
 		Utilisateur utilisateur = null;
@@ -109,13 +120,16 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			
 		} catch (SQLException e)
 		{
-			
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+		
 		}
 		return utilisateur;
 	}
 
-	public List<Utilisateur> selectAll() {
+	public List<Utilisateur> selectAll() throws BusinessException{
 	
 		PreparedStatement stmt =null;
 		ResultSet resultSet = null; 
@@ -143,7 +157,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			listeUtilisateurs.add(utilisateur);
 			}}
 			catch (SQLException e) {
-				//throw new DALException("selectAll failed - " , e);
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+				throw businessException;
 			} finally {
 				try {
 					if (resultSet != null){
@@ -166,7 +182,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 
 
 	}
-	public void delete(Utilisateur utilisateurCritere) {
+	public void delete(Utilisateur utilisateurCritere) throws BusinessException{
 		PreparedStatement stmt =null;
 		Connection cnx = null;
 	try {
@@ -176,7 +192,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 		stmt.executeUpdate();
 
 	} catch (SQLException e) {
-		//throw new DALException("Delete article failed - article =" + articleCritere, e);
+		BusinessException businessException = new BusinessException();
+		businessException.ajouterErreur(CodesResultatDAL.DELETE_DATA_ECHEC);
+		throw businessException;
 	} finally {
 		try {
 			if (stmt != null){
@@ -186,12 +204,12 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 				cnx.close();
 			}
 		} catch (SQLException e) {
-			//throw new DALException("close failed " , e);
+			e.printStackTrace();
 		}
 	}
 	}
 
-	public void update(Utilisateur data) {
+	public void update(Utilisateur data) throws BusinessException {
 		PreparedStatement stmt =null;
 		Connection cnx = null;
 		try {
@@ -213,8 +231,11 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			stmt.executeUpdate();
 			
 		} catch (SQLException e) {
-			//throw new DALException("Update article failed - " + data, e);
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UDPATE_DATA_ECHEC);
+			throw businessException;
+		
 		}
 		finally {
 			try {
@@ -231,4 +252,14 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 		}
 
 	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
