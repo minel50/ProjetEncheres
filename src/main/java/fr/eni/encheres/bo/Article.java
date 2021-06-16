@@ -11,6 +11,8 @@ public class Article {
 	private int prixInitial;
 	private int prixVente;
 	private String etatVente;
+	private int noUtilisateur;
+	private int noCategorie;
 	
 	//Constructeur par défaut
 	public Article() {
@@ -18,7 +20,7 @@ public class Article {
 	
 	//Constructeur avec id
 	public Article(Integer noArticle, String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres, int prixInitial,
-			int prixVente, String etatVente) {
+			int prixVente, String etatVente, int noUtilisateur, int noCategorie) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -27,12 +29,14 @@ public class Article {
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
 		this.etatVente = etatVente;
+		this.noUtilisateur = noUtilisateur;
+		this.noCategorie = noCategorie;
 	}
 	
 	//Constructeur sans id faisant appel au constructeur ci-dessus.
 	public Article(String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres, int prixInitial,
-			int prixVente, String etatVente) {
-		this(null, nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, etatVente);
+			int prixVente, String etatVente, int noUtilisateur, int noCategorie) {
+		this(null, nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, etatVente, noUtilisateur, noCategorie);
 	}
 
 	public Integer getNoArticle() {
@@ -100,13 +104,28 @@ public class Article {
 		this.etatVente = etatVente;
 	}
 
-	@Override
-	public String toString() {
-		return "Article [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", dateDebutEncheres="
-				+ dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", prixInitial=" + prixInitial
-				+ ", prixVente=" + prixVente + ", etatVente=" + etatVente + "]";
+	public int getNoUtilisateur() {
+		return noUtilisateur;
 	}
 
+	public void setNoUtilisateur(int noUtilisateur) {
+		this.noUtilisateur = noUtilisateur;
+	}
+
+	public int getNoCategorie() {
+		return noCategorie;
+	}
+
+	public void setNoCategorie(int noCategorie) {
+		this.noCategorie = noCategorie;
+	}
+
+	@Override
+	public String toString() {
+		return "Article [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
+				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", prixInitial="
+				+ prixInitial + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", noUtilisateur=" + noUtilisateur
+				+ ", noCategorie=" + noCategorie + "]";
+	}	
+
 }
-
-
