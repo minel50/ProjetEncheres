@@ -6,7 +6,8 @@ package fr.eni.encheres.bll;
 public class CodesResultatBLL {
 
 	/**
-	 * premier code à utiliser, remplacer cette description et le nom du code ci-dessous
+	 * L'objet n'est pas validé pour transmission à la DAL
 	 */
-	//public static final int CODE = 20000;
+	public static final int OBJECT_INVALIDE = 20000;
+	
 }
