@@ -19,6 +19,9 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String sqlUpdate = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, no_utilisateur = ?, no_categorie = ? WHERE no_article = ?";
 	private static final String sqlDelete = "DELETE FROM ARTICLES_VENDUS WHERE no_article = ?";
 	
+	private UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
+	private CategorieDAO categorieDAO = DAOFactory.getCategorieDAO();
+	
 	@Override
 	public void insert(Article article) throws BusinessException {
 		
@@ -40,8 +43,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			stmt.setDate(4, new Date(article.getDateFinEncheres().getTime()));
 			stmt.setInt(5, article.getPrixInitial());
 			stmt.setInt(6, article.getPrixVente());
-			stmt.setInt(7, article.getNoUtilisateur());
-			stmt.setInt(8, article.getNoCategorie());
+			stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
+			stmt.setInt(8, article.getCategorie().getNoCategorie());
 			
 			int nbRows = stmt.executeUpdate();
 			if (nbRows == 1) {
@@ -92,8 +95,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
 						"création",
-						rs.getInt("no_utilisateur"),
-						rs.getInt("no_categorie")
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						categorieDAO.selectById(rs.getInt("no_categorie"))
 						));
 			}
 			
@@ -140,8 +143,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
 						"création",
-						rs.getInt("no_utilisateur"),
-						rs.getInt("no_categorie")
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						categorieDAO.selectById(rs.getInt("no_categorie"))
 						);
 			}
 			
@@ -188,8 +191,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			stmt.setDate(4, new Date(article.getDateFinEncheres().getTime()));
 			stmt.setInt(5, article.getPrixInitial());
 			stmt.setInt(6, article.getPrixVente());
-			stmt.setInt(7, 1);		//A modifier avec getUtilisateur()
-			stmt.setInt(8, article.getNoCategorie());
+			stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());
+			stmt.setInt(8, article.getCategorie().getNoCategorie());
 			stmt.setInt(9, article.getNoArticle());
 			stmt.executeUpdate();
 			
