@@ -4,14 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Utilisateur implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4804753249878730328L;
 	private Integer noUtilisateur;
 	private String pseudo;
 	private String nom;
+	private String prenom;
 	private String email;
 	private String telephone;
 	private String rue;
@@ -21,42 +20,22 @@ public class Utilisateur implements Serializable{
 	private int credit;
 	private int administrateur;
 	
-	private List<Article> listeArticlesAchetes = new ArrayList<Article>();  
-	private List<Article> listeArticlesVendus = new ArrayList<Article>();  
+	private List<Article> listeArticlesAchetes;
+	private List<Article> listeArticlesVendus; 
 	
-	private List<Enchere> listeEncheres = new ArrayList<Enchere>();
-	
-	public Utilisateur() {
+	private List<Enchere> listeEncheres;
+public Utilisateur() {
 		
 	}
 	
 	
-	public Utilisateur(String pseudo, String nom, String email, String telephone, String rue,
-			String codePostal, String ville, String motDePasse, int credit, int administrateur, List<Article> listeArticlesAchetes, List<Article> listeArticlesVendus, List<Enchere> listeEncheres) {
-		super();
-		this.pseudo = pseudo;
-		this.nom = nom;
-		this.email = email;
-		this.telephone = telephone;
-		this.rue = rue;
-		this.codePostal = codePostal;
-		this.ville = ville;
-		this.motDePasse = motDePasse;
-		this.credit = credit;
-		this.administrateur = administrateur;
-		
-		this.listeArticlesAchetes = listeArticlesAchetes;
-		this.listeArticlesVendus = listeArticlesVendus;
-		
-		this.listeEncheres = listeEncheres;
-	}
-	
-	public Utilisateur(Integer noUtilisateur, String pseudo, String nom, String email, String telephone, String rue,
-			String codePostal, String ville, String motDePasse, int credit, int administrateur, List<Article> listeArticlesAchetes, List<Article> listeArticlesVendus, List<Enchere> listeEncheres) {
+	public Utilisateur(Integer noUtilisateur, String pseudo, String nom, String prenom, String email, String telephone, String rue,
+			String codePostal, String ville, String motDePasse, int credit, int administrateur ) {
 		super();
 		this.noUtilisateur = noUtilisateur;
 		this.pseudo = pseudo;
 		this.nom = nom;
+		this.prenom=prenom;
 		this.email = email;
 		this.telephone = telephone;
 		this.rue = rue;
@@ -66,12 +45,33 @@ public class Utilisateur implements Serializable{
 		this.credit = credit;
 		this.administrateur = administrateur;
 		
-		this.listeArticlesAchetes = new ArrayList<Article>();
-		this.listeArticlesVendus = new ArrayList<Article>();
+		listeArticlesAchetes = new ArrayList<Article>();
+		listeArticlesVendus = new ArrayList<Article>();
 		
-		this.listeEncheres = new ArrayList<Enchere>();
+		listeEncheres = new ArrayList<Enchere>();
 	}
-
+	
+	public Utilisateur(String pseudo, String nom, String prenom,String email, String telephone, String rue,
+			String codePostal, String ville, String motDePasse, int credit, int administrateur) {
+		super();
+		this.pseudo = pseudo;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.telephone = telephone;
+		this.rue = rue;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		this.motDePasse = motDePasse;
+		this.credit = credit;
+		this.administrateur = administrateur;
+		listeArticlesAchetes = new ArrayList<Article>();
+		listeArticlesVendus = new ArrayList<Article>();
+		
+		listeEncheres = new ArrayList<Enchere>();
+	
+	}
+	
 
 	public Integer getNoUtilisateur() {
 		return noUtilisateur;
@@ -92,7 +92,12 @@ public class Utilisateur implements Serializable{
 		this.pseudo = pseudo;
 	}
 
-
+	public String getPrenom() {
+		return prenom;
+	}
+	public void setPrenom(String prenom) {
+		this.prenom= prenom;
+	}
 	public String getNom() {
 		return nom;
 	}
@@ -173,7 +178,7 @@ public class Utilisateur implements Serializable{
 	}
 
 
-	public int isAdministrateur() {
+	public int getAdministrateur() {
 		return administrateur;
 	}
 
@@ -214,16 +219,6 @@ public class Utilisateur implements Serializable{
 
 
 	@Override
-	public String toString() {
-		return "Utilisateur [noUtilisateur=" + noUtilisateur + ", pseudo=" + pseudo + ", nom=" + nom + ", email="
-				+ email + ", telephone=" + telephone + ", rue=" + rue + ", codePostal=" + codePostal + ", ville="
-				+ ville + ", motDePasse=" + motDePasse + ", credit=" + credit + ", administrateur=" + administrateur
-				+ ", listeArticlesAchetes=" + listeArticlesAchetes + ", listeArticlesVendus=" + listeArticlesVendus
-				+ ", listeEncheres=" + listeEncheres + "]";
-	}
-
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -237,6 +232,7 @@ public class Utilisateur implements Serializable{
 		result = prime * result + ((motDePasse == null) ? 0 : motDePasse.hashCode());
 		result = prime * result + ((noUtilisateur == null) ? 0 : noUtilisateur.hashCode());
 		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
 		result = prime * result + ((pseudo == null) ? 0 : pseudo.hashCode());
 		result = prime * result + ((rue == null) ? 0 : rue.hashCode());
 		result = prime * result + ((telephone == null) ? 0 : telephone.hashCode());
@@ -298,6 +294,11 @@ public class Utilisateur implements Serializable{
 				return false;
 		} else if (!nom.equals(other.nom))
 			return false;
+		if (prenom == null) {
+			if (other.prenom != null)
+				return false;
+		} else if (!prenom.equals(other.prenom))
+			return false;
 		if (pseudo == null) {
 			if (other.pseudo != null)
 				return false;
@@ -320,6 +321,17 @@ public class Utilisateur implements Serializable{
 			return false;
 		return true;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Utilisateur [noUtilisateur=" + noUtilisateur + ", pseudo=" + pseudo + ", nom=" + nom + ", prenom="
+				+ prenom + ", email=" + email + ", telephone=" + telephone + ", rue=" + rue + ", codePostal="
+				+ codePostal + ", ville=" + ville + ", motDePasse=" + motDePasse + ", credit=" + credit
+				+ ", administrateur=" + administrateur + ", listeArticlesAchetes=" + listeArticlesAchetes
+				+ ", listeArticlesVendus=" + listeArticlesVendus + ", listeEncheres=" + listeEncheres + "]";
+	}
+
 
 
 	
