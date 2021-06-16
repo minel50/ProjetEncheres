@@ -76,7 +76,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 		
 	}
 	
-	public Utilisateur selectById(Utilisateur utilisateurCritere) {
+	public Utilisateur selectById(int id) {
 		PreparedStatement stmt =null;
 		ResultSet resultSet=null;
 		Utilisateur utilisateur = null;
@@ -84,7 +84,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 		try (Connection cnx = ConnectionProvider.getConnection())
 		{
 			stmt=cnx.prepareStatement(sqlSelectById);
-			stmt.setInt(1, utilisateurCritere.getNoUtilisateur());
+			stmt.setInt(1,id);
 			resultSet = stmt.executeQuery();
 			if(resultSet.next()) {
 				utilisateur = new Utilisateur (resultSet.getInt("no_utilisateur"),
