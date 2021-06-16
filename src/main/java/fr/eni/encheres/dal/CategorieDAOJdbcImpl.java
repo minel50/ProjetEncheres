@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bo.Categorie;
 
 public class CategorieDAOJdbcImpl implements CategorieDAO {
@@ -21,27 +21,52 @@ public class CategorieDAOJdbcImpl implements CategorieDAO {
 	private static final String sqlDelete = "DELETE FROM categories WHERE no_categorie = ?;";
 	
 	@Override
-	public void insert(Categorie categorie) {
+	public void insert(Categorie categorie) throws BusinessException {
 		
-		// Ajt erreur exception si (categorie == null)
+		if (categorie == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
+			throw businessException;
+		}
+		
+		PreparedStatement pstmt = null;
 		
 		try(Connection con = ConnectionProvider.getConnection())
 		{
-			PreparedStatement pstmt = con.prepareStatement(sqlInsert, PreparedStatement.RETURN_GENERATED_KEYS);
+			pstmt = con.prepareStatement(sqlInsert, PreparedStatement.RETURN_GENERATED_KEYS);
 			pstmt.setString(1, categorie.getLibelle());
-			ResultSet rs = pstmt.getGeneratedKeys();
-			if(rs.next()) {
-				categorie.setNoCategorie(rs.getInt(1));
+			
+			int nbRows = pstmt.executeUpdate();
+			
+			if(nbRows == 1) {
+				ResultSet rs = pstmt.getGeneratedKeys();
+				if(rs.next()) {
+					categorie.setNoCategorie(rs.getInt(1));
+				}
 			}
+			
+			
 		} catch(Exception e) 
 		{
-			// Ajt erreur exception si echec
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_ECHEC);
+			throw businessException;
+		}finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	
 	@Override
-	public List<Categorie> selectAll() {
+	public List<Categorie> selectAll() throws BusinessException {
 		
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -51,7 +76,6 @@ public class CategorieDAOJdbcImpl implements CategorieDAO {
 		{
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(sqlSelectAll);
-			//
 			
 			while(rs.next()) {
 				Categorie cat = new Categorie(rs.getInt("no_categorie"),
@@ -72,9 +96,135 @@ public class CategorieDAOJdbcImpl implements CategorieDAO {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
+				BusinessException businessException = new BusinessException();
+				businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+				throw businessException;
 			}
 		}
 		
 		return liste;
+	}
+	
+	@Override
+	public Categorie selectById(int id) throws BusinessException {
+		Categorie cat = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ConnectionProvider.getConnection();
+			pstmt = con.prepareStatement(sqlSelectById);
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				cat = new Categorie(
+						rs.getInt("no_categorie"),
+						rs.getString("libelle")
+						);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return cat;
+	}
+	
+	
+	@Override
+	public void update(Categorie cat) throws BusinessException {
+		if (cat == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UPDATE_OBJET_NULL);
+			throw businessException;
+		}
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ConnectionProvider.getConnection();
+			pstmt = con.prepareStatement(sqlUpdate);
+			pstmt.setString(1, cat.getLibelle());
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UDPATE_DATA_ECHEC);
+			throw businessException;
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				
+				if (con != null) {
+					con.close();
+				}	
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
+	
+	@Override
+	public void delete(Categorie cat) throws BusinessException {
+		
+		if (cat == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.DELETE_OBJET_NULL);
+			throw businessException;
+		}
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ConnectionProvider.getConnection();
+			pstmt = con.prepareStatement(sqlDelete);
+			pstmt.setInt(1, cat.getNoCategorie());
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.DELETE_DATA_ECHEC);
+			throw businessException;
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+		
 	}
 }
