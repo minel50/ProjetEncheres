@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bo.Article;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
@@ -19,7 +20,14 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String sqlDelete = "DELETE FROM ARTICLES_VENDUS WHERE no_article = ?";
 	
 	@Override
-	public void insert(Article article) {
+	public void insert(Article article) throws BusinessException {
+		
+		if (article == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
+			throw businessException;
+		}
+		
 		Connection cnx = null;
 		PreparedStatement stmt = null;
 		
@@ -45,6 +53,10 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_ECHEC);
+			throw businessException;
+			
 		} finally {
 			try {
 				if (stmt != null) {
@@ -60,7 +72,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	}
 
 	@Override
-	public List<Article> selectAll() {
+	public List<Article> selectAll() throws BusinessException {
 		List<Article> listeArticles = new ArrayList<>();
 		Connection cnx = null;
 		PreparedStatement stmt = null;
@@ -87,6 +99,10 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
 		} finally {
 			try {
 				if (stmt != null) {
@@ -104,7 +120,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	}
 
 	@Override
-	public Article selectById(int id) {
+	public Article selectById(int id) throws BusinessException {
 		Article article = null;
 		Connection cnx = null;
 		PreparedStatement stmt = null;
@@ -130,8 +146,11 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			}
 			
 		} catch (SQLException e) {
-
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
 		} finally {
 			try {
 				if (stmt != null) {
@@ -149,7 +168,14 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	}
 
 	@Override
-	public void update(Article article) {
+	public void update(Article article) throws BusinessException {
+		
+		if (article == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UPDATE_OBJET_NULL);
+			throw businessException;
+		}
+		
 		Connection cnx = null;
 		PreparedStatement stmt = null;
 		
@@ -169,6 +195,10 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UDPATE_DATA_ECHEC);
+			throw businessException;
+			
 		} finally {
 			try {
 				if (stmt != null) {
@@ -187,7 +217,14 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	}
 
 	@Override
-	public void delete(Article article) {
+	public void delete(Article article) throws BusinessException {
+		
+		if (article == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.DELETE_OBJET_NULL);
+			throw businessException;
+		}
+		
 		Connection cnx = null;
 		PreparedStatement stmt = null;
 		
@@ -199,6 +236,10 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.DELETE_DATA_ECHEC);
+			throw businessException;
+			
 		} finally {
 			try {
 				if (stmt != null) {

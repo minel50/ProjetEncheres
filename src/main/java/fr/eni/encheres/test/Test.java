@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.dal.ArticleDAO;
 import fr.eni.encheres.dal.DAOFactory;
@@ -31,28 +32,45 @@ public class Test extends HttpServlet {
 		
 		// Test ajout d'un article dans la base :
 		/*
-		Article nouvelArticle = new Article("bateau", "voilier", new Date(), new Date(2021, 5, 27), 399, 0, "création", 1, 1);
-		articleDAO.insert(nouvelArticle);
+		try {
+			Article nouvelArticle = new Article("bateau", "voilier", new Date(), new Date(2021, 5, 27), 399, 0, "création", 1, 1);
+			articleDAO.insert(nouvelArticle);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}	
 		*/
 		
 		//Test modification d'un article
 		/*
-		Article articleAModifier = articleDAO.selectById(4);
-		articleAModifier.setDescription("nouvelle description");
-		articleDAO.update(articleAModifier);
+		try {
+			Article articleAModifier = articleDAO.selectById(4);
+			articleAModifier.setDescription("nouvelle description");
+			articleDAO.update(articleAModifier);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
 		*/
 		
 		//Test suppression d'un article
+		/*
+		Article articleASupprimer;
+		try {
+			articleASupprimer = articleDAO.selectById(4);
+			articleDAO.delete(articleASupprimer);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+		*/
 		
-		Article articleASupprimer = articleDAO.selectById(4);
-		articleDAO.delete(articleASupprimer);
-		
-					
-		List<Article> listeArticles = articleDAO.selectAll();
-		request.setAttribute("listeArticles", listeArticles);
-		
-		Article articleSelectedById = articleDAO.selectById(1);
-		request.setAttribute("articleSelectedById", articleSelectedById);
+		try {
+			List<Article> listeArticles = articleDAO.selectAll();
+			request.setAttribute("listeArticles", listeArticles);
+			
+			Article articleSelectedById = articleDAO.selectById(1);
+			request.setAttribute("articleSelectedById", articleSelectedById);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/test.jsp");
 		rd.forward(request, response);
