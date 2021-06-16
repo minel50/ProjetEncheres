@@ -1,5 +1,6 @@
 package fr.eni.encheres;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,9 +16,9 @@ public class BusinessException extends Exception{
 	private List<Integer> listeCodesErreur;
 	
 	//Constructeur
-	public BusinessException(List<Integer> listeCodesErreur) {
+	public BusinessException() {
 		super();
-		this.listeCodesErreur = listeCodesErreur;
+		this.listeCodesErreur = new ArrayList<>();
 	}
 	//Code de l'erreur. Doit avoir un message associé dans un fichier properties.
 	public void ajouterErreur(int code) {
