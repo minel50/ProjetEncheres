@@ -10,9 +10,9 @@ public abstract class DAOFactory {
 		return new CategorieDAOJdbcImpl();
 	}
 	
-	/*public static RetraitDAO getRetraitDAO() {
+	public static RetraitDAO getRetraitDAO() {
 		return new RetraitDAOJdbcImpl();
-	}*/
+	}
 	
 	public static ArticleDAO getArticleDAO() {
 		return new ArticleDAOJdbcImpl();

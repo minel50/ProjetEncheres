@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.dal.CategorieDAO;
 import fr.eni.encheres.dal.DAOFactory;
@@ -30,7 +31,12 @@ public class TestCat extends HttpServlet {
 		
 		System.out.println("Insertion de " + c1.toString());
 		
-		catDAO.insert(c1);
+		try {
+			catDAO.insert(c1);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

@@ -20,6 +20,7 @@ public class RetraitDAOJdbcImpl implements RetraitDAO {
 	private static final String sqlUpdate = "UPDATE retraits SET rue=?, code_postal=?, ville=? WHERE no_article = ?;";
 	private static final String sqlDelete = "DELETE FROM retraits WHERE no_article = ?;";
 	
+	private ArticleDAO articleDAO = DAOFactory.getArticleDAO();
 	
 	@Override
 	public void insert(Retrait retrait) throws BusinessException {
@@ -35,10 +36,10 @@ public class RetraitDAOJdbcImpl implements RetraitDAO {
 		try(Connection con = ConnectionProvider.getConnection())
 		{
 			pstmt = con.prepareStatement(sqlInsert);
-			pstmt.setInt(1, retrait.getNoArticle());
+			pstmt.setInt(1, retrait.getArticle().getNoArticle());
 			pstmt.setString(2, retrait.getRue());
-			pstmt.setString(2, retrait.getCodePostal());
-			pstmt.setString(2, retrait.getVille());
+			pstmt.setString(3, retrait.getCodePostal());
+			pstmt.setString(4, retrait.getVille());
 			
 			pstmt.executeUpdate();
 			
@@ -74,7 +75,7 @@ public class RetraitDAOJdbcImpl implements RetraitDAO {
 			rs = stmt.executeQuery(sqlSelectAll);
 			
 			while(rs.next()) {
-				Retrait retrait = new Retrait(rs.getInt("no_article"),
+				Retrait retrait = new Retrait(articleDAO.selectById(rs.getInt("no_article")),
 												rs.getString("rue"),
 												rs.getString("code_postal"),
 												rs.getString("ville"));
@@ -116,7 +117,7 @@ public class RetraitDAOJdbcImpl implements RetraitDAO {
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				retrait = new Retrait(
-						rs.getInt("no_article"),
+						articleDAO.selectById(rs.getInt("no_article")),
 						rs.getString("rue"),
 						rs.getString("code_postal"),
 						rs.getString("ville")
@@ -163,7 +164,7 @@ public class RetraitDAOJdbcImpl implements RetraitDAO {
 			pstmt.setString(1, retrait.getRue());
 			pstmt.setString(2, retrait.getCodePostal());
 			pstmt.setString(3, retrait.getVille());
-			pstmt.setInt(4, retrait.getNoArticle());
+			pstmt.setInt(4, retrait.getArticle().getNoArticle());
 			pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -203,7 +204,7 @@ public class RetraitDAOJdbcImpl implements RetraitDAO {
 			try {
 				cnx = ConnectionProvider.getConnection();
 				stmt = cnx.prepareStatement(sqlDelete);
-				stmt.setInt(1, retrait.getNoArticle());
+				stmt.setInt(1, retrait.getArticle().getNoArticle());
 				stmt.executeUpdate();
 				
 			} catch (SQLException e) {
