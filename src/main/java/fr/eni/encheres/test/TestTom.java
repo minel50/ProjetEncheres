@@ -3,6 +3,7 @@ package fr.eni.encheres.test;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,40 +18,46 @@ import fr.eni.encheres.dal.DAOFactory;
 /**
  * Servlet implementation class TestCat
  */
-@WebServlet("/TestCat")
-public class TestCat extends HttpServlet {
+@WebServlet("/TestTom")
+public class TestTom extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-  
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
 		CategorieDAO catDAO = DAOFactory.getCategorieDAO();
 		
-		StringBuilder sb = new StringBuilder();
-		
-		System.out.println("Début du test");
-		
-		List<Categorie> listeCategories;
+		/*
+		CategorieDAO catDAO = DAOFactory.getCategorieDAO();
+		Categorie c1 = new Categorie("Mobilier");
+		System.out.println("Insertion de " + c1.toString());
 		try {
-			listeCategories = catDAO.selectAll();
-			for(Categorie c : listeCategories) {
-				sb.append(c.toString());
-				sb.append("\n");
-				System.out.println(c);
-			}
+			catDAO.insert(c1);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		*/
+		
+		
+		
+		try {
+			List<Categorie> listeCategories = catDAO.selectAll();
+			request.setAttribute("listeCategories", listeCategories);
+			
+			
+			
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
 		
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/testTom.jsp");
+		rd.forward(request, response);
 		
-		System.out.println(sb);
 		
-		
-		response.getWriter().append(sb);
 	}
 
 }

@@ -12,7 +12,7 @@ public class Categorie {
 	
 	// Constructeurs
 	public Categorie() {
-		listeArticles = new ArrayList<Article>();
+		setListeArticles(new ArrayList<Article>());
 	}
 	
 	public Categorie(Integer noCategorie, String libelle) {
@@ -24,7 +24,7 @@ public class Categorie {
 	public Categorie(String libelle) {
 		super();
 		this.libelle = libelle;
-		listeArticles = new ArrayList<Article>();
+		setListeArticles(new ArrayList<Article>());
 		
 	}
 
@@ -49,6 +49,14 @@ public class Categorie {
 	@Override
 	public String toString() {
 		return "Categorie [noCategorie=" + noCategorie + ", libelle=" + libelle + "]";
+	}
+
+	public List<Article> getListeArticles() {
+		return listeArticles;
+	}
+
+	public void setListeArticles(List<Article> listeArticles) {
+		this.listeArticles = listeArticles;
 	}
 	
 	

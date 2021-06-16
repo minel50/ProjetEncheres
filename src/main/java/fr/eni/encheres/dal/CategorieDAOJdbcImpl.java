@@ -16,7 +16,7 @@ public class CategorieDAOJdbcImpl implements CategorieDAO {
 	//Instructions SQL
 	private static final String sqlInsert = "INSERT INTO categories(libelle) VALUES(?);";
 	private static final String sqlSelectById = "SELECT no_categorie, libelle FROM categories WHERE no_categorie = ?;";
-	private static final String sqlSelectAll = "SELECT no_categorie, libelle FROM categories = ?;";
+	private static final String sqlSelectAll = "SELECT * FROM categories;";
 	private static final String sqlUpdate = "UPDATE categories SET libelle=? WHERE no_categorie = ?;";
 	private static final String sqlDelete = "DELETE FROM categories WHERE no_categorie = ?;";
 	
@@ -65,6 +65,8 @@ public class CategorieDAOJdbcImpl implements CategorieDAO {
 	}
 	
 	
+	
+	
 	@Override
 	public List<Categorie> selectAll() throws BusinessException {
 		
@@ -84,7 +86,10 @@ public class CategorieDAOJdbcImpl implements CategorieDAO {
 			}
 		} catch(Exception e) 
 		{
-			// Ajt erreur exception si echec
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
 		} finally 
 		{
 			try {
