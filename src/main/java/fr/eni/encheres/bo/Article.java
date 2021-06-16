@@ -11,6 +11,7 @@ public class Article {
 	private int prixInitial;
 	private int prixVente;
 	private String etatVente;
+	private Categorie categorie;
 	
 	//Constructeur par défaut
 	public Article() {
@@ -18,7 +19,7 @@ public class Article {
 	
 	//Constructeur avec id
 	public Article(Integer noArticle, String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres, int prixInitial,
-			int prixVente, String etatVente) {
+			int prixVente, String etatVente, Categorie categorie) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -27,12 +28,13 @@ public class Article {
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
 		this.etatVente = etatVente;
+		this.categorie = categorie;
 	}
 	
 	//Constructeur sans id faisant appel au constructeur ci-dessus.
 	public Article(String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres, int prixInitial,
-			int prixVente, String etatVente) {
-		this(null, nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, etatVente);
+			int prixVente, String etatVente, Categorie categorie) {
+		this(null, nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, etatVente, categorie);
 	}
 
 	public Integer getNoArticle() {
@@ -100,12 +102,23 @@ public class Article {
 		this.etatVente = etatVente;
 	}
 
+	public Categorie getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(Categorie categorie) {
+		this.categorie = categorie;
+	}
+
 	@Override
 	public String toString() {
-		return "Article [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", dateDebutEncheres="
-				+ dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", prixInitial=" + prixInitial
-				+ ", prixVente=" + prixVente + ", etatVente=" + etatVente + "]";
+		return "Article [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
+				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", prixInitial="
+				+ prixInitial + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", categorie=" + categorie
+				+ "]";
 	}
+
+	
 
 }
 

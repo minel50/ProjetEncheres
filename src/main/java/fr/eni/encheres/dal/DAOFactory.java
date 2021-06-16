@@ -6,9 +6,9 @@ public abstract class DAOFactory {
 		return new UtilisateurDAOJdbcImpl();
 	}*/
 	
-	/*public static CategorieDAO getCategorieDAO() {
+	public static CategorieDAO getCategorieDAO() {
 		return new CategorieDAOJdbcImpl();
-	}*/
+	}
 	
 	/*public static RetraitDAO getRetraitDAO() {
 		return new RetraitDAOJdbcImpl();
