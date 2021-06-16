@@ -16,6 +16,9 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String sqlSelectAll = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES";
 	private static final String sqlSelectByUser = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ?";
 	private static final String sqlSelectByArticle = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_article = ?";
+	
+	private ArticleDAO articleDAO = DAOFactory.getArticleDAO();
+	private UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
 
 	@Override
 	public void insert(Enchere enchere) throws BusinessException {
@@ -32,8 +35,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		try {
 			cnx = ConnectionProvider.getConnection();
 			stmt = cnx.prepareStatement(sqlInsert);
-			stmt.setInt(1, enchere.getNoUtilisateur());
-			stmt.setInt(2, enchere.getNoArticle());
+			stmt.setInt(1, enchere.getUtilisateur().getNoUtilisateur());
+			stmt.setInt(2, enchere.getArticle().getNoArticle());
 			stmt.setDate(3, new Date(enchere.getDateEnchere().getTime()));
 			stmt.setInt(4, enchere.getMontantEnchere());
 			stmt.executeUpdate();
@@ -74,8 +77,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 				listeEncheres.add(new Enchere(
 						rs.getDate("date_enchere"),
 						rs.getInt("montant_enchere"),
-						rs.getInt("no_utilisateur"),
-						rs.getInt("no_article")
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						articleDAO.selectById(rs.getInt("no_article"))
 						));
 			}
 			
@@ -116,8 +119,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 				listeEncheres.add(new Enchere(
 						rs.getDate("date_enchere"),
 						rs.getInt("montant_enchere"),
-						rs.getInt("no_utilisateur"),
-						rs.getInt("no_article")
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						articleDAO.selectById(rs.getInt("no_article"))
 						));
 			}
 			
@@ -158,8 +161,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 				listeEncheres.add(new Enchere(
 						rs.getDate("date_enchere"),
 						rs.getInt("montant_enchere"),
-						rs.getInt("no_utilisateur"),
-						rs.getInt("no_article")
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						articleDAO.selectById(rs.getInt("no_article"))
 						));
 			}
 			
