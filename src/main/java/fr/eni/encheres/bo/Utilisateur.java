@@ -4,8 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
+//classe utilisateur
 public class Utilisateur implements Serializable{
 	private static final long serialVersionUID = 4804753249878730328L;
 	private Integer noUtilisateur;
