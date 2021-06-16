@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.encheres.bo.Article;
-import fr.eni.encheres.bo.Categorie;
-import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.dal.ArticleDAO;
 import fr.eni.encheres.dal.DAOFactory;
 
@@ -30,24 +28,25 @@ public class Test extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ArticleDAO articleDAO = DAOFactory.getArticleDAO();
-		Categorie categorie = new Categorie(1, "toto");
 		
 		// Test ajout d'un article dans la base :
-		//Article nouvelArticle = new Article("voiture", "électrique", new Date(), new Date(2021, 5, 27), 127, 0, "création", categorie);
-		//articleDAO.insert(nouvelArticle);
+		/*
+		Article nouvelArticle = new Article("bateau", "voilier", new Date(), new Date(2021, 5, 27), 399, 0, "création", 1, 1);
+		articleDAO.insert(nouvelArticle);
+		*/
 		
 		//Test modification d'un article
 		/*
-		Article articleAModifier = articleDAO.selectById(2);
+		Article articleAModifier = articleDAO.selectById(4);
 		articleAModifier.setDescription("nouvelle description");
 		articleDAO.update(articleAModifier);
 		*/
 		
 		//Test suppression d'un article
-		/*
-		Article articleASupprimer = articleDAO.selectById(3);
+		
+		Article articleASupprimer = articleDAO.selectById(4);
 		articleDAO.delete(articleASupprimer);
-		*/
+		
 					
 		List<Article> listeArticles = articleDAO.selectAll();
 		request.setAttribute("listeArticles", listeArticles);

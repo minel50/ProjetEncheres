@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.encheres.bo.Article;
-import fr.eni.encheres.bo.Categorie;
-import fr.eni.encheres.bo.Utilisateur;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String sqlInsert = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -34,8 +32,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			stmt.setDate(4, new Date(article.getDateFinEncheres().getTime()));
 			stmt.setInt(5, article.getPrixInitial());
 			stmt.setInt(6, article.getPrixVente());
-			stmt.setInt(7, 1);		//manque utilisateur dans la classe Article
-			stmt.setInt(8, article.getCategorie().getNoCategorie());
+			stmt.setInt(7, article.getNoUtilisateur());
+			stmt.setInt(8, article.getNoCategorie());
 			
 			int nbRows = stmt.executeUpdate();
 			if (nbRows == 1) {
@@ -67,6 +65,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		Connection cnx = null;
 		PreparedStatement stmt = null;
 		
+		
 		try {
 			cnx = ConnectionProvider.getConnection();
 			stmt = cnx.prepareStatement(sqlSelectAll);
@@ -81,10 +80,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
 						"création",
-						//Attente création utilisateurDAO pour utiliser la méthode selectById
-						new Utilisateur(), 
-						//Attente création méthode selectById dans categorieDAO
-						new Categorie(rs.getInt("no_categorie"), "catégorie bidon")
+						rs.getInt("no_utilisateur"),
+						rs.getInt("no_categorie")
 						));
 			}
 			
@@ -127,10 +124,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
 						"création",
-						//Attente création utilisateurDAO pour utiliser la méthode selectById
-						new Utilisateur(), 
-						//Attente création méthode selectById dans categorieDAO
-						new Categorie(rs.getInt("no_categorie"), "catégorie bidon")
+						rs.getInt("no_utilisateur"),
+						rs.getInt("no_categorie")
 						);
 			}
 			
@@ -168,7 +163,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			stmt.setInt(5, article.getPrixInitial());
 			stmt.setInt(6, article.getPrixVente());
 			stmt.setInt(7, 1);		//A modifier avec getUtilisateur()
-			stmt.setInt(8, article.getCategorie().getNoCategorie());
+			stmt.setInt(8, article.getNoCategorie());
 			stmt.setInt(9, article.getNoArticle());
 			stmt.executeUpdate();
 			

@@ -11,8 +11,8 @@ public class Article {
 	private int prixInitial;
 	private int prixVente;
 	private String etatVente;
-	private Utilisateur utilisateur;
-	private Categorie categorie;
+	private int noUtilisateur;
+	private int noCategorie;
 	
 	//Constructeur par défaut
 	public Article() {
@@ -20,7 +20,7 @@ public class Article {
 	
 	//Constructeur avec id
 	public Article(Integer noArticle, String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres, int prixInitial,
-			int prixVente, String etatVente, Utilisateur utilisateur, Categorie categorie) {
+			int prixVente, String etatVente, int noUtilisateur, int noCategorie) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -29,14 +29,14 @@ public class Article {
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
 		this.etatVente = etatVente;
-		this.utilisateur = utilisateur;
-		this.categorie = categorie;
+		this.noUtilisateur = noUtilisateur;
+		this.noCategorie = noCategorie;
 	}
 	
 	//Constructeur sans id faisant appel au constructeur ci-dessus.
 	public Article(String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres, int prixInitial,
-			int prixVente, String etatVente, Utilisateur utilisateur, Categorie categorie) {
-		this(null, nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, etatVente, utilisateur, categorie);
+			int prixVente, String etatVente, int noUtilisateur, int noCategorie) {
+		this(null, nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, etatVente, noUtilisateur, noCategorie);
 	}
 
 	public Integer getNoArticle() {
@@ -104,28 +104,28 @@ public class Article {
 		this.etatVente = etatVente;
 	}
 
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
+	public int getNoUtilisateur() {
+		return noUtilisateur;
 	}
 
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
+	public void setNoUtilisateur(int noUtilisateur) {
+		this.noUtilisateur = noUtilisateur;
 	}
 
-	public Categorie getCategorie() {
-		return categorie;
+	public int getNoCategorie() {
+		return noCategorie;
 	}
 
-	public void setCategorie(Categorie categorie) {
-		this.categorie = categorie;
+	public void setNoCategorie(int noCategorie) {
+		this.noCategorie = noCategorie;
 	}
 
 	@Override
 	public String toString() {
 		return "Article [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", prixInitial="
-				+ prixInitial + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", utilisateur=" + utilisateur
-				+ ", categorie=" + categorie + "]";
+				+ prixInitial + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", noUtilisateur=" + noUtilisateur
+				+ ", noCategorie=" + noCategorie + "]";
 	}	
 
 }
