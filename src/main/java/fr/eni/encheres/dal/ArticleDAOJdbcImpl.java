@@ -11,6 +11,7 @@ import java.util.List;
 
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
+import fr.eni.encheres.bo.Utilisateur;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String sqlInsert = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -66,8 +67,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		Connection cnx = null;
 		PreparedStatement stmt = null;
 		
-		CategorieDAO categorieDAO = DAOFactory.getCategorieDAO();
-		
 		try {
 			cnx = ConnectionProvider.getConnection();
 			stmt = cnx.prepareStatement(sqlSelectAll);
@@ -82,7 +81,9 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
 						"création",
-						//categorieDAO.selectById(rs.getInt("no_categorie"))	//Attente création méthode selectById pour les catégories
+						//Attente création utilisateurDAO pour utiliser la méthode selectById
+						new Utilisateur(), 
+						//Attente création méthode selectById dans categorieDAO
 						new Categorie(rs.getInt("no_categorie"), "catégorie bidon")
 						));
 			}
@@ -126,7 +127,9 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
 						"création",
-						//categorieDAO.selectById(rs.getInt("no_categorie"))	//Attente création méthode selectById pour les catégories
+						//Attente création utilisateurDAO pour utiliser la méthode selectById
+						new Utilisateur(), 
+						//Attente création méthode selectById dans categorieDAO
 						new Categorie(rs.getInt("no_categorie"), "catégorie bidon")
 						);
 			}

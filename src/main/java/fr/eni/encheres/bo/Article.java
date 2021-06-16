@@ -11,6 +11,7 @@ public class Article {
 	private int prixInitial;
 	private int prixVente;
 	private String etatVente;
+	private Utilisateur utilisateur;
 	private Categorie categorie;
 	
 	//Constructeur par défaut
@@ -19,7 +20,7 @@ public class Article {
 	
 	//Constructeur avec id
 	public Article(Integer noArticle, String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres, int prixInitial,
-			int prixVente, String etatVente, Categorie categorie) {
+			int prixVente, String etatVente, Utilisateur utilisateur, Categorie categorie) {
 		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.description = description;
@@ -28,13 +29,14 @@ public class Article {
 		this.prixInitial = prixInitial;
 		this.prixVente = prixVente;
 		this.etatVente = etatVente;
+		this.utilisateur = utilisateur;
 		this.categorie = categorie;
 	}
 	
 	//Constructeur sans id faisant appel au constructeur ci-dessus.
 	public Article(String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres, int prixInitial,
-			int prixVente, String etatVente, Categorie categorie) {
-		this(null, nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, etatVente, categorie);
+			int prixVente, String etatVente, Utilisateur utilisateur, Categorie categorie) {
+		this(null, nomArticle, description, dateDebutEncheres, dateFinEncheres, prixInitial, prixVente, etatVente, utilisateur, categorie);
 	}
 
 	public Integer getNoArticle() {
@@ -102,6 +104,14 @@ public class Article {
 		this.etatVente = etatVente;
 	}
 
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
+	}
+
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+
 	public Categorie getCategorie() {
 		return categorie;
 	}
@@ -114,12 +124,8 @@ public class Article {
 	public String toString() {
 		return "Article [noArticle=" + noArticle + ", nomArticle=" + nomArticle + ", description=" + description
 				+ ", dateDebutEncheres=" + dateDebutEncheres + ", dateFinEncheres=" + dateFinEncheres + ", prixInitial="
-				+ prixInitial + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", categorie=" + categorie
-				+ "]";
-	}
-
-	
+				+ prixInitial + ", prixVente=" + prixVente + ", etatVente=" + etatVente + ", utilisateur=" + utilisateur
+				+ ", categorie=" + categorie + "]";
+	}	
 
 }
-
-
