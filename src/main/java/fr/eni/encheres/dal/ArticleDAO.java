@@ -11,4 +11,6 @@ public interface ArticleDAO {
 	public Article selectById(int id) throws BusinessException;
 	public void update(Article article) throws BusinessException;
 	public void delete(Article article) throws BusinessException;
+	List<Article> selectArticlesVendusByUtilisateur(int idUtilisateur) throws BusinessException;
+	List<Article> selectArticlesAchetesByUtilisateur(int idUtilisateur) throws BusinessException;
 }

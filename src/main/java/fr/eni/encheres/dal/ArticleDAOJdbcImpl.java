@@ -16,6 +16,10 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String sqlInsert = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String sqlSelectAll = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS";
 	private static final String sqlSelectById = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS WHERE no_article = ?";
+	private static final String sqlSelectArticlesVendusByUtilisateur = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS WHERE no_utilisateur = ?";
+	private static final String sqlSelectArticlesAchetesByUtilisateur = "SELECT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.no_utilisateur, a.no_categorie\r\n"
+																		+ "FROM ARTICLES_VENDUS a INNER JOIN ENCHERES e ON a.no_article = e.no_article\r\n"
+																		+ "WHERE e.no_utilisateur = ? AND a.prix_vente = e.montant_enchere;";
 	private static final String sqlUpdate = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, no_utilisateur = ?, no_categorie = ? WHERE no_article = ?";
 	private static final String sqlDelete = "DELETE FROM ARTICLES_VENDUS WHERE no_article = ?";
 	
@@ -167,6 +171,102 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		}
 		
 		return article;
+	}
+	
+	@Override
+	public List<Article> selectArticlesVendusByUtilisateur(int idUtilisateur) throws BusinessException {
+		List<Article> listeArticles = new ArrayList<>();
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(sqlSelectArticlesVendusByUtilisateur);
+			stmt.setInt(1, idUtilisateur);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				listeArticles.add(new Article(
+						rs.getInt("no_article"),
+						rs.getString("nom_article"),
+						rs.getString("description"),
+						rs.getDate("date_debut_encheres"),
+						rs.getDate("date_fin_encheres"),
+						rs.getInt("prix_initial"),
+						rs.getInt("prix_vente"),
+						"création",
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						categorieDAO.selectById(rs.getInt("no_categorie"))
+						));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (cnx != null) {
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return listeArticles;
+	}
+	
+	@Override
+	public List<Article> selectArticlesAchetesByUtilisateur(int idUtilisateur) throws BusinessException {
+		List<Article> listeArticles = new ArrayList<>();
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(sqlSelectArticlesAchetesByUtilisateur);
+			stmt.setInt(1, idUtilisateur);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				listeArticles.add(new Article(
+						rs.getInt("no_article"),
+						rs.getString("nom_article"),
+						rs.getString("description"),
+						rs.getDate("date_debut_encheres"),
+						rs.getDate("date_fin_encheres"),
+						rs.getInt("prix_initial"),
+						rs.getInt("prix_vente"),
+						"création",
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						categorieDAO.selectById(rs.getInt("no_categorie"))
+						));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (cnx != null) {
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return listeArticles;
 	}
 
 	@Override

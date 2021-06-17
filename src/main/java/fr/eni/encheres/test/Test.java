@@ -68,6 +68,13 @@ public class Test extends HttpServlet {
 			
 			Article articleSelectedById = articleDAO.selectById(1);
 			request.setAttribute("articleSelectedById", articleSelectedById);
+			
+			List<Article> listeArticlesVendusByUtilisateur = articleDAO.selectArticlesVendusByUtilisateur(1);
+			request.setAttribute("listeArticlesVendusByUtilisateur", listeArticlesVendusByUtilisateur);
+			
+			List<Article> listeArticlesAchetesByUtilisateur = articleDAO.selectArticlesAchetesByUtilisateur(2);
+			request.setAttribute("listeArticlesAchetesByUtilisateur", listeArticlesAchetesByUtilisateur);
+			
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
