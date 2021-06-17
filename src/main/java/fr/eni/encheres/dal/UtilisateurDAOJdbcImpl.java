@@ -108,7 +108,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 											   resultSet.getString("code_postal"),
 											   resultSet.getString("ville"),
 											   resultSet.getString("mot_de_passe"),
-											
+											   
 											   resultSet.getInt("credit"),
 											   resultSet.getInt("administrateur"));
 												

@@ -16,6 +16,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String sqlSelectAll = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES";
 	private static final String sqlSelectByUser = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ?";
 	private static final String sqlSelectByArticle = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_article = ?";
+	private static final String sqlSelectByUtilisateurEtArticle = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ? AND no_article = ?";
 	
 	private ArticleDAO articleDAO = DAOFactory.getArticleDAO();
 	private UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
@@ -186,6 +187,48 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		}
 		
 		return listeEncheres;
+	}
+
+	@Override
+	public Enchere selectByUtilisateurEtArticle(int idUtilisateur, int idArticle) throws BusinessException {
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		Enchere enchere = null;
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(sqlSelectByUtilisateurEtArticle);
+			stmt.setInt(1, idUtilisateur);
+			stmt.setInt(2, idArticle);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {new Enchere(
+							rs.getDate("date_enchere"),
+							rs.getInt("montant_enchere"),
+							utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+							articleDAO.selectById(rs.getInt("no_article"))
+							);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (cnx != null) {
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return enchere;
 	}
 
 }
