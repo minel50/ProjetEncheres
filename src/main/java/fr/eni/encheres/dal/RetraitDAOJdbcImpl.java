@@ -16,7 +16,7 @@ public class RetraitDAOJdbcImpl implements RetraitDAO {
 	//Instructions SQL
 	private static final String sqlInsert = "INSERT INTO retraits(no_article, rue, code_postal, ville) VALUES(?, ?, ?, ?);";
 	private static final String sqlSelectById = "SELECT no_article, rue, code_postal, ville FROM retraits WHERE no_article = ?;";
-	private static final String sqlSelectAll = "SELECT no_article, libelle FROM retraits = ?;";
+	private static final String sqlSelectAll = "SELECT no_article, rue, code_postal, ville FROM retraits;";
 	private static final String sqlUpdate = "UPDATE retraits SET rue=?, code_postal=?, ville=? WHERE no_article = ?;";
 	private static final String sqlDelete = "DELETE FROM retraits WHERE no_article = ?;";
 	

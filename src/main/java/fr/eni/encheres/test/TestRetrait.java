@@ -10,15 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.encheres.BusinessException;
+import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
+import fr.eni.encheres.bo.Retrait;
+import fr.eni.encheres.dal.ArticleDAO;
 import fr.eni.encheres.dal.CategorieDAO;
 import fr.eni.encheres.dal.DAOFactory;
+import fr.eni.encheres.dal.RetraitDAO;
 
 /**
  * Servlet implementation class TestCat
  */
-@WebServlet("/TestCat")
-public class TestCat extends HttpServlet {
+@WebServlet("/TestRetrait")
+public class TestRetrait extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
   
@@ -28,31 +32,41 @@ public class TestCat extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		CategorieDAO catDAO = DAOFactory.getCategorieDAO();
+		ArticleDAO artDAO = DAOFactory.getArticleDAO();
+		RetraitDAO retDAO = DAOFactory.getRetraitDAO();
+		
 		
 		//Test insert
-		/*Categorie c1 = new Categorie("Bricolage");
-		Categorie c2 = new Categorie("Jardin");
-		Categorie c3 = new Categorie("Jardin");
-		System.out.println("Insertion de " + c1.toString());
-		System.out.println("Insertion de " + c2.toString());
 		try {
-			catDAO.insert(c1);
-			catDAO.insert(c2);
-			catDAO.insert(c3);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}*/
+			Article a1 = artDAO.selectById(4);
+			Article a2 = artDAO.selectById(5);
+			
+			Retrait r1 = new Retrait(a1, "2 rue de la plaine basse", "35140", "Mezières");
+			Retrait r2 = new Retrait(a2, "2 rue George Pompidou", "35140", "Saint-Aubin");
+			
+			retDAO.insert(r1);
+			retDAO.insert(r2);
+			
+			System.out.println("Insertion de " + r1.toString());
+			System.out.println("Insertion de " + r2.toString());
+			
+		} catch (BusinessException e1) {
+			e1.printStackTrace();
+		}
+		
+		
+		
+			
 		
 		//Test Selectall
 		StringBuilder sb = new StringBuilder();
 		System.out.println("Début du test");
 		
-		List<Categorie> listeCategories;
+		List<Retrait> listeRetraits;
 		try {
-			listeCategories = catDAO.selectAll();
-			for(Categorie c : listeCategories) {
-				sb.append(c.toString());
+			listeRetraits = retDAO.selectAll();
+			for(Retrait r : listeRetraits) {
+				sb.append(r.toString());
 				sb.append("\n");
 			}
 		} catch (BusinessException e) {
@@ -62,40 +76,47 @@ public class TestCat extends HttpServlet {
 		System.out.println(sb);
 		response.getWriter().append(sb);
 		
+		
+		
 		//Test SelectById	
 		try {
-			Categorie cat1 = catDAO.selectById(2);
-			String CatString =  cat1.toString();
+			Retrait r1 = retDAO.selectById(4);
+			String retString =  r1.toString();
 			
-			System.out.println(CatString);
-			response.getWriter().append(CatString);
+			System.out.println(retString);
+			response.getWriter().append(retString);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
 		
+		
 		//Test Update
-		/*Categorie cat1;
+		
 		try {
 			
-			cat1 = catDAO.selectById(4);
-			cat1.setLibelle("Décoration");
-			catDAO.update(cat1);
+			Retrait r1 = retDAO.selectById(5);
+			r1.setCodePostal("35250");
+			retDAO.update(r1);
 			
 			
 		} catch (BusinessException e) {
 			e.printStackTrace();
-		}*/
+		}
+		
+		
 		
 		
 		//Test Delete
 		try {
-			Categorie cat1 = catDAO.selectById(7);
+			Retrait r1 = retDAO.selectById(5);
 			
-			catDAO.delete(cat1);
+			retDAO.delete(r1);
 			
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
+		
+		
 	}
 
 }
