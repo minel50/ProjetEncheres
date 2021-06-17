@@ -4,11 +4,11 @@ import java.util.List;
 
 import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bo.Enchere;
+import fr.eni.encheres.bo.Utilisateur;
 
 public interface EnchereDAO {
 	public void insert (Enchere enchere) throws BusinessException;
-	public List<Enchere> selectAll() throws BusinessException;
-	public List<Enchere> selectByUtilisateur(int idUtilisateur) throws BusinessException;
-	public List<Enchere> selectByArticle(int idArticle) throws BusinessException;
-	public Enchere selectByUtilisateurEtArticle(int idUtilisateur, int idArticle) throws BusinessException;
+	public List<Enchere> selectByUtilisateur(int noUtilisateur) throws BusinessException;
+	public List<Enchere> selectByArticle(int noArticle) throws BusinessException;
+	public Enchere selectByUtilisateurEtArticle(int noUtilisateur, int noArticle) throws BusinessException;
 }	

@@ -23,6 +23,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 	private static final String sqlDelete = "delete from utilisateurs where no_utilisateur=?";
 	private static final String sqlUpdate = "update UTILISATEURS set pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?,credit=?, administrateur =? where no_utilisateur=?";
 	
+	private EnchereDAO enchereDAO = DAOFactory.getEnchereDAO();
+	
 	public void insert(Utilisateur data ) throws BusinessException {
 		if(data==null)
 		{
@@ -108,13 +110,10 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 											   resultSet.getString("code_postal"),
 											   resultSet.getString("ville"),
 											   resultSet.getString("mot_de_passe"),
-											   
 											   resultSet.getInt("credit"),
 											   resultSet.getInt("administrateur"));
-												
-											  
 				
-										
+				utilisateur.setListeEncheres(enchereDAO.selectByUtilisateur(utilisateur.getNoUtilisateur()));							
 			}
 			
 			
@@ -141,7 +140,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			stmt=cnx.prepareStatement(sqlSelectAll);
 			resultSet = stmt.executeQuery();
 			while(resultSet.next()) {
-			Utilisateur utilisateur = new Utilisateur( resultSet.getInt("no_utilisateur"),
+				Utilisateur utilisateur = new Utilisateur( resultSet.getInt("no_utilisateur"),
 											   		   resultSet.getString("pseudo"),
 											   		   resultSet.getString("nom"),
 													   resultSet.getString("prenom"),
@@ -153,30 +152,31 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 													   resultSet.getString("mot_de_passe"),	
 													   resultSet.getInt("credit"),
 													   resultSet.getInt("administrateur"));
-													
-			listeUtilisateurs.add(utilisateur);
-			}}
-			catch (SQLException e) {
+				
+				utilisateur.setListeEncheres(enchereDAO.selectByUtilisateur(utilisateur.getNoUtilisateur()));
+				listeUtilisateurs.add(utilisateur);
+			}
+		} catch (SQLException e) {
 				BusinessException businessException = new BusinessException();
 				businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
 				throw businessException;
-			} finally {
-				try {
-					if (resultSet != null){
-						resultSet.close();
-					}
-					if (stmt != null){
-						stmt.close();
-					}
-					if(cnx!=null){
-						cnx.close();
-					}
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		} finally {
+			try {
+				if (resultSet != null){
+					resultSet.close();
 				}
-			
+				if (stmt != null){
+					stmt.close();
+				}
+				if(cnx!=null){
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+		
+		}
 		return listeUtilisateurs;
 
 

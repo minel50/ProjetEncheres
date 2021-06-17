@@ -2,23 +2,44 @@ package fr.eni.encheres.dal;
 
 public abstract class DAOFactory {
 	
+	private static UtilisateurDAO utilisateurDAO;
+	private static CategorieDAO categorieDAO;
+	private static RetraitDAO retraitDAO;
+	private static ArticleDAO articleDAO;
+	private static EnchereDAO enchereDAO;
+	
 	public static UtilisateurDAO getUtilisateurDAO() {
-		return new UtilisateurDAOJdbcImpl();
+		if (utilisateurDAO == null) {
+			utilisateurDAO = new UtilisateurDAOJdbcImpl();
+		}
+		return utilisateurDAO;
 	}
 	
 	public static CategorieDAO getCategorieDAO() {
-		return new CategorieDAOJdbcImpl();
+		if (categorieDAO == null) {
+			categorieDAO = new CategorieDAOJdbcImpl();
+		}
+		return categorieDAO;
 	}
 	
 	public static RetraitDAO getRetraitDAO() {
-		return new RetraitDAOJdbcImpl();
+		if (retraitDAO == null) {
+			retraitDAO = new RetraitDAOJdbcImpl();
+		}
+		return retraitDAO;
 	}
 	
 	public static ArticleDAO getArticleDAO() {
-		return new ArticleDAOJdbcImpl();
+		if (articleDAO == null) {
+			articleDAO = new ArticleDAOJdbcImpl();
+		}
+		return articleDAO;
 	}
 	
 	public static EnchereDAO getEnchereDAO() {
-		return new EnchereDAOJdbcImpl();
+		if (enchereDAO == null) {
+			enchereDAO = new EnchereDAOJdbcImpl();
+		}
+		return enchereDAO;
 	}
 }
