@@ -26,7 +26,21 @@
 		</p>
 		
 		<h3>Affichage de l'article id 1</h3>
-		<p>${articleSelectedById}
+		<p>${articleSelectedById}</p>
+		
+		<h3>Affichage des articles vendus par l'utilisateur 1 :</h3>
+		<p>
+			<c:forEach var="element" items="${requestScope.listeArticlesVendusByUtilisateur}">
+				${element}<br>
+			</c:forEach>
+		</p>
+		
+		<h3>Affichage des articles achetés par l'utilisateur 2 :</h3>
+		<p>
+			<c:forEach var="element" items="${requestScope.listeArticlesAchetesByUtilisateur}">
+				${element}<br>
+			</c:forEach>
+		</p>
 	</main>
 </body>
 </html>
