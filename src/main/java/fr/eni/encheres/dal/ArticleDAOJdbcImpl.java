@@ -80,7 +80,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		Connection cnx = null;
 		PreparedStatement stmt = null;
 		
-		
 		try {
 			cnx = ConnectionProvider.getConnection();
 			stmt = cnx.prepareStatement(sqlSelectAll);
