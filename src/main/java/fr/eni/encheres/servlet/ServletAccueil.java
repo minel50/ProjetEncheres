@@ -23,6 +23,7 @@ import fr.eni.encheres.bo.Article;
 @WebServlet("/")
 public class ServletAccueil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private String contient;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,8 +37,13 @@ public class ServletAccueil extends HttpServlet {
 		ArticleManager articleManager = new ArticleManager();
 		
 		try {
-			List<Article> listeArticlesEnVente = articleManager.getListeArticlesEnVente();
-			request.setAttribute("listeArticlesEnVente", listeArticlesEnVente);
+			if (contient == null) {
+				List<Article> listeArticlesEnVente = articleManager.getListeArticlesEnVente();
+				request.setAttribute("listeArticlesEnVente", listeArticlesEnVente);
+			} else {
+				List<Article> listeArticlesEnVente = articleManager.getListeArticlesEnVenteAvecFiltre(contient);
+				request.setAttribute("listeArticlesEnVente", listeArticlesEnVente);
+			}
 			
 		} catch (BusinessException e) {
 			List<Integer> listeCodesErreurs = new ArrayList<>();
@@ -48,6 +54,11 @@ public class ServletAccueil extends HttpServlet {
 		
 		RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/accueil.jsp");
 		rd.forward(request, response);
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		contient = request.getParameter("contient");
+		doGet(request, response);
 	}
 
 }

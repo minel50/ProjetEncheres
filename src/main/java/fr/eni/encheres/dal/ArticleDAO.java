@@ -12,6 +12,7 @@ public interface ArticleDAO {
 	public void update(Article article) throws BusinessException;
 	public void delete(Article article) throws BusinessException;
 	public List<Article> selectArticlesEnVente() throws BusinessException;
+	public List<Article> selectArticlesEnVenteAvecFiltre(String filtre) throws BusinessException;
 	List<Article> selectArticlesVendusByUtilisateur(int idUtilisateur) throws BusinessException;
 	List<Article> selectArticlesAchetesByUtilisateur(int idUtilisateur) throws BusinessException;
 }

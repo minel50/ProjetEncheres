@@ -24,6 +24,10 @@
 		<h2>Liste des enchères</h2>
 		<p>
 			<h3>Filtres :</h3>
+			<form name="filtres" action="/encheres/" method="POST">
+				<input type="text" name="contient" placeholder="Le nom de l'article contient" />
+				<button type="submit">Rechercher</button>
+			</form>
 		</p>
 		<ul>
 			<c:forEach var="a" items="${requestScope.listeArticlesEnVente}">
