@@ -5,18 +5,18 @@ import java.util.Date;
 public class Enchere {
 	private Date dateEnchere;
 	private int montantEnchere;
-	private Utilisateur utilisateur;
-	private Article article;
+	private int noUtilisateur;
+	private int noArticle;
 	
 	public Enchere() {
 	}
 	
-	public Enchere(Date dateEnchere, int montantEnchere, Utilisateur utilisateur, Article article) {
+	public Enchere(Date dateEnchere, int montantEnchere, int noUtilisateur, int noArticle) {
 		super();
 		this.dateEnchere = dateEnchere;
 		this.montantEnchere = montantEnchere;
-		this.utilisateur = utilisateur;
-		this.article = article;
+		this.noUtilisateur = noUtilisateur;
+		this.noArticle = noArticle;
 	}
 
 	public Date getDateEnchere() {
@@ -35,26 +35,26 @@ public class Enchere {
 		this.montantEnchere = montantEnchere;
 	}
 
-	public Utilisateur getUtilisateur() {
-		return utilisateur;
+	public int getNoUtilisateur() {
+		return noUtilisateur;
 	}
 
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
+	public void seNoUtilisateur(int noUtilisateur) {
+		this.noUtilisateur = noUtilisateur;
 	}
 
-	public Article getArticle() {
-		return article;
+	public int getNoArticle() {
+		return noArticle;
 	}
 
-	public void setArticle(Article article) {
-		this.article = article;
+	public void setNoArticle(int noArticle) {
+		this.noArticle = noArticle;
 	}
 
 	@Override
 	public String toString() {
-		return "Enchere [dateEnchere=" + dateEnchere + ", montantEnchere=" + montantEnchere + ", utilisateur="
-				+ utilisateur + ", article=" + article + "]";
+		return "Enchere [dateEnchere=" + dateEnchere + ", montantEnchere=" + montantEnchere + ", noUtilisateur="
+				+ noUtilisateur + ", noArticle=" + noArticle + "]";
 	}
 
 }

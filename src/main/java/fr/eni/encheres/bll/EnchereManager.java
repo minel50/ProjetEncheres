@@ -14,27 +14,21 @@ public class EnchereManager {
 		enchereDAO = DAOFactory.getEnchereDAO();
 	}
 	
-	public List<Enchere> getAllEncheres() throws BusinessException {
+	public List<Enchere> getAllEncheresParUtilisateur(int noUtilisateur) throws BusinessException {
 		List<Enchere> listeEncheres;
-		listeEncheres = enchereDAO.selectAll();
+		listeEncheres = enchereDAO.selectByUtilisateur(noUtilisateur);
 		return listeEncheres;
 	}
 	
-	public List<Enchere> getAllEncheresParUtilisateur(int idUtilisateur) throws BusinessException {
+	public List<Enchere> getAllEncheresParArticle(int noArticle) throws BusinessException {
 		List<Enchere> listeEncheres;
-		listeEncheres = enchereDAO.selectByUtilisateur(idUtilisateur);
+		listeEncheres = enchereDAO.selectByArticle(noArticle);
 		return listeEncheres;
 	}
 	
-	public List<Enchere> getAllEncheresParArticle(int idArticle) throws BusinessException {
-		List<Enchere> listeEncheres;
-		listeEncheres = enchereDAO.selectByArticle(idArticle);
-		return listeEncheres;
-	}
-	
-	public Enchere getEnchere(int idUtilisateur, int idArticle) throws BusinessException {
+	public Enchere getEnchere(int noUtilisateur, int noArticle) throws BusinessException {
 		Enchere enchere;
-		enchere = enchereDAO.selectByUtilisateurEtArticle(idUtilisateur, idArticle);
+		enchere = enchereDAO.selectByUtilisateurEtArticle(noUtilisateur, noArticle);
 		return enchere;
 	}
 	
@@ -54,10 +48,10 @@ public class EnchereManager {
 		if (e == null) {
 			exception.ajouterErreur(CodesResultatBLL.OBJECT_NULL);
 		} else {
-			if (e.getUtilisateur() == null) {
+			if (e.getNoUtilisateur() == 0) {
 				exception.ajouterErreur(CodesResultatBLL.ERREUR_ENCHERE_MANQUE_UTILISATEUR);
 			}
-			if (e.getArticle() == null) {
+			if (e.getNoArticle() == 0) {
 				exception.ajouterErreur(CodesResultatBLL.ERREUR_ENCHERE_MANQUE_ARTICLE);
 			}
 			if (e.getMontantEnchere() < 0) {
