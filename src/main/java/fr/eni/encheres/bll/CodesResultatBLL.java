@@ -86,7 +86,31 @@ public class CodesResultatBLL {
 	
 	/**
 	 * Le champ ville du point de retrait est obligatoire et doit comporter au maximum 30 caractères.
+	 * 
 	 */
-	public static final int ERREUR_VILLE_RETRAIT = 20402;	
+	public static final int ERREUR_VILLE_RETRAIT = 20402;
+	
+	//le champ pseudo utilisateur est obligatoire et doit comporter   caractères
+	public static final int ERREUR_PSEUDO_USER = 20001;
+	//le champ nom utilisateur est obligatoire et doit comporter   caractères
+	public static final int ERREUR_NOM_USER = 20002;
+	//le champ prenom utilisateur est obligatoire et doit comporter   caractères
+	public static final int ERREUR_PRENOM_USER = 20003;
+	//le champ prenom utilisateur est obligatoire et doit comporter   caractères
+	public static final int ERREUR_EMAIL_USER = 20004;
+	//le champ telephone utilisateur est obligatoire et doit comporter   caractères
+	public static final int ERREUR_TELEPHONE_USER = 20005;
+	//le champ prenom utilisateur est obligatoire et doit comporter   caractères
+	public static final int ERREUR_RUE_USER = 20006;
+	//le champ code postal utilisateur est obligatoire et doit comporter   caractères
+	public static final int ERREUR_CODEPOSTAL_USER = 20007;
+	//le champ ville utilisateur est obligatoire et doit comporter   caractères
+	public static final int ERREUR_VILLE_USER = 20008;
+	//le champ mot de passe utilisateur est obligatoire et doit comporter   caractères
+	public static final int ERREUR_MOTDEPASSE_USER = 20009;
+	//le champ credit  utilisateur ne doit pas être négatif
+	public static final int ERREUR_CREDIT_NEGATIF = 200010;
+	//le champ administarteur utilisateur  ne peut être que 0 et 1
+	public static final int ERREUR_CODE_ADMIN = 20011;	
 	
 }
