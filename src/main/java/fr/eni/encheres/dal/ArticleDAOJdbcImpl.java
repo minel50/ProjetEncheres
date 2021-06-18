@@ -22,9 +22,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	private static final String sqlSelectArticlesEnVente = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS\r\n"
 															+ "WHERE date_debut_encheres <= CONVERT (date, GETDATE()) AND date_fin_encheres >= CONVERT (date, GETDATE())";
-	
-	private static final String sqlSelectArticlesEnVenteAvecFiltre = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS\r\n"
-			+ "WHERE date_debut_encheres <= CONVERT (date, GETDATE()) AND date_fin_encheres >= CONVERT (date, GETDATE()) AND nom_article LIKE ?";
+	private static final String sqlExtensionFiltreNom = " AND nom_article LIKE ?";
+	private static final String sqlExtensionFiltreCategorie = " AND no_categorie = ?";
 	
 	private static final String sqlSelectArticlesVendusByUtilisateur = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS WHERE no_utilisateur = ?";
 	
@@ -38,6 +37,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	private UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
 	private CategorieDAO categorieDAO = DAOFactory.getCategorieDAO();
+	
+	
 	
 	@Override
 	public void insert(Article article) throws BusinessException {
@@ -91,6 +92,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		}
 	}
 
+	
+	
 	@Override
 	public List<Article> selectAll() throws BusinessException {
 		List<Article> listeArticles = new ArrayList<>();
@@ -138,6 +141,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		return listeArticles;
 	}
 
+	
+	
 	@Override
 	public Article selectById(int id) throws BusinessException {
 		Article article = null;
@@ -186,64 +191,37 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		return article;
 	}
 	
-	//Sélection des tous les articles en vente (date du jour >= date début et date du jour <= date fin)
+	
 	@Override
-	public List<Article> selectArticlesEnVente() throws BusinessException {
+	public List<Article> selectArticlesEnVente(String filtreNom, Integer noCategorie) throws BusinessException {
 		List<Article> listeArticles = new ArrayList<>();
 		Connection cnx = null;
 		PreparedStatement stmt = null;
 		
-		try {
-			cnx = ConnectionProvider.getConnection();
-			stmt = cnx.prepareStatement(sqlSelectArticlesEnVente);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				listeArticles.add(new Article(
-						rs.getInt("no_article"),
-						rs.getString("nom_article"),
-						rs.getString("description"),
-						rs.getDate("date_debut_encheres"),
-						rs.getDate("date_fin_encheres"),
-						rs.getInt("prix_initial"),
-						rs.getInt("prix_vente"),
-						"création",
-						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
-						categorieDAO.selectById(rs.getInt("no_categorie"))
-						));
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			BusinessException businessException = new BusinessException();
-			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
-			throw businessException;
-			
-		} finally {
-			try {
-				if (stmt != null) {
-					stmt.close();
-				}
-				if (cnx != null) {
-					cnx.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		//Construction de la requête en fonction des paramètres d'entrée
+		int index = 1; //pour pointer sur le bon "?" des requêtes préparées
+		StringBuilder requete = new StringBuilder();
+		requete.append(sqlSelectArticlesEnVente);
+		if (filtreNom != null) {
+			requete.append(sqlExtensionFiltreNom);
+		}
+		if (noCategorie != null && noCategorie != 0) {
+			requete.append(sqlExtensionFiltreCategorie);
 		}
 		
-		return listeArticles;
-	}
-
-	@Override
-	public List<Article> selectArticlesEnVenteAvecFiltre(String filtre) throws BusinessException {
-		List<Article> listeArticles = new ArrayList<>();
-		Connection cnx = null;
-		PreparedStatement stmt = null;
-		
 		try {
 			cnx = ConnectionProvider.getConnection();
-			stmt = cnx.prepareStatement(sqlSelectArticlesEnVenteAvecFiltre);
-			stmt.setString(1, "%" + filtre + "%");
+			
+			stmt = cnx.prepareStatement(requete.toString());
+			if (filtreNom != null) {
+				stmt.setString(index, "%" + filtreNom + "%");
+				index += 1;
+			}
+			if (noCategorie != null  && noCategorie != 0) {
+				stmt.setInt(index, noCategorie);
+				index += 1;
+			}
+
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				listeArticles.add(new Article(

@@ -25,7 +25,14 @@
 		<p>
 			<h3>Filtres :</h3>
 			<form name="filtres" action="/encheres/" method="POST">
-				<input type="text" name="contient" placeholder="Le nom de l'article contient" />
+				<input type="text" name="filtreNom" value ="${requestScope.filtreNom }" placeholder="Le nom de l'article contient" />
+				<label for="filtreCategorie">Catégorie : </label>
+				<select name="filtreCategorie">
+					<option value="0">Toutes</option>
+					<c:forEach var = "cat" items="${requestScope.listeCategories }">
+						<option value="${cat.getNoCategorie() }" <c:if test="${requestScope.noCategorie == cat.getNoCategorie() }">selected</c:if>>${cat.getLibelle() }</option>
+					</c:forEach>
+				</select>
 				<button type="submit">Rechercher</button>
 			</form>
 		</p>
@@ -33,7 +40,7 @@
 			<c:forEach var="a" items="${requestScope.listeArticlesEnVente}">
 				<li>
 					<p>
-						${a.getNomArticle()} ${a.getDescription() }<br>
+						${a.getNomArticle() }<br>
 						Prix : ${a.getPrixVente() } pts<br>
 						Fin de l'enchère : ${formatDate.format(a.getDateFinEncheres()) }<br>
 						Vendeur : ${a.getUtilisateur().getPseudo() }

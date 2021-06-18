@@ -20,15 +20,9 @@ public class ArticleManager {
 		return listeArticles;
 	}
 	
-	public List<Article> getListeArticlesEnVente() throws BusinessException {
+	public List<Article> getListeArticlesEnVente(String filtreNom, Integer noCategorie) throws BusinessException {
 		List<Article> listeArticles = null;
-		listeArticles = articleDAO.selectArticlesEnVente();
-		return listeArticles;
-	}
-	
-	public List<Article> getListeArticlesEnVenteAvecFiltre(String filtre) throws BusinessException {
-		List<Article> listeArticles = null;
-		listeArticles = articleDAO.selectArticlesEnVenteAvecFiltre(filtre);
+		listeArticles = articleDAO.selectArticlesEnVente(filtreNom, noCategorie);
 		return listeArticles;
 	}
 	
