@@ -64,6 +64,7 @@ public class RetraitManager
 	
 	public void deleteRetrait(Retrait retrait) throws BusinessException
 	{
+		
 		retraitDAO.delete(retrait);
 	}
 	

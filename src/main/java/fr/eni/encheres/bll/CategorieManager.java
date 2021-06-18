@@ -63,6 +63,7 @@ public class CategorieManager {
 	
 	public void deleteCategorie(Categorie categorie) throws BusinessException 
 	{
+		
 		categorieDAO.delete(categorie);
 	}
 	
