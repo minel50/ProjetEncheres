@@ -90,23 +90,23 @@ public class CodesResultatBLL {
 	 */
 	public static final int ERREUR_VILLE_RETRAIT = 20402;
 	
-	//le champ pseudo utilisateur est obligatoire et doit comporter   caractères
+	//le champ pseudo utilisateur est obligatoire et doit comporter 30 caractères
 	public static final int ERREUR_PSEUDO_USER = 20011;
-	//le champ nom utilisateur est obligatoire et doit comporter   caractères
+	//le champ nom utilisateur est obligatoire et doit comporter 30 caractères
 	public static final int ERREUR_NOM_USER = 20012;
-	//le champ prenom utilisateur est obligatoire et doit comporter   caractères
+	//le champ prenom utilisateur est obligatoire et doit comporter  30 caractères
 	public static final int ERREUR_PRENOM_USER = 20013;
-	//le champ prenom utilisateur est obligatoire et doit comporter   caractères
+	//le champ email utilisateur est obligatoire et doit comporter 20  caractères
 	public static final int ERREUR_EMAIL_USER = 20014;
-	//le champ telephone utilisateur est obligatoire et doit comporter   caractères
+	//le champ telephone utilisateur est obligatoire et doit comporter 15  caractères
 	public static final int ERREUR_TELEPHONE_USER = 20015;
-	//le champ prenom utilisateur est obligatoire et doit comporter   caractères
+	//le champ prenom utilisateur est obligatoire et doit comporter  30 caractères
 	public static final int ERREUR_RUE_USER = 20016;
-	//le champ code postal utilisateur est obligatoire et doit comporter   caractères
+	//le champ code postal utilisateur est obligatoire et doit comporter   10caractères
 	public static final int ERREUR_CODEPOSTAL_USER = 20017;
-	//le champ ville utilisateur est obligatoire et doit comporter   caractères
+	//le champ ville utilisateur est obligatoire et doit comporter  30 caractères
 	public static final int ERREUR_VILLE_USER = 20018;
-	//le champ mot de passe utilisateur est obligatoire et doit comporter   caractères
+	//le champ mot de passe utilisateur est obligatoire et doit comporter 30  caractères
 	public static final int ERREUR_MOTDEPASSE_USER = 20019;
 	//le champ credit  utilisateur ne doit pas être négatif
 	public static final int ERREUR_CREDIT_NEGATIF = 20009;
