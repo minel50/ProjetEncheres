@@ -20,6 +20,12 @@ public class ArticleManager {
 		return listeArticles;
 	}
 	
+	public List<Article> getListeArticlesEnVente(String filtreNom, Integer noCategorie) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesEnVente(filtreNom, noCategorie);
+		return listeArticles;
+	}
+	
 	public List<Article> getListeArticlesVendusParUtilisateur(int idUtilisateur) throws BusinessException {
 		List<Article> listeArticles = null;
 		listeArticles = articleDAO.selectArticlesVendusByUtilisateur(idUtilisateur);
