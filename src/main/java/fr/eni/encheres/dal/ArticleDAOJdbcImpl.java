@@ -13,14 +13,24 @@ import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bo.Article;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
+	
 	private static final String sqlInsert = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	
 	private static final String sqlSelectAll = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS";
+	
 	private static final String sqlSelectById = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS WHERE no_article = ?";
+	
+	private static final String sqlSelectArticlesEnVente = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS\r\n"
+															+ "WHERE date_debut_encheres <= CONVERT (date, GETDATE()) AND date_fin_encheres >= CONVERT (date, GETDATE())";
+	
 	private static final String sqlSelectArticlesVendusByUtilisateur = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS WHERE no_utilisateur = ?";
+	
 	private static final String sqlSelectArticlesAchetesByUtilisateur = "SELECT a.no_article, a.nom_article, a.description, a.date_debut_encheres, a.date_fin_encheres, a.prix_initial, a.prix_vente, a.no_utilisateur, a.no_categorie\r\n"
 																		+ "FROM ARTICLES_VENDUS a INNER JOIN ENCHERES e ON a.no_article = e.no_article\r\n"
 																		+ "WHERE e.no_utilisateur = ? AND a.prix_vente = e.montant_enchere;";
+	
 	private static final String sqlUpdate = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, no_utilisateur = ?, no_categorie = ? WHERE no_article = ?";
+	
 	private static final String sqlDelete = "DELETE FROM ARTICLES_VENDUS WHERE no_article = ?";
 	
 	private UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
@@ -171,6 +181,57 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		}
 		
 		return article;
+	}
+	
+	//Sélection des tous les articles en vente (date du jour >= date début et date du jour <= date fin)
+	@Override
+	public List<Article> selectArticlesEnVente() throws BusinessException {
+		List<Article> listeArticles = new ArrayList<>();
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		//Date aujourdhui = new Date(System.currentTimeMillis());
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(sqlSelectArticlesEnVente);
+			//stmt.setDate(1, aujourdhui);
+			//stmt.setDate(2, aujourdhui);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				listeArticles.add(new Article(
+						rs.getInt("no_article"),
+						rs.getString("nom_article"),
+						rs.getString("description"),
+						rs.getDate("date_debut_encheres"),
+						rs.getDate("date_fin_encheres"),
+						rs.getInt("prix_initial"),
+						rs.getInt("prix_vente"),
+						"création",
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						categorieDAO.selectById(rs.getInt("no_categorie"))
+						));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (cnx != null) {
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return listeArticles;
 	}
 	
 	@Override
@@ -354,8 +415,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 				e.printStackTrace();
 			}
 		}
-		
-		
-		
+			
 	}
 }
