@@ -66,4 +66,27 @@ public class CodesResultatBLL {
 	 * Le montant de l'enchère doit être positif.
 	 */
 	public static final int ERREUR_ENCHERE_MONTANT_NEGATIF = 20202;
+	
+	//-------Erreurs pour CategorieManager-------------
+	/**
+	 * Le libelle de la catégorie est obligatoire et doit comporter au maximum 30 caractères.
+	 */
+	public static final int ERREUR_NOM_CATEGORIE = 20300;
+	
+	//-------Erreurs pour RetraitManager-------------
+	/**
+	 * Le champ rue du point de retrait est obligatoire et doit comporter au maximum 30 caractères.
+	 */
+	public static final int ERREUR_RUE_RETRAIT = 20400;	
+	
+	/**
+	 * Le champ code postal du point de retrait est obligatoire et doit comporter au maximum 15 caractères.
+	 */
+	public static final int ERREUR_CODE_POSTAL_RETRAIT = 20401;	
+	
+	/**
+	 * Le champ ville du point de retrait est obligatoire et doit comporter au maximum 30 caractères.
+	 */
+	public static final int ERREUR_VILLE_RETRAIT = 20402;	
+	
 }
