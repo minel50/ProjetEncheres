@@ -22,10 +22,10 @@ import fr.eni.encheres.bo.Categorie;
 /**
  * Servlet implementation class ServletAccueil
  */
-@WebServlet("/")
+@WebServlet("/accueil")
 public class ServletAccueil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String filtreNom;
+	private String filtreNom = "";
 	private Integer noCategorie;
 
 	/**
@@ -67,7 +67,6 @@ public class ServletAccueil extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		filtreNom = request.getParameter("filtreNom");
-		System.out.println(filtreNom);
 		noCategorie = Integer.parseInt(request.getParameter("filtreCategorie"));
 		
 		doGet(request, response);
