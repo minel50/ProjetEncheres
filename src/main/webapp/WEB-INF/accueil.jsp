@@ -17,7 +17,7 @@
 	<header>
 		<h1>ENI - Enchères</h1>
 		<nav>
-			<a href="" title="inscription">S'inscrire</a> - <a href="" title="connexion">Se connecter</a>
+			<a href="" title="connexion">S'inscrire - Se connecter</a>
 		</nav>
 	</header>
 	<main>
