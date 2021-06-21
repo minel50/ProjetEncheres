@@ -40,7 +40,7 @@ public class NouvelleVente extends HttpServlet {
 		}
 		
 		
-		RequestDispatcher rd = this.getServletContext().getRequestDispatcher("WEB-INF/vendreArticle.jsp");
+		RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/vendreArticle.jsp");
 		rd.forward(request, response);
 	}
 
