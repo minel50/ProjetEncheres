@@ -22,7 +22,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 	private  static final String sqlSelectAll = "select* from utilisateurs";
 	private static final String sqlDelete = "delete from utilisateurs where no_utilisateur=?";
 	private static final String sqlUpdate = "update UTILISATEURS set pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?,credit=?, administrateur =? where no_utilisateur=?";
-	private static final String sqlSelectByEmail = "select no_utilisateur,pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur from UTILISATEURS where email=?";
+	private static final String sqlCheckEmail = "select no_utilisateur,pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur from UTILISATEURS where email=?";
+	private static final String sqlCheckPseudo = "select no_utilisateur,pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur from UTILISATEURS where pseudo=?";
 	
 	
 	private EnchereDAO enchereDAO = DAOFactory.getEnchereDAO();
@@ -130,34 +131,28 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 		return utilisateur;
 	}
 	
-	public Utilisateur selectByEmail(String email)  throws BusinessException{
+		
+	// Vérifie si l'email existe déjà dans la table utilisateurs (true/false)
+	public boolean checkEmailExists(String email)  throws BusinessException{
+		
+		boolean existInDatabase = false;
+		
 		PreparedStatement stmt =null;
 		ResultSet resultSet=null;
-		Utilisateur utilisateur = null;
+		
 		
 		try (Connection cnx = ConnectionProvider.getConnection())
 		{
-			stmt=cnx.prepareStatement(sqlSelectByEmail);
+			stmt=cnx.prepareStatement(sqlCheckEmail);
 			stmt.setString(1,email);
 			resultSet = stmt.executeQuery();
 			if(resultSet.next()) {
-				utilisateur = new Utilisateur (resultSet.getInt("no_utilisateur"),
-											   resultSet.getString("pseudo"),
-											   resultSet.getString("nom"),
-											   resultSet.getString("prenom"),
-											   resultSet.getString("email"),
-											   resultSet.getString("telephone"),
-											   resultSet.getString("rue"),
-											   resultSet.getString("code_postal"),
-											   resultSet.getString("ville"),
-											   resultSet.getString("mot_de_passe"),
-											   resultSet.getInt("credit"),
-											   resultSet.getInt("administrateur"));
+				existInDatabase = true;
 				
-				utilisateur.setListeEncheres(enchereDAO.selectByUtilisateur(utilisateur.getNoUtilisateur()));							
+			} else {
+				
 			}
-			
-			
+				
 		} catch (SQLException e)
 		{
 			e.printStackTrace();
@@ -166,9 +161,42 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO{
 			throw businessException;
 		
 		}
-		return utilisateur;
-	}
-
+		return existInDatabase;
+	}	
+	
+	// Vérifie si le pseudo existe déjà dans la table utilisateurs (true/false)
+	public boolean checkPseudoExists(String pseudo)  throws BusinessException{
+		
+		boolean existInDatabase = false;
+		
+		PreparedStatement stmt =null;
+		ResultSet resultSet=null;
+		
+		
+		try (Connection cnx = ConnectionProvider.getConnection())
+		{
+			stmt=cnx.prepareStatement(sqlCheckPseudo);
+			stmt.setString(1,pseudo);
+			resultSet = stmt.executeQuery();
+			if(resultSet.next()) {
+				existInDatabase = true;
+				
+			} else {
+				
+			}
+				
+		} catch (SQLException e)
+		{
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+		
+		}
+		return existInDatabase;
+	}	
+	
+	
 	public List<Utilisateur> selectAll() throws BusinessException{
 	
 		PreparedStatement stmt =null;
