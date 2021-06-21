@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fr.eni.encheres.BusinessException;
+import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.DAOFactory;
 import fr.eni.encheres.dal.UtilisateurDAO;
@@ -27,29 +28,40 @@ public class Profil extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		UtilisateurManager utilisateurManager = new UtilisateurManager();
+		
+		request.setCharacterEncoding("UTF-8");
+		
+		try {
+			Utilisateur u = utilisateurManager.getUtilisateur(7);
+			request.setAttribute("pseudo", u.getPseudo());
+			request.setAttribute("nom", u.getNom());
+			request.setAttribute("prenom", u.getPrenom());
+			request.setAttribute("email", u.getEmail());
+			request.setAttribute("tel", u.getTelephone());
+			request.setAttribute("rue", u.getRue());
+			request.setAttribute("codePostal", u.getCodePostal());
+			request.setAttribute("ville", u.getVille());
+			
+			
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
 		
 		RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/profil.jsp");
 		rd.forward(request, response);
+		
 	}
 	
-	//A ajouter dans UtilisateurManager
-	public Utilisateur getUtilisateurByPseudo(String pseudo) throws BusinessException {
-		Utilisateur u = null;
-		//article = articleDAO.selectById(id);
-		return u;
-	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		//RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/inscription.jsp");
-		//rd.forward(request, response);
-		
+				
 		//response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		
 		
 		String pseudo = request.getParameter("pseudo");
 		String nom = request.getParameter("nom");
@@ -59,10 +71,12 @@ public class Profil extends HttpServlet {
 		String rue = request.getParameter("rue");
 		String codePostal = request.getParameter("code-postal");
 		String ville = request.getParameter("ville");
+		String mdpActuel = request.getParameter("mdpActuel");
 		String mdp = request.getParameter("mdp");
 		String confirmation = request.getParameter("confirmation");
 		
-		Utilisateur u = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, mdp, 0, 0);
+		UtilisateurManager utilisateurManager = new UtilisateurManager();
+		
 		
 		out.println("\n");
 		out.println("Pseudo : " + pseudo);
@@ -81,31 +95,28 @@ public class Profil extends HttpServlet {
 		out.println("\n");
 		out.println("ville : " + ville);
 		out.println("\n");
+		out.println("mdp Actuel : " + mdpActuel);
+		out.println("\n");
 		out.println("mdp : " + mdp);
 		out.println("\n");
 		out.println("confirmation : " + confirmation);
-		out.println("\n");
-		out.println("Utilisateur : " + u.toString());
 		
-		//Utiliser UtilisateurManager à la place
-		UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
 		
+		
+		String mdpBDD;
 		try {
-			if(utilisateurDAO.checkEmailExists(email)) {
-				out.println("L'email existe déjà dans la BDD");
-				
-			}else {
-				if(utilisateurDAO.checkPseudoExists(pseudo)) {
-					out.println("Le pseudo existe déjà dans la BDD");
-				}else {
-					out.println("N'existe pas dans la BDD");
-					utilisateurDAO.insert(u);
-				}
+			Utilisateur u = utilisateurManager.getUtilisateur(7);
+			mdpBDD = u.getMotDePasse();
+			
+			if(mdpBDD == mdpActuel && mdp == confirmation) {
+				utilisateurManager.updateUtilisateur(u);
 			}
 			
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
+		
+		
 		
 	}
 
