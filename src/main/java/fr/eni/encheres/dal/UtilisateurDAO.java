@@ -1,6 +1,5 @@
 package fr.eni.encheres.dal;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import fr.eni.encheres.BusinessException;
@@ -14,5 +13,4 @@ public interface UtilisateurDAO {
 	public List<Utilisateur> selectAll() throws BusinessException ;
 	public void delete(Utilisateur utilisateurCritere) throws BusinessException;
 	public void update(Utilisateur data) throws BusinessException ;
-	public Utilisateur selectByEmail(String email)  throws BusinessException;
 }
