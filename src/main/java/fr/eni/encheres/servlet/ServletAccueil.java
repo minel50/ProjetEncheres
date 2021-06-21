@@ -67,6 +67,7 @@ public class ServletAccueil extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		filtreNom = request.getParameter("filtreNom");
+		System.out.println(filtreNom);
 		noCategorie = Integer.parseInt(request.getParameter("filtreCategorie"));
 		
 		doGet(request, response);

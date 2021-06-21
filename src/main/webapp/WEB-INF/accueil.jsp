@@ -25,7 +25,7 @@
 		<p>
 			<h3>Filtres :</h3>
 			<form name="filtres" action="/encheres/" method="POST">
-				<input type="text" name="filtreNom" value ="${requestScope.filtreNom }" placeholder="Le nom de l'article contient" />
+				<input type="text" name="filtreNom" value ="<%=request.getAttribute("filtreNom") %>" placeholder="Le nom de l'article contient" />
 				<label for="filtreCategorie">Catégorie : </label>
 				<select name="filtreCategorie">
 					<option value="0">Toutes</option>
