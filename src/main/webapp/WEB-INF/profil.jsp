@@ -65,6 +65,7 @@
         minlength="4" maxlength="30" size="10">
                 
                 <br>
+                
 
         <label for="mdp">Mot de passe :</label>
         <input type="password" id="mdp" name="mdp" required

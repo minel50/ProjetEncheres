@@ -107,7 +107,6 @@ public class Profil extends HttpServlet {
 		try {
 			Utilisateur u = utilisateurManager.getUtilisateur(7);
 			mdpBDD = u.getMotDePasse();
-			
 			if(mdpBDD == mdpActuel && mdp == confirmation) {
 				utilisateurManager.updateUtilisateur(u);
 			}
