@@ -18,7 +18,7 @@
 		<nav>
 			<a href="" title="connexion">S'inscrire - Se connecter</a>
 			 | 
-			<a href="vendre" title="vendre un article">Vendre un article</a>
+			<a href="vente" title="vendre un article">Vendre un article</a>
 		</nav>
 	</header>
 	<main>

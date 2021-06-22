@@ -22,31 +22,32 @@
 	<main>
 		<h2>Nouvelle vente</h2>
 		
-		<form name="nouvelleVente" action="/encheres/vendre" method="POST">
+		<form name="nouvelleVente" action="/encheres/vente" method="POST">
 			<label for="nomArticle">Article :</label>
-			<input type="text" name="nomArticle" maxlength="30" required><br>
+			<input type="text" name="nomArticle" maxlength="30" value="${requestScope.articleEnCoursCreation.getNomArticle() }" required><br>
 			
 			<label for="description">Description :</label>
-			<textarea name="description" rows="4" cols="75" maxlength="300" required draggable="false"></textarea><br>
+			<textarea name="description" rows="4" cols="75" maxlength="300" required>${requestScope.articleEnCoursCreation.getDescription() }</textarea><br>
 			
 			<label for="noCategorie">Catégorie :</label>
 			<select name="noCategorie">
 				<c:forEach var="cat" items="${requestScope.listeCategories }">
-					<option value="${cat.getNoCategorie() }">${cat.getLibelle() }</option>
+					<option value="${cat.getNoCategorie() }" <c:if test="${requestScope.articleEnCoursCreation.getCategorie().getNoCategorie() == cat.getNoCategorie() }">selected</c:if>>
+						${cat.getLibelle() }
+					</option>
 				</c:forEach>
 			</select><br>
 			
-			<label for="photo">Photo de l'article :</label>
-			Fonction uploader à écrire...<br>
-			
 			<label for="prixInitial">Mise à prix :</label>
-			<input type="number" name="prixInitial" min="1" max="1000000000" required><br>
+			<input type="number" name="prixInitial" min="1" max="1000000000" value="${requestScope.articleEnCoursCreation.getPrixInitial() }" required><br>
 			
 			<label for="dateDebutEnchere">Début de l'enchère :</label>
-			<input type="date" name="dateDebutEnchere" min="" max="" value=""><br>
+			<input type="date" name="dateDebutEnchere" min="${requestScope.dateAujourdhui }" value="${requestScope.dateAujourdhui }">
+			<input type="time" name="heureDebutEnchere" value="${requestScope.heureHPlusUne }"><br>
 			
 			<label for="dateFinEnchere">Fin de l'enchère :</label>
-			<input type="date" name="dateFinEnchere" min="" max="" value=""><br>
+			<input type="date" name="dateFinEnchere" min="${requestScope.dateAujourdhui }" value="${requestScope.dateDemain }">
+			<input type="time" name="heureFinEnchere" value="22:00"><br>
 			
 			<fieldset>
 				<legend>Retrait</legend>
