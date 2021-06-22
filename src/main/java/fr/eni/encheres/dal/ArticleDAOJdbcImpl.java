@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +58,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			stmt = cnx.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, article.getNomArticle());
 			stmt.setString(2, article.getDescription());
-			stmt.setDate(3, new Date(article.getDateDebutEncheres().getTime()));
-			stmt.setDate(4, new Date(article.getDateFinEncheres().getTime()));
+			stmt.setTimestamp(3, new Timestamp(article.getDateDebutEncheres().getTime()));
+			stmt.setTimestamp(4, new Timestamp(article.getDateFinEncheres().getTime()));
 			stmt.setInt(5, article.getPrixInitial());
 			stmt.setInt(6, article.getPrixVente());
 			stmt.setInt(7, article.getUtilisateur().getNoUtilisateur());

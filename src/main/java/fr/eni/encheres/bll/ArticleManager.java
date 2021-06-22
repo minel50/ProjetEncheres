@@ -1,5 +1,6 @@
 package fr.eni.encheres.bll;
 
+import java.util.Date;
 import java.util.List;
 
 import fr.eni.encheres.BusinessException;
@@ -90,8 +91,16 @@ public class ArticleManager {
 				exception.ajouterErreur(CodesResultatBLL.ERREUR_DATE_ENCHERES_NULL);
 			}
 			
-			//il faut gérer la conformité des dates : date début > date du jour et date fin > date début
+			//Erreur si date de début dans le passé
+			if (a.getDateDebutEncheres().before(new Date())) {
+				exception.ajouterErreur(CodesResultatBLL.ERREUR_DATE_DEBUT_ENCHERE);
+			}
 			
+			//Erreur si date de fin antérieure à la date de début
+			if (a.getDateFinEncheres().before(a.getDateDebutEncheres())) {
+				exception.ajouterErreur(CodesResultatBLL.ERREUR_DATE_FIN_ENCHERE);
+			}
+						
 			if (a.getPrixInitial() < 0 || a.getPrixVente() < 0) {
 				exception.ajouterErreur(CodesResultatBLL.ERREUR_PRIX_NEGATIF);
 			}
