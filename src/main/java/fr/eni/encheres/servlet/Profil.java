@@ -28,11 +28,22 @@ public class Profil extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		int ID_SESSION = 7;
+		String msgEchec = "";
+		
 		UtilisateurManager utilisateurManager = new UtilisateurManager();
 		request.setCharacterEncoding("UTF-8");
 		
+		/*Utilisateur u9 = new Utilisateur("NaidroD", "DELAGRE", "Dorian", "naidrod@gamil.com", "0610060606", "9  rue de l'oise", "35230", "Orgères", "ABCD12", 700, 0);
 		try {
-			Utilisateur u = utilisateurManager.getUtilisateur(7);
+			utilisateurManager.addUtilisateur(u9);
+		} catch (BusinessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}*/
+		
+		try {
+			Utilisateur u = utilisateurManager.getUtilisateur(ID_SESSION);
 			request.setAttribute("pseudo", u.getPseudo());
 			request.setAttribute("nom", u.getNom());
 			request.setAttribute("prenom", u.getPrenom());
@@ -42,6 +53,7 @@ public class Profil extends HttpServlet {
 			request.setAttribute("codePostal", u.getCodePostal());
 			request.setAttribute("ville", u.getVille());
 			request.setAttribute("credit", u.getCredit());
+			request.setAttribute("msgEchec", msgEchec);
 			
 			
 		} catch (BusinessException e) {
@@ -60,6 +72,9 @@ public class Profil extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 				
+		int ID_SESSION = 7;
+		String msgEchec = "";
+		
 		//response.setContentType("text/html;charset=UTF-8");
 		//PrintWriter out = response.getWriter();
 		
@@ -77,10 +92,10 @@ public class Profil extends HttpServlet {
 		String confirmation = request.getParameter("confirmation");
 		
 		UtilisateurManager utilisateurManager = new UtilisateurManager();
-		
+		String msgFeedback;
 		String mdpBDD;
 		try {
-			Utilisateur u = utilisateurManager.getUtilisateur(7);
+			Utilisateur u = utilisateurManager.getUtilisateur(ID_SESSION);
 			mdpBDD = u.getMotDePasse();
 			
 			// check si un des champs du profil a été modifié
@@ -96,7 +111,7 @@ public class Profil extends HttpServlet {
 					(!mdp.isEmpty() && mdp != mdpBDD)
 			) {
 				
-				//Modif des champs
+				//Modif des champs de l'utilisateur avec les données postées 
 				u.setPseudo(pseudo);
 				u.setNom(nom);
 				u.setPrenom(prenom);
@@ -110,7 +125,7 @@ public class Profil extends HttpServlet {
 				
 				// check si demande modif du mot de passe
 				if(!mdp.isEmpty() && mdp.trim() != "") {
-				
+									
 					System.out.println("demande modification mot de pass");
 					
 					// check si le mdp match avec celui enregistré dans la BDD
@@ -120,15 +135,49 @@ public class Profil extends HttpServlet {
 							System.out.println("Mot de pass modifié");
 							u.setMotDePasse(mdp);
 						}else {
-							System.out.println("Le mot de pass de confiration différent !");
-							doGet(request, response);
+							
+							// Si nouveau mot de pass différent du mot de pass de confiramtion :
+							// Reset les paramètres utilisateurs
+							Utilisateur userReset = utilisateurManager.getUtilisateur(ID_SESSION);
+							request.setAttribute("pseudo", userReset.getPseudo());
+							request.setAttribute("nom", userReset.getNom());
+							request.setAttribute("prenom", userReset.getPrenom());
+							request.setAttribute("email", userReset.getEmail());
+							request.setAttribute("tel", userReset.getTelephone());
+							request.setAttribute("rue", userReset.getRue());
+							request.setAttribute("codePostal", userReset.getCodePostal());
+							request.setAttribute("ville", userReset.getVille());
+							request.setAttribute("credit", userReset.getCredit());
+							
+							//Redirection avec message d'erreur
+							System.out.println("Mot de pass de confirmation différent !");
+							msgFeedback = "Mot de pass de confirmation différent !";
+							request.setAttribute("msgEchec", msgFeedback);
+							RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/profil.jsp");
+							rd.forward(request, response);
+							
 						}
 						
 					} else {
-						System.out.println(mdpActuel);
-						System.out.println(mdpBDD);
-						System.out.println("Acien mot de passe incorrecte");
-						doGet(request, response);
+						// Si le mot de pass actuel ne correspond pas :
+						// Reset les paramètres utilisateurs
+						Utilisateur userReset = utilisateurManager.getUtilisateur(ID_SESSION);
+						request.setAttribute("pseudo", userReset.getPseudo());
+						request.setAttribute("nom", userReset.getNom());
+						request.setAttribute("prenom", userReset.getPrenom());
+						request.setAttribute("email", userReset.getEmail());
+						request.setAttribute("tel", userReset.getTelephone());
+						request.setAttribute("rue", userReset.getRue());
+						request.setAttribute("codePostal", userReset.getCodePostal());
+						request.setAttribute("ville", userReset.getVille());
+						request.setAttribute("credit", userReset.getCredit());
+						
+						//Redirection avec message d'erreur
+						System.out.println("Mot de passe actuel incorrecte");
+						msgFeedback = "Mot de passe actuel incorrecte";
+						request.setAttribute("msgEchec", msgFeedback);
+						RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/profil.jsp");
+						rd.forward(request, response);
 						
 					}
 				} else {
@@ -147,6 +196,7 @@ public class Profil extends HttpServlet {
 				request.setAttribute("rue", u.getRue());
 				request.setAttribute("codePostal", u.getCodePostal());
 				request.setAttribute("ville", u.getVille());
+				request.setAttribute("msgEchec", "");
 				
 				//Redirection vers la page Profil avec le message succès
 				RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/profil.jsp");
@@ -164,5 +214,6 @@ public class Profil extends HttpServlet {
 		
 		
 	}
+	
 
 }
