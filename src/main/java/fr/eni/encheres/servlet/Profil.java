@@ -42,6 +42,7 @@ public class Profil extends HttpServlet {
 			request.setAttribute("rue", u.getRue());
 			request.setAttribute("codePostal", u.getCodePostal());
 			request.setAttribute("ville", u.getVille());
+			request.setAttribute("credit", u.getCredit());
 			
 			
 		} catch (BusinessException e) {
@@ -61,8 +62,9 @@ public class Profil extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 				
 		//response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter();
+		//PrintWriter out = response.getWriter();
 		
+		// Récupérer paramètres de la requête postée après demande de modif
 		String pseudo = request.getParameter("pseudo");
 		String nom = request.getParameter("nom");
 		String prenom = request.getParameter("prenom");
@@ -77,38 +79,83 @@ public class Profil extends HttpServlet {
 		
 		UtilisateurManager utilisateurManager = new UtilisateurManager();
 		
-		
-		out.println("\n");
-		out.println("Pseudo : " + pseudo);
-		out.println("\n");
-		out.println("nom : " + nom);
-		out.println("\n");
-		out.println("prenom : " + prenom);
-		out.println("\n");
-		out.println("email : " + email);
-		out.println("\n");
-		out.println("telephone : " + telephone);
-		out.println("\n");
-		out.println("rue : " + rue);
-		out.println("\n");
-		out.println("code postal : " + codePostal);
-		out.println("\n");
-		out.println("ville : " + ville);
-		out.println("\n");
-		out.println("mdp Actuel : " + mdpActuel);
-		out.println("\n");
-		out.println("mdp : " + mdp);
-		out.println("\n");
-		out.println("confirmation : " + confirmation);
-		
-		
-		
 		String mdpBDD;
 		try {
 			Utilisateur u = utilisateurManager.getUtilisateur(7);
 			mdpBDD = u.getMotDePasse();
-			if(mdpBDD == mdpActuel && mdp == confirmation) {
+			
+			// check si un des champs du profil a été modifié
+			if(		
+					(!pseudo.equals(u.getPseudo()) && !pseudo.isEmpty()) || 
+					(!nom.equals(u.getNom()) && !nom.isEmpty()) ||
+					(!prenom.equals(u.getPrenom()) && !prenom.isEmpty()) ||
+					(!email.equals(u.getEmail()) && !email.isEmpty()) ||
+					(!telephone.equals(u.getTelephone()) && !telephone.isEmpty()) ||
+					(!rue.equals(u.getRue())  && !rue.isEmpty())||
+					(!codePostal.equals(u.getCodePostal()) && !codePostal.isEmpty()) ||
+					(!ville.equals(u.getVille())  && !ville.isEmpty())||
+					(!mdp.isEmpty() && mdp != mdpBDD)
+			) {
+				
+				//Modif des champs
+				u.setPseudo(pseudo);
+				u.setNom(nom);
+				u.setPrenom(prenom);
+				u.setEmail(email);
+				u.setTelephone(telephone);
+				u.setRue(rue);
+				u.setCodePostal(codePostal);
+				u.setVille(ville);
+				
+				System.out.println("Utilisateur après modifs : " + u.toString());
+				
+				// check si demande modif du mot de passe
+				if(!mdp.isEmpty() && mdp.trim() != "") {
+				
+					System.out.println("demande modification mot de pass");
+					
+					// check si le mdp match avec celui enregistré dans la BDD
+					if(mdpBDD.equals(mdpActuel)) {
+						
+						if(mdp.equals(confirmation)) {
+							System.out.println("Mot de pass modifié");
+							u.setMotDePasse(mdp);
+						}else {
+							System.out.println("Le mot de pass de confiration différent !");
+							doGet(request, response);
+						}
+						
+					} else {
+						System.out.println(mdpActuel);
+						System.out.println(mdpBDD);
+						System.out.println("Acien mot de passe incorrecte");
+						doGet(request, response);
+						
+					}
+				} else {
+					System.out.println("mdp non modifié");
+				}
+				
+				// envoyer les modifs de l'utilisateur vers la BDD
 				utilisateurManager.updateUtilisateur(u);
+				
+				//Récupère les attributs de la BDD
+				request.setAttribute("pseudo", u.getPseudo());
+				request.setAttribute("nom", u.getNom());
+				request.setAttribute("prenom", u.getPrenom());
+				request.setAttribute("email", u.getEmail());
+				request.setAttribute("tel", u.getTelephone());
+				request.setAttribute("rue", u.getRue());
+				request.setAttribute("codePostal", u.getCodePostal());
+				request.setAttribute("ville", u.getVille());
+				
+				//Redirection vers la page Profil avec le message succès
+				RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/profil.jsp");
+				rd.forward(request, response);
+				
+			}else {
+				doGet(request, response);
+				System.out.println("Aucune modification sur les champs de l'utilisateur");
 			}
 			
 		} catch (BusinessException e) {

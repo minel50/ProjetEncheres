@@ -21,27 +21,27 @@
     <form name="formInscription" action="<%=request.getContextPath()%>/profil" method="post">
 
         <label for="pseudo">Pseudo:</label>
-        <input type="text" id="pseudo" name="pseudo" value=<%= (String)request.getAttribute("pseudo") %> required
+        <input type="text" id="pseudo" name="pseudo" value="<%= (String)request.getAttribute("pseudo") %>" required
             minlength="4" maxlength="30" size="10">
         
         <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" value=<%= (String)request.getAttribute("nom") %> required
+        <input type="text" id="nom" name="nom" value="<%= (String)request.getAttribute("nom") %>" required
             minlength="4" maxlength="30" size="10">
         
                 <br>
 
         <label for="prenom">Prénom :</label>
-        <input type="text" id="prenom" name="prenom" value=<%= (String)request.getAttribute("prenom") %> required
+        <input type="text" id="prenom" name="prenom" value="<%= (String)request.getAttribute("prenom") %>" required
                 minlength="4" maxlength="30" size="10">
         
         <label for="email">Email :</label>
-        <input type="text" id="email" name="email" value=<%= (String)request.getAttribute("email") %> required
+        <input type="text" id="email" name="email" value="<%= (String)request.getAttribute("email") %>" required
                 minlength="4" maxlength="20" size="10">
 
                 <br>
 
         <label for="telephone">Téléphone :</label>
-        <input type="text" id="telephone" name="telephone" value=<%= (String)request.getAttribute("tel") %> required
+        <input type="text" id="telephone" name="telephone"value="<%= (String)request.getAttribute("tel") %>" required
                 minlength="4" maxlength="15" size="10">
         
         <label for="rue">Rue :</label>
@@ -51,55 +51,53 @@
                 <br>
 
         <label for="code-postal">Code postal :</label>
-        <input type="text" id="code-postal" name="code-postal" value=<%= (String)request.getAttribute("codePostal") %> required
+        <input type="text" id="code-postal" name="code-postal" value="<%= (String)request.getAttribute("codePostal") %>" required
                 minlength="4" maxlength="10" size="10">
         
         <label for="ville">Ville :</label>
-        <input type="text" id="ville" name="ville" value=<%= (String)request.getAttribute("ville") %> required
+        <input type="text" id="ville" name="ville" value="<%= (String)request.getAttribute("ville") %>" required
                 minlength="4" maxlength="30" size="10">
 				
 				<br>
 
         <label for="mdpActuel">Mot de passe actuel :</label>
-        <input type="password" id="mdpActuel" name="mdpActuel" required
+        <input type="password" id="mdpActuel" name="mdpActuel" 
         minlength="4" maxlength="30" size="10">
                 
                 <br>
                 
 
-        <label for="mdp">Mot de passe :</label>
-        <input type="password" id="mdp" name="mdp" required
+        <label for="mdp">Nouveau mot de passe :</label>
+        <input type="password" id="mdp" name="mdp" 
                 minlength="4" maxlength="30" size="10">
         
         <label for="confirmation">Confirmation :</label>
-        <input type="password" id="confirmation" name="confirmation" required
+        <input type="password" id="confirmation" name="confirmation" 
                 minlength="4" maxlength="30" size="10">
 
                 <br>
         
-        <label for="credit">Crédit :</label> 
+        <p>Crédit : <%= request.getAttribute("credit") %></p> 
         
         		<br>
         
-        <button type="submit" onclick="checkPassword(document.formInscription.mdp)">Créer</button>
+        <button type="submit" onclick="checkPassword(document.formInscription.mdp)">Enregistrer</button>
         
             
 	    </form>
 		
-		<form action="<%=request.getContextPath()%>" method="get">
-	    <input type="submit" value="Annuler" />
+		<form action="<%=request.getContextPath()%>/SupprimerProfil" method="get">
+	    <input type="submit" value="Supprimer mon compte" />
 		</form>
 		
 		<!--Check REGEX mot de pass-->
-		<button onclick="checkPassword(document.formInscription.mdp)">check</button>
+		<button onclick=checkPassword(document.formInscription.mdp)>check javascript</button>
 		
 		
 		<p style="color: red;" id="message-echec"></p>
 		<p style="color: green;" id="message-succes"></p>		
 		
-
 		<script src="js/check-password.js"></script>
-	
 
 </body>
 </html>
