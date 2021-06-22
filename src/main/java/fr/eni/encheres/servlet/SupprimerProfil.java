@@ -1,6 +1,8 @@
 package fr.eni.encheres.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,13 +32,22 @@ public class SupprimerProfil extends HttpServlet {
 		
 		try {
 			
-			Utilisateur u = utilisateurManager.getUtilisateur(8);
+			Utilisateur u = utilisateurManager.getUtilisateur(9);
 			utilisateurManager.deleteUtilisateur(u);
 			RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/accueil.jsp");
 			rd.forward(request, response);
 			
+		} catch(NullPointerException e){
+			RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/accueil.jsp");
+			rd.forward(request, response);
 		} catch (BusinessException e) {
+			List<Integer> listeCodesErreurs = new ArrayList<>();
+			listeCodesErreurs = e.getListeCodesErreur();
+			request.setAttribute("listeCodesErreurs", listeCodesErreurs);
 			e.printStackTrace();
+			
+			RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/accueil.jsp");
+			rd.forward(request, response);
 		}
 		
 		response.getWriter().append("Served at: ").append(request.getContextPath());

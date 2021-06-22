@@ -1,0 +1,17 @@
+@charset "UTF-8";
+h1{
+	margin-left : 50px;
+	color:red;
+}
+h2{
+	margin-left : 50px;
+}
+input{
+	margin-left : 50px;
+	margin-bottom : 10px;
+	display:block;
+}
+#souvenir
+{
+	display : inline;
+}
