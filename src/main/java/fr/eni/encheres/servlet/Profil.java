@@ -1,7 +1,6 @@
 package fr.eni.encheres.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Utilisateur;
-import fr.eni.encheres.dal.DAOFactory;
-import fr.eni.encheres.dal.UtilisateurDAO;
 
 /**
  * Servlet implementation class ServletInscription
@@ -58,8 +55,13 @@ public class Profil extends HttpServlet {
 			request.setAttribute("msgSucces", msgSucces);
 			
 			
-		} catch (BusinessException e) {
+		} catch(NullPointerException e){
+			RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/accueil.jsp");
+			rd.forward(request, response);
 			e.printStackTrace();
+		}catch (BusinessException e) {
+			e.printStackTrace();
+			
 		}
 		
 		RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/profil.jsp");
@@ -124,7 +126,6 @@ public class Profil extends HttpServlet {
 				u.setCodePostal(codePostal);
 				u.setVille(ville);
 				
-				System.out.println("Utilisateur après modifs : " + u.toString());
 				
 				// check si demande modif du mot de passe
 				if(!mdp.isEmpty() && mdp.trim() != "") {
@@ -201,6 +202,7 @@ public class Profil extends HttpServlet {
 				request.setAttribute("rue", u.getRue());
 				request.setAttribute("codePostal", u.getCodePostal());
 				request.setAttribute("ville", u.getVille());
+				request.setAttribute("credit", u.getCredit());
 				request.setAttribute("msgEchec", "");
 				request.setAttribute("msgSucces", msgSucces);
 				

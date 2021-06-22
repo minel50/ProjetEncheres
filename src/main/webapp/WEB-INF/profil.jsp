@@ -38,7 +38,7 @@
         
         <label for="email">Email :</label>
         <input type="text" id="email" name="email" value="<%= (String)request.getAttribute("email") %>" required
-                minlength="4" maxlength="20" size="10">
+                minlength="4" maxlength="20" size="20">
 
                 <br>
 
@@ -48,7 +48,7 @@
         
         <label for="rue">Rue :</label>
         <input type="text" id="rue" name="rue" value="<%= (String)request.getAttribute("rue") %>" required
-                minlength="4" maxlength="30" size="10">
+                minlength="4" maxlength="30" size="20">
 
                 <br>
 
@@ -58,7 +58,7 @@
         
         <label for="ville">Ville :</label>
         <input type="text" id="ville" name="ville" value="<%= (String)request.getAttribute("ville") %>" required
-                minlength="4" maxlength="30" size="10">
+                minlength="4" maxlength="30" size="20">
 				
 				<br>
 
@@ -83,8 +83,8 @@
         
         		<br>
         
-        <button type="submit" onclick="checkPassword(document.formInscription.mdp)">Enregistrer</button>
-        
+        <button type="submit" >Enregistrer</button>
+       <!-- ajouter onclick="checkPassword(document.formInscription.mdp)" -->
             
 	    </form>
 		
