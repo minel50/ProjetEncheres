@@ -30,6 +30,7 @@ public class Profil extends HttpServlet {
 		
 		int ID_SESSION = 7;
 		String msgEchec = "";
+		String msgSucces = "";
 		
 		UtilisateurManager utilisateurManager = new UtilisateurManager();
 		request.setCharacterEncoding("UTF-8");
@@ -54,6 +55,7 @@ public class Profil extends HttpServlet {
 			request.setAttribute("ville", u.getVille());
 			request.setAttribute("credit", u.getCredit());
 			request.setAttribute("msgEchec", msgEchec);
+			request.setAttribute("msgSucces", msgSucces);
 			
 			
 		} catch (BusinessException e) {
@@ -74,6 +76,7 @@ public class Profil extends HttpServlet {
 				
 		int ID_SESSION = 7;
 		String msgEchec = "";
+		String msgSucces = "Modifications effectuées";
 		
 		//response.setContentType("text/html;charset=UTF-8");
 		//PrintWriter out = response.getWriter();
@@ -148,6 +151,7 @@ public class Profil extends HttpServlet {
 							request.setAttribute("codePostal", userReset.getCodePostal());
 							request.setAttribute("ville", userReset.getVille());
 							request.setAttribute("credit", userReset.getCredit());
+							request.setAttribute("msgSucces", "");
 							
 							//Redirection avec message d'erreur
 							System.out.println("Mot de pass de confirmation différent !");
@@ -171,6 +175,7 @@ public class Profil extends HttpServlet {
 						request.setAttribute("codePostal", userReset.getCodePostal());
 						request.setAttribute("ville", userReset.getVille());
 						request.setAttribute("credit", userReset.getCredit());
+						request.setAttribute("msgSucces", "");
 						
 						//Redirection avec message d'erreur
 						System.out.println("Mot de passe actuel incorrecte");
@@ -197,6 +202,8 @@ public class Profil extends HttpServlet {
 				request.setAttribute("codePostal", u.getCodePostal());
 				request.setAttribute("ville", u.getVille());
 				request.setAttribute("msgEchec", "");
+				request.setAttribute("msgSucces", msgSucces);
+				
 				
 				//Redirection vers la page Profil avec le message succès
 				RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/profil.jsp");
