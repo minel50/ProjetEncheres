@@ -29,7 +29,6 @@ public class Profil extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		UtilisateurManager utilisateurManager = new UtilisateurManager();
-		
 		request.setCharacterEncoding("UTF-8");
 		
 		try {

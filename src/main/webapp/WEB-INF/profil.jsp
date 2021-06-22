@@ -15,7 +15,6 @@
 <body>
 
 
-
     <h1>Mon profil</h1>
     
     <form name="formInscription" action="<%=request.getContextPath()%>/profil" method="post">

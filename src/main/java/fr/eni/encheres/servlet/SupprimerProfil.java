@@ -32,7 +32,6 @@ public class SupprimerProfil extends HttpServlet {
 			
 			Utilisateur u = utilisateurManager.getUtilisateur(8);
 			utilisateurManager.deleteUtilisateur(u);
-			
 			RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/accueil.jsp");
 			rd.forward(request, response);
 			
