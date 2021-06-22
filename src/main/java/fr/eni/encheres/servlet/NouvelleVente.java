@@ -1,10 +1,8 @@
 package fr.eni.encheres.servlet;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -17,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bll.ArticleManager;
 import fr.eni.encheres.bll.CategorieManager;
+import fr.eni.encheres.bll.RetraitManager;
 import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Article;
 import fr.eni.encheres.bo.Categorie;
+import fr.eni.encheres.bo.Retrait;
 import fr.eni.encheres.bo.Utilisateur;
 
 /**
@@ -28,11 +28,14 @@ import fr.eni.encheres.bo.Utilisateur;
 @WebServlet("/vendre")
 public class NouvelleVente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private int noUtilisateur = 1; //connection pas encore mise en place, simulation utilisateur connecté
 	private CategorieManager categorieManager = new CategorieManager();
 	private UtilisateurManager utilisateurManager = new UtilisateurManager();
 	private ArticleManager articleManager = new ArticleManager();
+	private RetraitManager retraitManager = new RetraitManager();
 	private List<Integer> listeCodesErreursAjoutArticle = new ArrayList<>();
+	
+	private int noUtilisateur = 1; //simulation utilisateur connecté
+	private Utilisateur utilisateurConnecte;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,7 +46,7 @@ public class NouvelleVente extends HttpServlet {
 			List<Categorie> listeCategories = categorieManager.getListeCategorie();
 			request.setAttribute("listeCategories", listeCategories);
 			
-			Utilisateur utilisateurConnecte = utilisateurManager.getUtilisateur(noUtilisateur);
+			utilisateurConnecte = utilisateurManager.getUtilisateur(noUtilisateur);
 			request.setAttribute("utilisateurConnecte", utilisateurConnecte);
 			
 		} catch (BusinessException e) {
@@ -78,7 +81,20 @@ public class NouvelleVente extends HttpServlet {
 					categorieManager.getCategorie(Integer.parseInt(request.getParameter("noCategorie")))
 					);
 		
-			articleManager.addArticle(nouvelArticle);	
+			articleManager.addArticle(nouvelArticle);
+			
+			utilisateurConnecte = utilisateurManager.getUtilisateur(noUtilisateur);
+			
+			//récupération de l'adresse saisie et comparaison avec celle de l'utilisateur
+			String nouvelleRue = request.getParameter("rue");
+			String nouveauCodePostal = request.getParameter("codePostal");
+			String nouvelleVille = request.getParameter("ville");
+			
+			//si différente, création d'une nouvelle adresse de retrait pour cet article
+			if (nouvelleRue != utilisateurConnecte.getRue() || nouveauCodePostal != utilisateurConnecte.getCodePostal() || nouvelleVille != utilisateurConnecte.getVille()) {
+				Retrait nouveauRetrait = new Retrait(nouvelArticle, nouvelleRue, nouveauCodePostal, nouvelleVille);
+				retraitManager.addRetrait(nouveauRetrait);
+			}
 			
 		} catch (BusinessException e) {
 			listeCodesErreursAjoutArticle = e.getListeCodesErreur();
