@@ -93,7 +93,7 @@
 		
 		
 		<p style="color: red;" id="message-echec"><%= (String)request.getAttribute("msgEchec") %></p>
-		<p style="color: green;" id="message-succes"></p>		
+		<p style="color: green;" id="message-succes"><%= (String)request.getAttribute("msgSucces") %></p>		
 		
 		<script src="js/check-password.js"></script>
 		<script src="js/check-fields.js"></script>
