@@ -92,7 +92,7 @@
 		<button onclick=checkPassword(document.formInscription.mdp)>check javascript</button>
 		
 		
-		<p style="color: red;" id="message-echec"><%= (String)request.getAttribute("msgFeedback") %></p>
+		<p style="color: red;" id="message-echec"><%= (String)request.getAttribute("msgEchec") %></p>
 		<p style="color: green;" id="message-succes"></p>		
 		
 		<script src="js/check-password.js"></script>
