@@ -20,6 +20,12 @@ public class EnchereManager {
 		return listeEncheres;
 	}
 	
+	public Enchere getMeilleureEnchereParArticle(int noArticle) throws BusinessException {
+		Enchere enchere;
+		enchere = enchereDAO.getMeilleureEnchereByArticle(noArticle);
+		return enchere;
+	}
+	
 	public List<Enchere> getAllEncheresParArticle(int noArticle) throws BusinessException {
 		List<Enchere> listeEncheres;
 		listeEncheres = enchereDAO.selectByArticle(noArticle);

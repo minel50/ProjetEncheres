@@ -8,6 +8,7 @@ import fr.eni.encheres.bo.Utilisateur;
 
 public interface EnchereDAO {
 	public void insert (Enchere enchere) throws BusinessException;
+	Enchere getMeilleureEnchereByArticle(int noArticle) throws BusinessException;
 	public List<Enchere> selectByUtilisateur(int noUtilisateur) throws BusinessException;
 	public List<Enchere> selectByArticle(int noArticle) throws BusinessException;
 	public Enchere selectByUtilisateurEtArticle(int noUtilisateur, int noArticle) throws BusinessException;

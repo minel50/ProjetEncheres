@@ -14,6 +14,7 @@ import fr.eni.encheres.bo.Utilisateur;
 
 public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String sqlInsert = "INSERT INTO ENCHERES (no_utilisateur, no_article, date_enchere, montant_enchere) VALUES (?, ?, ?, ?)";
+	private static final String sqlSelectMeilleurEnchereByArticle = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_article = ? AND montant_enchere = (SELECT MAX(montant_enchere) AS meilleureEnchere FROM ENCHERES WHERE no_article = ? GROUP BY no_article);";
 	private static final String sqlSelectByUser = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ?";
 	private static final String sqlSelectByArticle = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_article = ?";
 	private static final String sqlSelectByUtilisateurEtArticle = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ? AND no_article = ?";
@@ -59,6 +60,46 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			}
 		}
 		
+	}
+	
+	@Override
+	public Enchere getMeilleureEnchereByArticle(int noArticle) throws BusinessException {
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		Enchere enchere = null;
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(sqlSelectMeilleurEnchereByArticle);
+			stmt.setInt(1, noArticle);
+			stmt.setInt(2, noArticle);
+			
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				enchere = new Enchere(rs.getDate("date_enchere"), rs.getInt("montant_enchere"), rs.getInt("no_utilisateur"), noArticle);
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (cnx != null) {
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return enchere;
 	}
 
 	@Override

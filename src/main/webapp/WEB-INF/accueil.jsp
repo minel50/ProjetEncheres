@@ -41,7 +41,7 @@
 			<c:forEach var="a" items="${requestScope.listeArticlesEnVente}">
 				<li>
 					<p>
-						${a.getNomArticle() }<br>
+						<a href="detailVente?noArticle=${a.getNoArticle() }" title="accéder à la vente de cet article">${a.getNomArticle() }</a><br>
 						Prix : ${a.getPrixVente() } pts<br>
 						Fin de l'enchère : ${formatDate.format(a.getDateFinEncheres()) }<br>
 						Vendeur : ${a.getUtilisateur().getPseudo() }
