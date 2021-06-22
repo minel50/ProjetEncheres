@@ -9,12 +9,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription</title>
+    <title>Edition du profil</title>
 </head>
 
 <body>
 
-    <h1>Mon profil</h1>
+	<header>
+		<h1>ENI-Enchères</h1>
+	</header>
+
+    <h2>Mon profil</h2>
     
     <form name="formInscription" action="<%=request.getContextPath()%>/profil" method="post">
 
@@ -85,11 +89,11 @@
 	    </form>
 		
 		<form action="<%=request.getContextPath()%>/SupprimerProfil" method="get">
-	    <input type="submit" value="Supprimer mon compte" />
+	    	<input type="submit" value="Supprimer mon compte" onclick="if (confirm('Are you...?')) commentDelete(1); return false"/>
 		</form>
 		
 		<!--Check REGEX mot de pass-->
-		<button onclick=checkPassword(document.formInscription.mdp)>check javascript</button>
+		<!--  <button onclick=checkPassword(document.formInscription.mdp)>check javascript</button>-->
 		
 		
 		<p style="color: red;" id="message-echec"><%= (String)request.getAttribute("msgEchec") %></p>
@@ -97,6 +101,7 @@
 		
 		<script src="js/check-password.js"></script>
 		<script src="js/check-fields.js"></script>
+		<script src="js/popup-suppression.js"></script>
 
 </body>
 </html>
