@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Utilisateur;
@@ -25,7 +25,12 @@ public class Profil extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		int ID_SESSION = 7;
+		HttpSession session = request.getSession();
+		System.out.println("La session est " + session.getId());
+		Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		System.out.println(utilisateurConnecte.getNoUtilisateur());
+		
+		int ID_USER = utilisateurConnecte.getNoUtilisateur();
 		String msgEchec = "";
 		String msgSucces = "";
 		
@@ -41,7 +46,7 @@ public class Profil extends HttpServlet {
 		}*/
 		
 		try {
-			Utilisateur u = utilisateurManager.getUtilisateur(ID_SESSION);
+			Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
 			request.setAttribute("pseudo", u.getPseudo());
 			request.setAttribute("nom", u.getNom());
 			request.setAttribute("prenom", u.getPrenom());
@@ -53,7 +58,6 @@ public class Profil extends HttpServlet {
 			request.setAttribute("credit", u.getCredit());
 			request.setAttribute("msgEchec", msgEchec);
 			request.setAttribute("msgSucces", msgSucces);
-			
 			
 		} catch(NullPointerException e){
 			RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/accueil.jsp");
@@ -76,7 +80,12 @@ public class Profil extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 				
-		int ID_SESSION = 7;
+		HttpSession session = request.getSession();
+		System.out.println("La session est " + session.getId());
+		Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		System.out.println(utilisateurConnecte.getNoUtilisateur());
+		
+		int ID_USER = utilisateurConnecte.getNoUtilisateur();
 		String msgEchec = "";
 		String msgSucces = "Modifications effectuées";
 		
@@ -100,7 +109,7 @@ public class Profil extends HttpServlet {
 		String msgFeedback;
 		String mdpBDD;
 		try {
-			Utilisateur u = utilisateurManager.getUtilisateur(ID_SESSION);
+			Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
 			mdpBDD = u.getMotDePasse();
 			
 			// check si un des champs du profil a été modifié
@@ -142,7 +151,7 @@ public class Profil extends HttpServlet {
 							
 							// Si nouveau mot de pass différent du mot de pass de confiramtion :
 							// Reset les paramètres utilisateurs
-							Utilisateur userReset = utilisateurManager.getUtilisateur(ID_SESSION);
+							Utilisateur userReset = utilisateurManager.getUtilisateur(ID_USER);
 							request.setAttribute("pseudo", userReset.getPseudo());
 							request.setAttribute("nom", userReset.getNom());
 							request.setAttribute("prenom", userReset.getPrenom());
@@ -166,7 +175,7 @@ public class Profil extends HttpServlet {
 					} else {
 						// Si le mot de pass actuel ne correspond pas :
 						// Reset les paramètres utilisateurs
-						Utilisateur userReset = utilisateurManager.getUtilisateur(ID_SESSION);
+						Utilisateur userReset = utilisateurManager.getUtilisateur(ID_USER);
 						request.setAttribute("pseudo", userReset.getPseudo());
 						request.setAttribute("nom", userReset.getNom());
 						request.setAttribute("prenom", userReset.getPrenom());
