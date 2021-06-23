@@ -74,6 +74,7 @@ public class Login extends HttpServlet {
 							HttpSession session = request.getSession();
 							session.setAttribute("identifiant", pseudo);
 							session.setAttribute("motpasse", motpasse);
+							session.setAttribute("utilisateurConnecte", user);
 							System.out.println("login " +session.getId());
 							RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/inscription/details.jsp");//a changer pour jsp page page accueil liste enchere
 							rd.forward(request, response);
