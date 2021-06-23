@@ -44,7 +44,7 @@
 				<p style="color: green;">L'article a été créé avec succès</p>
 			</c:if>
 			
-			<form name="nouvelleVente" action="/encheres/vente" method="POST">
+			<form name="nouvelleVente" action="vente" method="POST">
 				<label for="nomArticle">Article :</label>
 				<input type="text" name="nomArticle" maxlength="30" value="${requestScope.articleEnCoursCreation.getNomArticle() }" required><br>
 				
