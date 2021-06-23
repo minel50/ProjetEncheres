@@ -19,7 +19,7 @@
 		
 			
 			<input type="text" id="pseudo" name = "pseudo" value ="<c:out value = "${param.pseudo}"/>" placeholder="Pseudo" required>
-				
+				 <span class="erreur">${erreurs["pseudo"] }</span>
 			<input type="text" id="nom" name = "nom" value ="<c:out value = "${param.nom}"/>" placeholder="Nom" required>
 			<input type="text" id="prenom" name = "prenom" value ="<c:out value = "${param.prenom}"/>" placeholder="Prénom" required>
 			<input type="email" id="email" name = "email" value ="<c:out value = "${param.email}"/>" placeholder="Email" required>

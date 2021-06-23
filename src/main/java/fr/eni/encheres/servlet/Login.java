@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
+//import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +25,9 @@ import fr.eni.encheres.bo.Utilisateur;
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String ATT_ERREURS = "erreurs";
+	private static final String ATT_ERREURS= "erreurs";
 	private static final String ATT_RESULTAT ="resultat";
+	private static final String CHAMP_SESSION ="session";
 
 	UtilisateurManager utilisateurManager = new UtilisateurManager();  
   
@@ -56,6 +57,7 @@ public class Login extends HttpServlet {
 		String resultat = null;
 		String pseudo = request.getParameter("pseudo");
 		String motpasse = request.getParameter("motpasse");
+		String email = request.getParameter("pseudo");
 		String remember =request.getParameter("remember");
 	
 		/*Cookie cookie = new Cookie("pseudo", pseudo);
@@ -66,42 +68,45 @@ public class Login extends HttpServlet {
 		List<Utilisateur> listeUtilisateurs = new ArrayList<>();
 
 		try {
+			HttpSession session = request.getSession();
+
 			listeUtilisateurs = utilisateurManager.getListeUtilisateur();
-					for(Utilisateur user: listeUtilisateurs) 
+					for(Utilisateur user: listeUtilisateurs) {
 				
-							if((user.getPseudo().equals(pseudo)) && (user.getMotDePasse().equals(motpasse))){
-					
-							HttpSession session = request.getSession();
-							session.setAttribute("identifiant", pseudo);
+							if((user.getPseudo().equals(pseudo)) ||(user.getEmail().equals(email)) && (user.getMotDePasse().equals(motpasse))){
+							session.setAttribute("pseudo", pseudo);
 							session.setAttribute("motpasse", motpasse);
+							session.setAttribute("pseudo",email);
 							session.setAttribute("utilisateurConnecte", user);
 							System.out.println("login " +session.getId());
-							RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/inscription/details.jsp");//a changer pour jsp page page accueil liste enchere
-							rd.forward(request, response);
-					
-							}
-							else {
+							response.sendRedirect(request.getContextPath() +"/Liste");
+						
+							resultat = "succes";
+							
+				
+							
+						
+							}}
+						
 								
-								
+								if(resultat!="succes") {
 								resultat = "Vos identifiants ne correspondent pas";
 								request.setAttribute(ATT_RESULTAT, resultat);
-								/*RequestDispatcher rd1 =
+								RequestDispatcher rd1 =
 										request.getRequestDispatcher("/WEB-INF/inscription/login.jsp");
-								rd1.forward(request, response);*/
+								rd1.forward(request, response);}
 								
-							}
-					
+								
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-					
-		doGet(request, response);
-		
 			
-
-							
-							}
+			
+		
+				
+			}
+	
 							
 					
 					
@@ -115,27 +120,7 @@ public class Login extends HttpServlet {
 	}
 	
 		
-	/*try {
-			verifIdentifiant(pseudo,motpasse);
-		} catch (Exception e) {
-	
-			erreurs.put(CHAMP_IDENTIFIANT, e.getMessage());
-		}*/
-		
-		//request.setAttribute(ATT_ERREURS, erreurs);
-		
-	
 
-/*public void verifIdentifiant(String pseudo, String motpasse) throws Exception {
-		List<Utilisateur> listeUtilisateurs = new ArrayList<>();
-		listeUtilisateurs = utilisateurManager.getListeUtilisateur();
-		for(Utilisateur user: listeUtilisateurs) {
-			
-			if(!user.getPseudo().equals(pseudo) && (user.getMotDePasse().equals(motpasse))){
-		throw new Exception ("Aucun compte n'est asssocié à cette adresse email");}
-	}
-	
-	}*/
 	
 	
 
