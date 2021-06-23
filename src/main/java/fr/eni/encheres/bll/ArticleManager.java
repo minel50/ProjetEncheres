@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.ArticleDAO;
 import fr.eni.encheres.dal.DAOFactory;
 
@@ -71,6 +72,24 @@ public class ArticleManager {
 	
 	public void deleteArticle(Article article) throws BusinessException {
 		articleDAO.delete(article);
+	}
+	
+	public List<Article> getListeArticlesVenteEnCoursParUtilisateur(Utilisateur utilisateur) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesVenteEnCoursByUtilisateur(utilisateur);
+		return listeArticles;
+	}
+	
+	public List<Article> getListeArticlesVenteNonDebuteeParUtilisateur(Utilisateur utilisateur) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesVenteNonDebuteeByUtilisateur(utilisateur);
+		return listeArticles;
+	}
+	
+	public List<Article> getListeArticlesVenteTermineeParUtilisateur(Utilisateur utilisateur) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesVenteTermineeByUtilisateur(utilisateur);
+		return listeArticles;
 	}
 	
 	public void validerArticle(Article a, BusinessException exception) throws BusinessException {

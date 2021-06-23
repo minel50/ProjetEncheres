@@ -12,6 +12,7 @@ import java.util.List;
 
 import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Utilisateur;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
@@ -35,6 +36,18 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String sqlUpdate = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, no_utilisateur = ?, no_categorie = ? WHERE no_article = ?";
 	
 	private static final String sqlDelete = "DELETE FROM ARTICLES_VENDUS WHERE no_article = ?";
+	
+	private static final String sqlSelectArticlesVenteEnCoursByUtilisateur = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie\r\n"
+																			+ "FROM ARTICLES_VENDUS\r\n"
+																			+ "WHERE date_debut_encheres <= CONVERT (date, GETDATE()) AND date_fin_encheres >= CONVERT (date, GETDATE()) AND no_utilisateur = ?;";
+	
+	private static final String sqlSelectArticlesVenteNonDebuteeByUtilisateur = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie\r\n"
+																				+ "FROM ARTICLES_VENDUS\r\n"
+																				+ "WHERE date_debut_encheres > CONVERT (date, GETDATE()) AND no_utilisateur = ?;";
+	
+	private static final String sqlSelectArticlesVenteTermineeByUtilisateur = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie\r\n"
+																				+ "FROM ARTICLES_VENDUS\r\n"
+																				+ "WHERE date_fin_encheres < CONVERT (date, GETDATE()) AND no_utilisateur = ?;";
 	
 	private UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
 	private CategorieDAO categorieDAO = DAOFactory.getCategorieDAO();
@@ -114,7 +127,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getDate("date_fin_encheres"),
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
-						"création",
+						"?",
 						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
 						categorieDAO.selectById(rs.getInt("no_categorie"))
 						));
@@ -164,7 +177,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getDate("date_fin_encheres"),
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
-						"création",
+						"?",
 						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
 						categorieDAO.selectById(rs.getInt("no_categorie"))
 						);
@@ -233,7 +246,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getDate("date_fin_encheres"),
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
-						"création",
+						"en cours",
 						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
 						categorieDAO.selectById(rs.getInt("no_categorie"))
 						));
@@ -281,7 +294,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getDate("date_fin_encheres"),
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
-						"création",
+						"?",
 						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
 						categorieDAO.selectById(rs.getInt("no_categorie"))
 						));
@@ -329,7 +342,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 						rs.getDate("date_fin_encheres"),
 						rs.getInt("prix_initial"),
 						rs.getInt("prix_vente"),
-						"création",
+						"?",
 						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
 						categorieDAO.selectById(rs.getInt("no_categorie"))
 						));
@@ -443,5 +456,152 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			}
 		}
 			
+	}
+	
+	
+	@Override
+	public List<Article> selectArticlesVenteEnCoursByUtilisateur(Utilisateur utilisateur) throws BusinessException {
+		List<Article> listeArticles = new ArrayList<>();
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(sqlSelectArticlesVenteEnCoursByUtilisateur);
+			stmt.setInt(1, utilisateur.getNoUtilisateur());
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				listeArticles.add(new Article(
+						rs.getInt("no_article"),
+						rs.getString("nom_article"),
+						rs.getString("description"),
+						rs.getDate("date_debut_encheres"),
+						rs.getDate("date_fin_encheres"),
+						rs.getInt("prix_initial"),
+						rs.getInt("prix_vente"),
+						"en cours",
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						categorieDAO.selectById(rs.getInt("no_categorie"))
+						));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (cnx != null) {
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return listeArticles;
+	}
+	
+	
+	@Override
+	public List<Article> selectArticlesVenteNonDebuteeByUtilisateur(Utilisateur utilisateur) throws BusinessException {
+		List<Article> listeArticles = new ArrayList<>();
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(sqlSelectArticlesVenteNonDebuteeByUtilisateur);
+			stmt.setInt(1, utilisateur.getNoUtilisateur());
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				listeArticles.add(new Article(
+						rs.getInt("no_article"),
+						rs.getString("nom_article"),
+						rs.getString("description"),
+						rs.getDate("date_debut_encheres"),
+						rs.getDate("date_fin_encheres"),
+						rs.getInt("prix_initial"),
+						rs.getInt("prix_vente"),
+						"créée",
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						categorieDAO.selectById(rs.getInt("no_categorie"))
+						));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (cnx != null) {
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return listeArticles;
+	}
+	
+	
+	@Override
+	public List<Article> selectArticlesVenteTermineeByUtilisateur(Utilisateur utilisateur) throws BusinessException {
+		List<Article> listeArticles = new ArrayList<>();
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(sqlSelectArticlesVenteTermineeByUtilisateur);
+			stmt.setInt(1, utilisateur.getNoUtilisateur());
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				listeArticles.add(new Article(
+						rs.getInt("no_article"),
+						rs.getString("nom_article"),
+						rs.getString("description"),
+						rs.getDate("date_debut_encheres"),
+						rs.getDate("date_fin_encheres"),
+						rs.getInt("prix_initial"),
+						rs.getInt("prix_vente"),
+						"enchères terminées",
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						categorieDAO.selectById(rs.getInt("no_categorie"))
+						));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (cnx != null) {
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return listeArticles;
 	}
 }

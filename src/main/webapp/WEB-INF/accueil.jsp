@@ -76,7 +76,7 @@
 			</form>
 		</p>
 		<ul>
-			<c:forEach var="a" items="${requestScope.listeArticlesEnVente}">
+			<c:forEach var="a" items="${requestScope.listeArticlesAAfficher}">
 				<li>
 					<p>
 						<a href="detailVente?noArticle=${a.getNoArticle() }" title="accéder à la vente de cet article">${a.getNomArticle() }</a><br>
