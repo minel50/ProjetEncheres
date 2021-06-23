@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bll.ArticleManager;
@@ -34,9 +35,6 @@ public class NouvelleVente extends HttpServlet {
 	private ArticleManager articleManager = new ArticleManager();
 	private RetraitManager retraitManager = new RetraitManager();
 	private List<Integer> listeCodesErreursAjoutArticle = new ArrayList<>();
-	
-	private int noUtilisateur = 1; //simulation utilisateur connecté
-	private Utilisateur utilisateurConnecte;
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -48,9 +46,6 @@ public class NouvelleVente extends HttpServlet {
 		try {
 			List<Categorie> listeCategories = categorieManager.getListeCategorie();
 			request.setAttribute("listeCategories", listeCategories);
-			
-			utilisateurConnecte = utilisateurManager.getUtilisateur(noUtilisateur);
-			request.setAttribute("utilisateurConnecte", utilisateurConnecte);
 			
 			//envoi jour J et heure H + 1 pour affichage dans le formulaire html
 			request.setAttribute("dateAujourdhui", formatDateHtml.format(new Date(System.currentTimeMillis())));
@@ -77,6 +72,9 @@ public class NouvelleVente extends HttpServlet {
 		SimpleDateFormat formatDateEtHeure = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 		Article nouvelArticle = null;
 		
+		HttpSession session = request.getSession();
+		Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
+		
 		try {
 			nouvelArticle = new Article(
 					request.getParameter("nomArticle"),
@@ -86,13 +84,11 @@ public class NouvelleVente extends HttpServlet {
 					Integer.parseInt(request.getParameter("prixInitial")),
 					Integer.parseInt(request.getParameter("prixInitial")),	//A la création de la vente, le prix de vente est égal au prix initial.
 					"création",
-					utilisateurManager.getUtilisateur(noUtilisateur),
+					utilisateurConnecte,
 					categorieManager.getCategorie(Integer.parseInt(request.getParameter("noCategorie")))
 					);
 		
 			articleManager.addArticle(nouvelArticle);
-			
-			utilisateurConnecte = utilisateurManager.getUtilisateur(noUtilisateur);
 			
 			//récupération de l'adresse saisie et comparaison avec celle de l'utilisateur
 			String nouvelleRue = request.getParameter("rue");
@@ -104,6 +100,9 @@ public class NouvelleVente extends HttpServlet {
 				Retrait nouveauRetrait = new Retrait(nouvelArticle, nouvelleRue, nouveauCodePostal, nouvelleVille);
 				retraitManager.addRetrait(nouveauRetrait);
 			}
+			
+			// si tout s'est bien passé (attribut testé dans la jsp) :
+			request.setAttribute("succes", 1);
 			
 		} catch (BusinessException e) {
 			listeCodesErreursAjoutArticle = e.getListeCodesErreur();
