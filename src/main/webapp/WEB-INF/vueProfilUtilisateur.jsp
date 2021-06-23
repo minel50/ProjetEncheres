@@ -23,29 +23,46 @@
 	</p>
 	
 	<p> Nom : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getNom }
+					${sessionScope.utilisateurConnecte.getNom() }
 				</c:if>
-	
 	</p>
 	
 	<p> Prénom : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getPrenom }
+					${sessionScope.utilisateurConnecte.getPrenom() }
 				</c:if>
 	</p>
 	
-	<p> Email : <%= (String)request.getAttribute("email") %></p>
+	<p> Email : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
+					${sessionScope.utilisateurConnecte.getEmail() }
+				</c:if>
+	</p>
 	
-	<p> Téléphone : <%= (String)request.getAttribute("tel") %></p>
+	<p> Téléphone : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
+					${sessionScope.utilisateurConnecte.getTelephone() }
+				</c:if>
+	</p>
 	
-	<p> Rue : <%= (String)request.getAttribute("rue") %></p>
+	<p> Rue : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
+					${sessionScope.utilisateurConnecte.getRue() }
+				</c:if>
+	</p>
 	
-	<p> Code postal : <%= (String)request.getAttribute("codePostal") %></p>
+	<p> Code postal : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
+					${sessionScope.utilisateurConnecte.getCodePostal() }
+				</c:if>
+	</p>
 	
-	<p> Ville : <%= (String)request.getAttribute("ville") %></p>
+	<p> Ville : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
+					${sessionScope.utilisateurConnecte.getVille() }
+				</c:if>
+	</p>
 	
-	<p>Crédit : <%= request.getAttribute("credit") %></p> 
+	<p>Crédit : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
+					${sessionScope.utilisateurConnecte.getCredit() }
+				</c:if>
+	</p> 
 	
-	<form action="<%=request.getContextPath()%>/Profil">
+	<form action="<%=request.getContextPath()%>/profil">
     	<input type="submit" value="Modifier" />
 	</form>
 	

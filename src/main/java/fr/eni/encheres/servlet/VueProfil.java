@@ -27,7 +27,7 @@ public class VueProfil extends HttpServlet {
 		System.out.println("ID de la session " + session.getId());
 		Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		System.out.println(utilisateurConnecte.getNoUtilisateur());
-		int ID_USER = utilisateurConnecte.getNoUtilisateur();
+		
 		
 		//Redirection vers la page de modification du profil avec le message succès
 		RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/vueProfilUtilisateur.jsp");
