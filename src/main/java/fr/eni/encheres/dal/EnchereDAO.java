@@ -12,4 +12,5 @@ public interface EnchereDAO {
 	public List<Enchere> selectByUtilisateur(int noUtilisateur) throws BusinessException;
 	public List<Enchere> selectByArticle(int noArticle) throws BusinessException;
 	public Enchere selectByUtilisateurEtArticle(int noUtilisateur, int noArticle) throws BusinessException;
+	void update(Enchere enchere) throws BusinessException;
 }	

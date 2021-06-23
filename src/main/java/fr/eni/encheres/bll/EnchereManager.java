@@ -26,6 +26,10 @@ public class EnchereManager {
 		return enchere;
 	}
 	
+	public void updateEnchere(Enchere enchere) throws BusinessException {
+		enchereDAO.update(enchere);
+	}
+	
 	public List<Enchere> getAllEncheresParArticle(int noArticle) throws BusinessException {
 		List<Enchere> listeEncheres;
 		listeEncheres = enchereDAO.selectByArticle(noArticle);

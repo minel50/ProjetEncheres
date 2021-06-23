@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.encheres.BusinessException;
+import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
 
@@ -18,7 +19,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String sqlSelectByUser = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ?";
 	private static final String sqlSelectByArticle = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_article = ?";
 	private static final String sqlSelectByUtilisateurEtArticle = "SELECT no_utilisateur, no_article, date_enchere, montant_enchere FROM ENCHERES WHERE no_utilisateur = ? AND no_article = ?";
-
+	private static final String sqlUpdate = "UPDATE encheres SET date_enchere=?, montant_enchere=? WHERE no_utilisateur = ? AND no_article = ?;";
+	
 	@Override
 	public void insert(Enchere enchere) throws BusinessException {
 		
@@ -185,7 +187,50 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		
 		return listeEncheres;
 	}
-
+	
+	@Override
+	public void update(Enchere enchere) throws BusinessException {
+		if (enchere == null) {
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UPDATE_OBJET_NULL);
+			throw businessException;
+		}
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ConnectionProvider.getConnection();
+			pstmt = con.prepareStatement(sqlUpdate);
+			pstmt.setDate(1, (Date) enchere.getDateEnchere());
+			pstmt.setInt(2, enchere.getMontantEnchere());
+			pstmt.setInt(3, enchere.getNoUtilisateur());
+			pstmt.setInt(4, enchere.getNoArticle());
+			pstmt.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UDPATE_DATA_ECHEC);
+			throw businessException;
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				
+				if (con != null) {
+					con.close();
+				}	
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
+	
 	@Override
 	public Enchere selectByUtilisateurEtArticle(int noUtilisateur, int noArticle) throws BusinessException {
 		Connection cnx = null;
@@ -198,7 +243,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			stmt.setInt(1, noUtilisateur);
 			stmt.setInt(2, noArticle);
 			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {new Enchere(
+			while (rs.next()) {enchere = new Enchere(
 							rs.getDate("date_enchere"),
 							rs.getInt("montant_enchere"),
 							noUtilisateur,
