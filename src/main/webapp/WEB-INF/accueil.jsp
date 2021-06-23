@@ -41,6 +41,41 @@
 					</c:forEach>
 				</select>
 				
+				<p>Choix de l'utilisateur au dernier envoi du formulaire : ${requestScope.choixAchatVente }</p>
+				
+				<c:if test="${requestScope.choixAchatVente == achat }">L'utilisateur a choisi achat</c:if>
+				<c:if test="${requestScope.choixAchatVente == vente }">L'utilisateur a choisi vente</c:if>
+				
+				<c:if test="${ !empty sessionScope.utilisateurConnecte }">
+					<div id="formulaireAchat">
+						<input type="radio" name="choixAchatVente" value="achat" checked/>
+						<label for="achat">Achats</label><br>
+						
+						<input type="checkbox" name="encheresOuvertes" checked/>
+						<label for="encheresOuvertes">enchères ouvertes</label><br>
+						
+						<input type="checkbox" name="mesEncheresEnCours" />
+						<label for="mesEncheresEnCours">mes enchères en cours</label><br>
+						
+						<input type="checkbox" name="mesEncheresRemportees" />
+						<label for="mesEncheresRemportees">mes enchères remportées</label><br>
+					</div>
+					
+					<div id="formulaireVente">
+						<input type="radio" name="choixAchatVente" value="vente" />
+						<label for="vente">Mes ventes</label><br>
+						
+						<input type="checkbox" name="mesVentesEnCours" />
+						<label for="mesVentesEnCours">mes ventes en cours</label><br>
+						
+						<input type="checkbox" name="mesVentesNonDebutees" checked/>
+						<label for="mesVentesNonDebutees">mes ventes non débutées</label><br>
+						
+						<input type="checkbox" name="mesVentesTerminees" />
+						<label for="mesVentesTerminees">mes ventes terminées</label><br>
+					</div>
+				</c:if>
+				
 				<button type="submit">Rechercher</button>
 			</form>
 		</p>

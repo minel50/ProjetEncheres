@@ -46,7 +46,7 @@ public class ServletAccueil extends HttpServlet {
 			List<Categorie> listeCategories = categorieManager.getListeCategorie();
 			request.setAttribute("listeCategories", listeCategories);
 			
-			//Renvoit état des filtres
+			//Renvoit état des filtres pour les réafficher dans le formulaire
 			request.setAttribute("filtreNom", filtreNom);
 			request.setAttribute("noCategorie", noCategorie);
 			
@@ -66,8 +66,35 @@ public class ServletAccueil extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//récupération choix de l'utilisateur (connecté ou non)
 		filtreNom = request.getParameter("filtreNom");
 		noCategorie = Integer.parseInt(request.getParameter("filtreCategorie"));
+		
+		//récupération choix de l'utilisareur connecté
+		//pour les checkbox renvoit "on" si coché, null si non coché
+		String choixAchatVente = request.getParameter("choixAchatVente");
+		String encheresOuvertes = request.getParameter("encheresOuvertes");
+		String mesEncheresEnCours = request.getParameter("mesEncheresEnCours");
+		String mesEncheresRemportees = request.getParameter("mesEncheresRemportees");
+		String mesVentesEnCours = request.getParameter("mesVentesEnCours");
+		String mesVentesNonDebutees = request.getParameter("mesVentesNonDebutees");
+		String mesVentesTerminees = request.getParameter("mesVentesTerminees");
+		
+		//Débugage
+		System.out.println("choix utilisateur:");
+		System.out.println(choixAchatVente);
+		
+		System.out.println(encheresOuvertes);
+		System.out.println(mesEncheresEnCours);
+		System.out.println(mesEncheresRemportees);
+		
+		System.out.println(mesVentesEnCours);
+		System.out.println(mesVentesNonDebutees);
+		System.out.println(mesVentesTerminees);
+		
+		//Attributs pour ré-afficher le formulaire avec les bonnes cases cochées
+		request.setAttribute("choixAchatVente", choixAchatVente);
+		
 		
 		doGet(request, response);
 	}
