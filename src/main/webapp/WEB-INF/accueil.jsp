@@ -10,6 +10,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Enchères</title>
+	
 </head>
 
 <body>
@@ -43,30 +44,30 @@
 				
 				<c:if test="${ !empty sessionScope.utilisateurConnecte }">
 					<div id="formulaireAchat">
-						<input type="radio" name="choixAchatVente" value="achat" <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">checked</c:if>/>
+						<input type="radio" id ="btnRadioAchat" name="choixAchatVente" value="achat" onclick="basculerSurAchat()" <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">checked</c:if>/>
 						<label for="achat">Achats</label><br>
 						
-						<input type="checkbox" name="encheresOuvertes" <c:if test="${requestScope.encheresOuvertes eq 'on' || empty requestScope.choixAchatVente }">checked</c:if> />
+						<input type="checkbox" class="checkboxAchat" id="cbAchatDefaut" name="encheresOuvertes" <c:if test="${requestScope.encheresOuvertes eq 'on' || empty requestScope.choixAchatVente }">checked</c:if> />
 						<label for="encheresOuvertes">enchères ouvertes</label><br>
 						
-						<input type="checkbox" name="mesEncheresEnCours" <c:if test="${requestScope.mesEncheresEnCours eq 'on' }">checked</c:if> />
+						<input type="checkbox" class="checkboxAchat" name="mesEncheresEnCours" <c:if test="${requestScope.mesEncheresEnCours eq 'on' }">checked</c:if> />
 						<label for="mesEncheresEnCours">mes enchères en cours</label><br>
 						
-						<input type="checkbox" name="mesEncheresRemportees" <c:if test="${requestScope.mesEncheresRemportees eq 'on' }">checked</c:if> />
+						<input type="checkbox" class="checkboxAchat" name="mesEncheresRemportees" <c:if test="${requestScope.mesEncheresRemportees eq 'on' }">checked</c:if> />
 						<label for="mesEncheresRemportees">mes enchères remportées</label><br>
 					</div>
 					
 					<div id="formulaireVente">
-						<input type="radio" name="choixAchatVente" value="vente" <c:if test="${requestScope.choixAchatVente eq 'vente' }">checked</c:if>/>
+						<input type="radio" id ="btnRadioVente" name="choixAchatVente" value="vente" onclick="basculerSurVente()" <c:if test="${requestScope.choixAchatVente eq 'vente' }">checked</c:if>/>
 						<label for="vente">Mes ventes</label><br>
 						
-						<input type="checkbox" name="mesVentesEnCours" <c:if test="${requestScope.mesVentesEnCours eq 'on' }">checked</c:if> />
+						<input type="checkbox" class="checkboxVente" name="mesVentesEnCours" <c:if test="${requestScope.mesVentesEnCours eq 'on' }">checked</c:if> />
 						<label for="mesVentesEnCours">mes ventes en cours</label><br>
 						
-						<input type="checkbox" name="mesVentesNonDebutees" <c:if test="${requestScope.mesVentesNonDebutees eq 'on' }">checked</c:if> />
+						<input type="checkbox" class="checkboxVente" id="cbVenteDefaut" name="mesVentesNonDebutees" <c:if test="${requestScope.mesVentesNonDebutees eq 'on' }">checked</c:if> />
 						<label for="mesVentesNonDebutees">mes ventes non débutées</label><br>
 						
-						<input type="checkbox" name="mesVentesTerminees" <c:if test="${requestScope.mesVentesTerminees eq 'on' }">checked</c:if> />
+						<input type="checkbox" class="checkboxVente" name="mesVentesTerminees" <c:if test="${requestScope.mesVentesTerminees eq 'on' }">checked</c:if> />
 						<label for="mesVentesTerminees">mes ventes terminées</label><br>
 					</div>
 				</c:if>
@@ -88,5 +89,39 @@
 		</ul>
 	</main>
 	<footer>&copy; Claire - Thomas - Grégory - 2021</footer>
+	
+	<script  type="text/javascript">
+	
+		function basculerSurAchat() {
+			var checkboxesAchat = document.getElementsByClassName("checkboxAchat");
+			for (var i = 0; i < checkboxesAchat.length; i ++) {
+				checkboxesAchat[i].disabled = false;
+			}
+			
+			var checkboxesVente = document.getElementsByClassName("checkboxVente");
+			for (var i = 0; i < checkboxesVente.length; i ++) {
+				checkboxesVente[i].checked = false;
+				checkboxesVente[i].disabled = true;
+			}
+			
+			document.getElementById("cbAchatDefaut").checked = true;			
+		}
+		
+		function basculerSurVente() {
+			var checkboxesAchat = document.getElementsByClassName("checkboxAchat");
+			for (var i = 0; i < checkboxesAchat.length; i ++) {
+				checkboxesAchat[i].checked = false;
+				checkboxesAchat[i].disabled = true;
+			}
+			
+			var checkboxesVente = document.getElementsByClassName("checkboxVente");
+			for (var i = 0; i < checkboxesVente.length; i ++) {
+				checkboxesVente[i].disabled = false;
+			}
+
+			document.getElementById("cbVenteDefaut").checked = true;	
+		}
+		
+	</script>
 </body>
 </html>
