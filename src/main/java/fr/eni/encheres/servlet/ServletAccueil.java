@@ -73,9 +73,11 @@ public class ServletAccueil extends HttpServlet {
 		//récupération choix de l'utilisareur connecté
 		//pour les checkbox renvoit "on" si coché, null si non coché
 		String choixAchatVente = request.getParameter("choixAchatVente");
+		
 		String encheresOuvertes = request.getParameter("encheresOuvertes");
 		String mesEncheresEnCours = request.getParameter("mesEncheresEnCours");
 		String mesEncheresRemportees = request.getParameter("mesEncheresRemportees");
+		
 		String mesVentesEnCours = request.getParameter("mesVentesEnCours");
 		String mesVentesNonDebutees = request.getParameter("mesVentesNonDebutees");
 		String mesVentesTerminees = request.getParameter("mesVentesTerminees");
@@ -94,6 +96,14 @@ public class ServletAccueil extends HttpServlet {
 		
 		//Attributs pour ré-afficher le formulaire avec les bonnes cases cochées
 		request.setAttribute("choixAchatVente", choixAchatVente);
+		
+		request.setAttribute("encheresOuvertes", encheresOuvertes);
+		request.setAttribute("mesEncheresEnCours", mesEncheresEnCours);
+		request.setAttribute("mesEncheresRemportees", mesEncheresRemportees);
+		
+		request.setAttribute("mesVentesEnCours", mesVentesEnCours);
+		request.setAttribute("mesVentesNonDebutees", mesVentesNonDebutees);
+		request.setAttribute("mesVentesTerminees", mesVentesTerminees);
 		
 		
 		doGet(request, response);

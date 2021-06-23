@@ -41,37 +41,32 @@
 					</c:forEach>
 				</select>
 				
-				<p>Choix de l'utilisateur au dernier envoi du formulaire : ${requestScope.choixAchatVente }</p>
-				
-				<c:if test="${requestScope.choixAchatVente == achat }">L'utilisateur a choisi achat</c:if>
-				<c:if test="${requestScope.choixAchatVente == vente }">L'utilisateur a choisi vente</c:if>
-				
 				<c:if test="${ !empty sessionScope.utilisateurConnecte }">
 					<div id="formulaireAchat">
-						<input type="radio" name="choixAchatVente" value="achat" checked/>
+						<input type="radio" name="choixAchatVente" value="achat" <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">checked</c:if>/>
 						<label for="achat">Achats</label><br>
 						
-						<input type="checkbox" name="encheresOuvertes" checked/>
+						<input type="checkbox" name="encheresOuvertes" <c:if test="${requestScope.encheresOuvertes eq 'on' || empty requestScope.choixAchatVente }">checked</c:if> />
 						<label for="encheresOuvertes">enchères ouvertes</label><br>
 						
-						<input type="checkbox" name="mesEncheresEnCours" />
+						<input type="checkbox" name="mesEncheresEnCours" <c:if test="${requestScope.mesEncheresEnCours eq 'on' }">checked</c:if> />
 						<label for="mesEncheresEnCours">mes enchères en cours</label><br>
 						
-						<input type="checkbox" name="mesEncheresRemportees" />
+						<input type="checkbox" name="mesEncheresRemportees" <c:if test="${requestScope.mesEncheresRemportees eq 'on' }">checked</c:if> />
 						<label for="mesEncheresRemportees">mes enchères remportées</label><br>
 					</div>
 					
 					<div id="formulaireVente">
-						<input type="radio" name="choixAchatVente" value="vente" />
+						<input type="radio" name="choixAchatVente" value="vente" <c:if test="${requestScope.choixAchatVente eq 'vente' }">checked</c:if>/>
 						<label for="vente">Mes ventes</label><br>
 						
-						<input type="checkbox" name="mesVentesEnCours" />
+						<input type="checkbox" name="mesVentesEnCours" <c:if test="${requestScope.mesVentesEnCours eq 'on' }">checked</c:if> />
 						<label for="mesVentesEnCours">mes ventes en cours</label><br>
 						
-						<input type="checkbox" name="mesVentesNonDebutees" checked/>
+						<input type="checkbox" name="mesVentesNonDebutees" <c:if test="${requestScope.mesVentesNonDebutees eq 'on' }">checked</c:if> />
 						<label for="mesVentesNonDebutees">mes ventes non débutées</label><br>
 						
-						<input type="checkbox" name="mesVentesTerminees" />
+						<input type="checkbox" name="mesVentesTerminees" <c:if test="${requestScope.mesVentesTerminees eq 'on' }">checked</c:if> />
 						<label for="mesVentesTerminees">mes ventes terminées</label><br>
 					</div>
 				</c:if>
