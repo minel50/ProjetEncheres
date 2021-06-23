@@ -64,10 +64,6 @@
 	</p> 
 	
 	<form action="<%=request.getContextPath()%>/profil">
-    	<input type="submit" value="Modifier" />
-	</form>
-	
-	<form action="<%=request.getContextPath()%>/profil">
     	<input type="submit" value="Retour" onclick ="history.back()"/>
 	</form>
 	
