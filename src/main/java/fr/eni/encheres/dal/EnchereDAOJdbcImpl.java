@@ -5,6 +5,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -199,10 +202,13 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
+				
 		try {
+			
+			
 			con = ConnectionProvider.getConnection();
 			pstmt = con.prepareStatement(sqlUpdate);
-			pstmt.setDate(1, (Date) enchere.getDateEnchere());
+			pstmt.setDate(1, new Date(enchere.getDateEnchere().getTime()));
 			pstmt.setInt(2, enchere.getMontantEnchere());
 			pstmt.setInt(3, enchere.getNoUtilisateur());
 			pstmt.setInt(4, enchere.getNoArticle());
