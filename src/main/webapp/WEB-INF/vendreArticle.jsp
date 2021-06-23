@@ -22,6 +22,10 @@
 	<main>
 		<h2>Nouvelle vente</h2>
 		
+		<c:if test="${ !empty sessionScope.utilisateurConnecte }">
+			L'utilisateur connecté est : ${sessionScope.utilisateurConnecte.getPseudo() }
+		</c:if>
+		
 		<form name="nouvelleVente" action="/encheres/vente" method="POST">
 			<label for="nomArticle">Article :</label>
 			<input type="text" name="nomArticle" maxlength="30" value="${requestScope.articleEnCoursCreation.getNomArticle() }" required><br>
@@ -53,13 +57,13 @@
 				<legend>Retrait</legend>
 				
 				<label for="rue">Rue :</label>
-				<input type="text" name="rue" value="${requestScope.utilisateurConnecte.getRue() }" maxlength="30" required><br>
+				<input type="text" name="rue" value="${sessionScope.utilisateurConnecte.getRue() }" maxlength="30" required><br>
 				
 				<label for="codePostal" >Code postal :</label>
-				<input type="text" name="codePostal" value="${requestScope.utilisateurConnecte.getCodePostal() }" maxlength="15" required><br>
+				<input type="text" name="codePostal" value="${sessionScope.utilisateurConnecte.getCodePostal() }" maxlength="15" required><br>
 				
 				<label for="ville" >Ville :</label>
-				<input type="text" name="ville" value="${requestScope.utilisateurConnecte.getVille() }" maxlength="30" required><br>
+				<input type="text" name="ville" value="${sessionScope.utilisateurConnecte.getVille() }" maxlength="30" required><br>
 				
 			</fieldset>
 			<button type="submit">Enregistrer</button>
