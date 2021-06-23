@@ -16,9 +16,15 @@
 	<header>
 		<h1>ENI - Enchères</h1>
 		<nav>
-			<a href="Login" title="connexion">S'inscrire - Se connecter</a>
-			 | 
-			<a href="vente" title="vendre un article">Vendre un article</a>
+			<c:if test="${ empty sessionScope.utilisateurConnecte }">
+				<a href="Login" title="connexion">S'inscrire - Se connecter</a>
+			</c:if>
+			
+			<c:if test="${ !empty sessionScope.utilisateurConnecte }">
+				<a href="vente" title="vendre un article">Vendre un article</a>
+				<a href="profil" title="afficher mon profil">Mon profil</a>
+				<a href="Logout" title="se déconnecter">Déconnexion</a>
+			</c:if>
 		</nav>
 	</header>
 	<main>
@@ -34,6 +40,7 @@
 						<option value="${cat.getNoCategorie() }" <c:if test="${requestScope.noCategorie == cat.getNoCategorie() }">selected</c:if>>${cat.getLibelle() }</option>
 					</c:forEach>
 				</select>
+				
 				<button type="submit">Rechercher</button>
 			</form>
 		</p>
