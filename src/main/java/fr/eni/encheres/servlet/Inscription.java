@@ -121,8 +121,11 @@ public class Inscription extends HttpServlet {
 		if(erreurs.isEmpty()) {
 			/*ajout nouvel utilisateur dans BDD*/
 			try {
-				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/accueil.jsp");//a mettre page accueil connecté gregory
-				rd.forward(request, response);
+			
+				response.sendRedirect(request.getContextPath() +"/Liste");
+				/*RequestDispatcher rd1=
+						request.getRequestDispatcher("/WEB-INF/accueil.jsp");
+				rd1.forward(request, response);*/
 				utilisateurManager.addUtilisateur(utilisateur);
 				
 			} catch (Exception e) {
@@ -145,11 +148,11 @@ public class Inscription extends HttpServlet {
 			request.setAttribute(ATT_RESULTAT, resultat);
 			
 			//on renvoie la réponse vers la jsp
-			RequestDispatcher rd1=request.getRequestDispatcher("/WEB-INF/inscription/inscription.jsp");
-					
+			RequestDispatcher rd1=
+					request.getRequestDispatcher("/WEB-INF/inscription/inscription.jsp");
 			rd1.forward(request, response);
 		}
-	
+		
 		
 				
 		

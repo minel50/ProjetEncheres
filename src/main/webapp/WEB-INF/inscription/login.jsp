@@ -14,7 +14,7 @@
 	<span>${resultat}</span>
 	<form method="post" action ="Login">
 
-	<input type=text id = "identifiant"  value ="<c:out value="${pseudo}" />" name ="pseudo" placeholder = "identifiant" required>
+	<input type=text id = "identifiant"  value ="" name ="pseudo" placeholder = "identifiant" required><%--"<c:out value="${pseudo}" />" --%>
 	<%--  <span class="erreur">${erreurs["pseudo"] }</span>  --%>
 	<input type="password" id  ="motpasse" value ="" name ="motpasse" required>
 	

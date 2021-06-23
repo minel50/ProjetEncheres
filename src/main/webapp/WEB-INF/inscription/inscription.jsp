@@ -23,7 +23,7 @@
 			<input type="text" id="nom" name = "nom" value ="<c:out value = "${param.nom}"/>" placeholder="Nom" required>
 			<input type="text" id="prenom" name = "prenom" value ="<c:out value = "${param.prenom}"/>" placeholder="Prénom" required>
 			<input type="email" id="email" name = "email" value ="<c:out value = "${param.email}"/>" placeholder="Email" required>
-			<%-- <span class="erreur">${erreurs["email"] }</span> --%>
+			 <span class="erreur">${erreurs["email"] }</span>
 			<input type="tel" id="tel" name = "telephone" value ="<c:out value = "${param.telephone}"/>" placeholder="Telephone" >
 		 	<span class="erreur">${erreurs["telephone"] }</span> 
 			<input type="text" id="rue" name = "rue" value ="<c:out value = "${param.rue}"/>" placeholder="Rue" required>

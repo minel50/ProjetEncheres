@@ -27,7 +27,7 @@ public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String ATT_ERREURS = "erreurs";
 	private static final String ATT_RESULTAT ="resultat";
-	private static final String CHAMP_IDENTIFIANT= "pseudo";
+
 	UtilisateurManager utilisateurManager = new UtilisateurManager();  
   
 
