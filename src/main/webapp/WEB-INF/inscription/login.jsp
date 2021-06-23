@@ -11,6 +11,8 @@
 </head>
 <body>
 	<h1>Login</h1>
+	
+	<span>${erreurs["session"]}</span>
 	<span>${resultat}</span>
 	<form method="post" action ="Login">
 
@@ -29,15 +31,6 @@
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	<p>
 	<a href ="Inscription">
 	<button>
@@ -45,5 +38,14 @@
 	</button>
 	</a>
 	</p>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </body>
 </html>

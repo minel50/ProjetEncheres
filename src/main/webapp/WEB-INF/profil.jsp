@@ -87,7 +87,6 @@
        <!-- ajouter onclick="checkPassword(document.formInscription.mdp)" -->
             
 	    </form>
-		
 		<form action="<%=request.getContextPath()%>/SupprimerProfil" method="get">
 	    	<input type="submit" value="Supprimer mon compte" onclick="if (confirm('Are you...?')) commentDelete(1); return false"/>
 		</form>

@@ -37,13 +37,13 @@ public class Inscription extends HttpServlet {
 	private static final String CHAMP_PASS ="motpasse";
 	private static final String CHAMP_EMAIL ="email";
 	private static final String CHAMP_PSEUDO= "pseudo";
-	private static final String CHAMP_NOM= "nom";
-	private static final String CHAMP_PRENOM= "prenom";
-	private static final String CHAMP_TELEPHONE= "telephone";
-	private static final String CHAMP_RUE= "rue";
-	private static final String CHAMP_CODEPOSTAL= "codepostal";
-	private static final String CHAMP_VILLE= "ville";
-	private static final String CHAMP_CONFIRMATION= "confirmation";
+	//private static final String CHAMP_NOM= "nom";
+	//private static final String CHAMP_PRENOM= "prenom";
+	//private static final String CHAMP_TELEPHONE= "telephone";
+	//private static final String CHAMP_RUE= "rue";
+	//private static final String CHAMP_CODEPOSTAL= "codepostal";
+	//private static final String CHAMP_VILLE= "ville";
+	//private static final String CHAMP_CONFIRMATION= "confirmation";
 	
 	
 	UtilisateurManager utilisateurManager = new UtilisateurManager();
@@ -98,7 +98,7 @@ public class Inscription extends HttpServlet {
 		} catch (Exception e) {
 			erreurs.put(CHAMP_PASS, e.getMessage());
 		}
-		/*Validation email */
+		/*Validation email unique*/
 		 try {
 			
 			 verifEmail(email);
@@ -107,14 +107,23 @@ public class Inscription extends HttpServlet {
 			
 			
 		}
-		/*validation des champs*/
+			/*Validation pseudo unique*/
 		 try {
+			
+			 verifPseudo(pseudo);
+		} catch (Exception e) {
+			erreurs.put(CHAMP_PSEUDO,e.getMessage());
+			
+			
+		}
+		/*validation des champs*/
+		 /*try {
 			validationUtilisateur(pseudo);
 		} catch (Exception e) {
 		erreurs.put(CHAMP_PSEUDO, e.getMessage());
 	
 		
-		}
+		}*/
 		
 	
 		/*initialisation du resultat de la validation*/
@@ -187,8 +196,18 @@ public class Inscription extends HttpServlet {
 		for(Utilisateur user: listeUtilisateurs) {
 			
 			if( user.getEmail().equals(email)){
-		throw new Exception ("Vous ne pouvez pas créer de compte avec cette adresse mail");}
-	}
+		throw new Exception ("Vous ne pouvez pas créer de compte avec cette adresse mail");
+	}}}
+		
+		
+		public void verifPseudo(String pseudo) throws Exception {
+			List<Utilisateur> listeUtilisateurs = new ArrayList<>();
+			listeUtilisateurs = utilisateurManager.getListeUtilisateur();
+			for(Utilisateur user: listeUtilisateurs) {
+				
+				if( user.getPseudo().equals(pseudo)){
+			throw new Exception ("Vous ne pouvez pas créer de compte avec ce pseudo");}
+		}
 	
 	}
 	

@@ -26,7 +26,7 @@ public class Profil extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
-		System.out.println("La session est " + session.getId());
+		System.out.println("ID de la session " + session.getId());
 		Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		System.out.println(utilisateurConnecte.getNoUtilisateur());
 		
@@ -216,7 +216,7 @@ public class Profil extends HttpServlet {
 				request.setAttribute("msgSucces", msgSucces);
 				
 				
-				//Redirection vers la page Profil avec le message succès
+				//Redirection vers la page de modification du profil avec le message succès
 				RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/profil.jsp");
 				rd.forward(request, response);
 				
