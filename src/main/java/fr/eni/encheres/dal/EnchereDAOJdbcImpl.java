@@ -43,6 +43,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			stmt.executeUpdate();
 			
 			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			BusinessException businessException = new BusinessException();
