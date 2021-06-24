@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,7 +42,7 @@ public class NouvelleVente extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		SimpleDateFormat formatDateHtml = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat formatHeureHtml = new SimpleDateFormat("hh:mm");
+		SimpleDateFormat formatHeureHtml = new SimpleDateFormat("HH:mm");
 		
 		try {
 			List<Categorie> listeCategories = categorieManager.getListeCategorie();
@@ -49,6 +50,7 @@ public class NouvelleVente extends HttpServlet {
 			
 			//envoi jour J et heure H + 1 pour affichage dans le formulaire html
 			request.setAttribute("dateAujourdhui", formatDateHtml.format(new Date(System.currentTimeMillis())));
+			System.out.println();
 			request.setAttribute("heureHPlusUne", formatHeureHtml.format(new Date(System.currentTimeMillis() + 3600 * 1000)));
 			request.setAttribute("dateDemain", formatDateHtml.format(new Date(System.currentTimeMillis() + 86400 * 1000)));	// 1 jour = 86400 s
 			

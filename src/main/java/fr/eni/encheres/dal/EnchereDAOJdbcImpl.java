@@ -116,7 +116,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				listeEncheres.add(new Enchere(
-						rs.getDate("date_enchere"),
+						rs.getTimestamp("date_enchere"),
 						rs.getInt("montant_enchere"),
 						noUtilisateur,
 						rs.getInt("no_article")
@@ -158,7 +158,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				listeEncheres.add(new Enchere(
-						rs.getDate("date_enchere"),
+						rs.getTimestamp("date_enchere"),
 						rs.getInt("montant_enchere"),
 						rs.getInt("no_utilisateur"),
 						noArticle
@@ -245,7 +245,7 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			stmt.setInt(2, noArticle);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {enchere = new Enchere(
-							rs.getDate("date_enchere"),
+							rs.getTimestamp("date_enchere"),
 							rs.getInt("montant_enchere"),
 							noUtilisateur,
 							noArticle

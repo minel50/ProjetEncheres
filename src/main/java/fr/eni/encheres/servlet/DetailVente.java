@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,7 +35,7 @@ public class DetailVente extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		SimpleDateFormat formatAffichageDateHeure = new SimpleDateFormat("'le' dd/MM/yyyy 'à' hh:mm");
+		SimpleDateFormat formatAffichageDateHeure = new SimpleDateFormat("'le' dd/MM/yyyy 'à' HH:mm");
 		Integer noArticle = Integer.parseInt(request.getParameter("noArticle"));
 		
 		ArticleManager articleManager = new ArticleManager();
