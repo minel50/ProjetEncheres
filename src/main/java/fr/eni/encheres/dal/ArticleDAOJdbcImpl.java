@@ -39,15 +39,15 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	private static final String sqlSelectArticlesVenteEnCoursByUtilisateur = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie\r\n"
 																			+ "FROM ARTICLES_VENDUS\r\n"
-																			+ "WHERE date_debut_encheres <= CONVERT (date, GETDATE()) AND date_fin_encheres >= CONVERT (date, GETDATE()) AND no_utilisateur = ?;";
+																			+ "WHERE date_debut_encheres <= CONVERT (datetime2, GETDATE()) AND date_fin_encheres >= CONVERT (datetime2, GETDATE()) AND no_utilisateur = ?;";
 	
 	private static final String sqlSelectArticlesVenteNonDebuteeByUtilisateur = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie\r\n"
 																				+ "FROM ARTICLES_VENDUS\r\n"
-																				+ "WHERE date_debut_encheres > CONVERT (date, GETDATE()) AND no_utilisateur = ?;";
+																				+ "WHERE date_debut_encheres > CONVERT (datetime2, GETDATE()) AND no_utilisateur = ?;";
 	
 	private static final String sqlSelectArticlesVenteTermineeByUtilisateur = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie\r\n"
 																				+ "FROM ARTICLES_VENDUS\r\n"
-																				+ "WHERE date_fin_encheres < CONVERT (date, GETDATE()) AND no_utilisateur = ?;";
+																				+ "WHERE date_fin_encheres < CONVERT (datetime2, GETDATE()) AND no_utilisateur = ?;";
 	
 	private UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
 	private CategorieDAO categorieDAO = DAOFactory.getCategorieDAO();
