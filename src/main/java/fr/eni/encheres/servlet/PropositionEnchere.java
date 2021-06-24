@@ -14,8 +14,10 @@ import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bll.EnchereManager;
+import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.CodesResultatDAL;
 
 /**
  * Servlet implementation class Enchere
@@ -25,7 +27,7 @@ public class PropositionEnchere extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	EnchereManager enchereManager = new EnchereManager();
-	
+	UtilisateurManager utilisateurManager = new UtilisateurManager();
 	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -78,21 +80,39 @@ public class PropositionEnchere extends HttpServlet {
 		try {
 
 			if(enchereManager.getEnchere(ID_USER, noArticle) == null) {
+				
 				System.out.println("Il n'y a pas d'enchere : 1ere enchère de l'utilisateur sur cet article");
+				Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
+				System.out.println("Crédit disponible : " + u.getCredit());
+				int credit = u.getCredit() - mtEnchere;
+				u.setCredit(credit);
+				System.out.println("Crédit restant après enchere : " + u.getCredit());
+				utilisateurManager.updateUtilisateur(u);
+				
 				enchereManager.addEnchere(enchere);
+				
 			} else {
 				System.out.println("Il y a déjà une enchere : ancienne enchère écrasée");
+				
+				Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
+				System.out.println("Crédit disponible : " + u.getCredit());
+				int credit = u.getCredit() - mtEnchere;
+				u.setCredit(credit);
+				System.out.println("Crédit restant après enchere : " + u.getCredit());
+				
 				enchereManager.updateEnchere(enchere);
 			}
 			
 			
-			
+		} catch(NullPointerException e){
+			System.out.println("Utilisateur non trouvé dans la base de données");
+			e.printStackTrace();
+			response.sendRedirect(request.getContextPath() +"/accueil");
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
 		
 		System.out.println("L'utilisateur a enchéri de " + mtEnchere);
-		
 		response.sendRedirect(request.getContextPath() +"/accueil");
 		
 		
