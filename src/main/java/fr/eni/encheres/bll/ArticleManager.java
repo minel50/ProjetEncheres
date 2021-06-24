@@ -89,6 +89,9 @@ public class ArticleManager {
 	public List<Article> getListeArticlesVenteTermineeParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
 		List<Article> listeArticles = null;
 		listeArticles = articleDAO.selectArticlesVenteTermineeByUtilisateur(utilisateur, filtreNom, noCategorie);
+		for (Article article : listeArticles) {
+			article.setEtatVente("vente terminée");
+		}
 		return listeArticles;
 	}
 	

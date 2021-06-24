@@ -75,14 +75,38 @@
 				<button type="submit">Rechercher</button>
 			</form>
 		</p>
+		
 		<ul>
 			<c:forEach var="a" items="${requestScope.listeArticlesAAfficher}">
 				<li>
 					<p>
-						<a href="detailVente?noArticle=${a.getNoArticle() }" title="accéder à la vente de cet article">${a.getNomArticle() }</a><br>
+						<c:if test="${ empty sessionScope.utilisateurConnecte }">
+							${a.getNomArticle() }<br>
+						</c:if>
+			
+						<c:if test="${ !empty sessionScope.utilisateurConnecte && empty requestScope.mesEncheresRemportees && a.getEtatVente() ne 'vente terminée'}">
+							<a href="detailVente?noArticle=${a.getNoArticle() }" title="accéder à la vente de cet article">${a.getNomArticle() }</a><br>
+						</c:if>
+						
+						<c:if test="${ !empty sessionScope.utilisateurConnecte && requestScope.mesEncheresRemportees eq 'on' }">
+							<a href="VenteRemportee?noArticle=${a.getNoArticle() }" title="accéder à la page enchère remportée">${a.getNomArticle() }</a><br>
+						</c:if>
+						
+						<c:if test="${ !empty sessionScope.utilisateurConnecte && requestScope.choixAchatVente eq 'vente' && a.getEtatVente() eq 'vente terminée' }">
+							<a href="VenteTerminee?noArticle=${a.getNoArticle() }" title="accéder à la page vente terminée">${a.getNomArticle() }</a><br>
+						</c:if>
+						
 						Prix : ${a.getPrixInitial() } pts<br>
+						
 						Fin de l'enchère : ${formatDate.format(a.getDateFinEncheres()) }<br>
-						Vendeur : ${a.getUtilisateur().getPseudo() }
+						
+						<c:if test="${ empty sessionScope.utilisateurConnecte }">
+							Vendeur : ${a.getUtilisateur().getPseudo() }<br>
+						</c:if>
+			
+						<c:if test="${ !empty sessionScope.utilisateurConnecte }">
+							Vendeur : <a href="VueProfilVendeur?noVendeur=${a.getUtilisateur().getNoUtilisateur() }" title="accéder au profil du vendeur">${a.getUtilisateur().getPseudo() }</a><br>
+						</c:if>
 					</p>
 				</li>
 			</c:forEach>

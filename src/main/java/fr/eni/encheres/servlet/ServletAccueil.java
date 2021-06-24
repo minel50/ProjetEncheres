@@ -120,18 +120,6 @@ public class ServletAccueil extends HttpServlet {
 		mesVentesNonDebutees = request.getParameter("mesVentesNonDebutees");
 		mesVentesTerminees = request.getParameter("mesVentesTerminees");
 		
-		//Débugage
-		System.out.println("choix utilisateur:");
-		System.out.println(choixAchatVente);
-		
-		System.out.println(encheresOuvertes);
-		System.out.println(mesEncheresEnCours);
-		System.out.println(mesEncheresRemportees);
-		
-		System.out.println(mesVentesEnCours);
-		System.out.println(mesVentesNonDebutees);
-		System.out.println(mesVentesTerminees);
-		
 		//Attributs pour ré-afficher le formulaire avec les choix faits par l'utilisateur
 		request.setAttribute("filtreNom", filtreNom);
 		request.setAttribute("noCategorie", noCategorie);
