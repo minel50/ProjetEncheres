@@ -45,7 +45,7 @@ public class DetailVente extends HttpServlet {
 		Article article;
 		Retrait retrait;
 		Enchere meilleureEnchere;
-		Utilisateur meilleurAcheteur;
+		Utilisateur meilleurAcheteur = null;
 		
 		try {
 			request.setAttribute("formatAffichageDateHeure", formatAffichageDateHeure);
@@ -61,7 +61,9 @@ public class DetailVente extends HttpServlet {
 			meilleureEnchere = enchereManager.getMeilleureEnchereParArticle(noArticle);
 			request.setAttribute("meilleureEnchere", meilleureEnchere);
 			
-			meilleurAcheteur = utilisateurManager.getUtilisateur(meilleureEnchere.getNoUtilisateur());
+			if (meilleureEnchere != null) {
+				meilleurAcheteur = utilisateurManager.getUtilisateur(meilleureEnchere.getNoUtilisateur());
+			}
 			request.setAttribute("meilleurAcheteur", meilleurAcheteur);
 			
 		} catch (BusinessException e) {

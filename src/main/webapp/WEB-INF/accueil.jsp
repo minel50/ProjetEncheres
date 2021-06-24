@@ -80,7 +80,7 @@
 				<li>
 					<p>
 						<a href="detailVente?noArticle=${a.getNoArticle() }" title="accéder à la vente de cet article">${a.getNomArticle() }</a><br>
-						Prix : ${a.getPrixVente() } pts<br>
+						Prix : ${a.getPrixInitial() } pts<br>
 						Fin de l'enchère : ${formatDate.format(a.getDateFinEncheres()) }<br>
 						Vendeur : ${a.getUtilisateur().getPseudo() }
 					</p>

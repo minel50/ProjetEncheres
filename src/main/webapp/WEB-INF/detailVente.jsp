@@ -55,6 +55,8 @@
 		
 		<p>Vendeur : ${requestScope.article.getUtilisateur().getPseudo() }</p>
 		
+		<c:import url="/WEB-INF/propositionEnchere.jsp"/>
+		
 	</main>
 	<footer>&copy; Claire - Thomas - Grégory - 2021</footer>
 </body>

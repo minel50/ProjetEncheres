@@ -73,7 +73,7 @@ public class Login extends HttpServlet {
 			listeUtilisateurs = utilisateurManager.getListeUtilisateur();
 					for(Utilisateur user: listeUtilisateurs) {
 				
-							if((user.getPseudo().equals(pseudo)) ||(user.getEmail().equals(email)) && (user.getMotDePasse().equals(motpasse))){
+							if(((user.getPseudo().equals(pseudo)) ||(user.getEmail().equals(email))) && (user.getMotDePasse().equals(motpasse))){
 							session.setAttribute("pseudo", pseudo);
 							session.setAttribute("motpasse", motpasse);
 							session.setAttribute("pseudo",email);
