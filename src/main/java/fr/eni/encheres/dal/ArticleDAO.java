@@ -20,4 +20,5 @@ public interface ArticleDAO {
 	public List<Article> selectArticlesVenteTermineeByUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException;
 	public List<Article> selectArticlesAvecEnchereByUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException;
 	public List<Article> selectArticlesAvecEnchereRemporteeByUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException;
+	public void updatePrixVente(Article article) throws BusinessException;
 }

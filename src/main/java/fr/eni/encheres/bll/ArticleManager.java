@@ -107,6 +107,14 @@ public class ArticleManager {
 		return listeArticles;
 	}
 	
+	public void setPrixVenteArticle(int noArticle, int nouveauPrix) throws BusinessException {
+		Article article = getArticle(noArticle);
+		if (nouveauPrix > article.getPrixVente()) {
+			article.setPrixVente(nouveauPrix);
+			articleDAO.updatePrixVente(article);
+		}
+	}
+	
 	public void validerArticle(Article a, BusinessException exception) throws BusinessException {
 
 		if (a == null) {
