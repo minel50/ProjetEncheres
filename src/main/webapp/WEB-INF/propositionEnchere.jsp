@@ -6,7 +6,7 @@
       <input type="number" id="mtEnchere" name="mtEnchere" 
       min="${requestScope.meilleureEnchere.getMontantEnchere() + 1 }"
       max="${sessionScope.utilisateurConnecte.getCredit() }"
-      value="${requestScope.meilleureEnchere.getMontantEnchere() + 1 }" step="10">
+      value="${requestScope.meilleureEnchere.getMontantEnchere() + 1 }">
       <input type="submit" value="Enchérir">
       <input name="noArticle" type="hidden" value="${requestScope.article.getNoArticle()}">
 </form>
