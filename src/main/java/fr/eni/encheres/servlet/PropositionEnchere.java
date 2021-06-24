@@ -17,7 +17,6 @@ import fr.eni.encheres.bll.EnchereManager;
 import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
-import fr.eni.encheres.dal.CodesResultatDAL;
 
 /**
  * Servlet implementation class Enchere
@@ -33,22 +32,6 @@ public class PropositionEnchere extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		try {
-			
-			Enchere eTest = enchereManager.getEnchere(2, 77);
-
-			if(eTest == null) {
-				System.out.println("Il n'y a pas d'enchere");
-			} else {
-				System.out.println("Il y a bien une enchere");
-			}
-			
-			
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
 		
 		
 		response.sendRedirect(request.getContextPath() +"/accueil");
@@ -78,17 +61,19 @@ public class PropositionEnchere extends HttpServlet {
 		enchere.setNoArticle(noArticle);
 		
 		try {
-
+			
+			// Si l'enchère existe déjà : MAJ de l'enchère, sinon : création d'une nouvelle
 			if(enchereManager.getEnchere(ID_USER, noArticle) == null) {
 				
 				System.out.println("Il n'y a pas d'enchere : 1ere enchère de l'utilisateur sur cet article");
 				Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
 				System.out.println("Crédit disponible : " + u.getCredit());
+				
 				int credit = u.getCredit() - mtEnchere;
 				u.setCredit(credit);
 				System.out.println("Crédit restant après enchere : " + u.getCredit());
-				utilisateurManager.updateUtilisateur(u);
 				
+				utilisateurManager.updateUtilisateur(u);
 				enchereManager.addEnchere(enchere);
 				
 			} else {
@@ -96,10 +81,13 @@ public class PropositionEnchere extends HttpServlet {
 				
 				Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
 				System.out.println("Crédit disponible : " + u.getCredit());
-				int credit = u.getCredit() - mtEnchere;
+				int ancienneEnchere = enchereManager.getEnchere(ID_USER, noArticle).getMontantEnchere();
+				int credit = u.getCredit() - (mtEnchere - ancienneEnchere);
+				System.out.println("Ancienne enchère : " + ancienneEnchere);
 				u.setCredit(credit);
 				System.out.println("Crédit restant après enchere : " + u.getCredit());
 				
+				utilisateurManager.updateUtilisateur(u);
 				enchereManager.updateEnchere(enchere);
 			}
 			
@@ -112,7 +100,7 @@ public class PropositionEnchere extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		System.out.println("L'utilisateur a enchéri de " + mtEnchere);
+		System.out.println("L'utilisateur a enchéri à " + mtEnchere);
 		response.sendRedirect(request.getContextPath() +"/accueil");
 		
 		
