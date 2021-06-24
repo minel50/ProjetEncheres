@@ -47,13 +47,13 @@
 						<input type="radio" id ="btnRadioAchat" name="choixAchatVente" value="achat" onclick="basculerSurAchat()" <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">checked</c:if>/>
 						<label for="achat">Achats</label><br>
 						
-						<input type="checkbox" class="checkboxAchat" id="cbAchatDefaut" name="encheresOuvertes" <c:if test="${requestScope.encheresOuvertes eq 'on' || empty requestScope.choixAchatVente }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />
+						<input type="checkbox" class="checkboxAchat" id="cbAchatDefaut" name="encheresOuvertes" onclick="clicSurEncheresOuvertes()" <c:if test="${requestScope.encheresOuvertes eq 'on' || empty requestScope.choixAchatVente }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />
 						<label for="encheresOuvertes">enchères ouvertes</label><br>
 						
-						<input type="checkbox" class="checkboxAchat" name="mesEncheresEnCours" <c:if test="${requestScope.mesEncheresEnCours eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />
+						<input type="checkbox" class="checkboxAchat" id = "cbAchatMesEncheresEnCours" name="mesEncheresEnCours" onclick="clicSurEncheresEnCours()" <c:if test="${requestScope.mesEncheresEnCours eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />
 						<label for="mesEncheresEnCours">mes enchères en cours</label><br>
 						
-						<input type="checkbox" class="checkboxAchat" name="mesEncheresRemportees" <c:if test="${requestScope.mesEncheresRemportees eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />
+						<input type="checkbox" class="checkboxAchat" id = "cbAchatMesEncheresRemportees" name="mesEncheresRemportees" onclick="clicSurEncheresRemportees()" <c:if test="${requestScope.mesEncheresRemportees eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />
 						<label for="mesEncheresRemportees">mes enchères remportées</label><br>
 					</div>
 					
@@ -120,6 +120,21 @@
 			}
 
 			document.getElementById("cbVenteDefaut").checked = true;	
+		}
+		
+		function clicSurEncheresOuvertes() {
+			document.getElementById("cbAchatMesEncheresEnCours").checked = false;
+			document.getElementById("cbAchatMesEncheresRemportees").checked = false;
+		}
+		
+		function clicSurEncheresEnCours() {
+			document.getElementById("cbAchatDefaut").checked = false;
+			document.getElementById("cbAchatMesEncheresRemportees").checked = false;			
+		}
+		
+		function clicSurEncheresRemportees() {
+			document.getElementById("cbAchatDefaut").checked = false;
+			document.getElementById("cbAchatMesEncheresEnCours").checked = false;			
 		}
 		
 	</script>
