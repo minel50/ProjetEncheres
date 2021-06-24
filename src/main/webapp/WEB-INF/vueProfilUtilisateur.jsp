@@ -63,9 +63,9 @@
 				</c:if>
 	</p> 
 	
-	<form action="<%=request.getContextPath()%>/profil">
+	<%-- <form action="<%=request.getContextPath()%>/profil">
     	<input type="submit" value="Retour" onclick ="history.back()"/>
-	</form>
+	</form> --%>
 	
 	<form action="javascript:history.back()">
     	<input type="submit" value="Retour" onclick ="history.back()"/>
