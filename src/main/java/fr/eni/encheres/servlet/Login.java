@@ -79,8 +79,9 @@ public class Login extends HttpServlet {
 							session.setAttribute("pseudo",email);
 							session.setAttribute("utilisateurConnecte", user);
 							System.out.println("login " +session.getId());
-							response.sendRedirect(request.getContextPath() +"/Liste");
-						
+							//response.sendRedirect(request.getContextPath() +"/Liste");
+							response.sendRedirect(request.getContextPath());
+							
 							resultat = "succes";
 							
 				
