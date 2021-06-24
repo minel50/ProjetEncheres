@@ -29,7 +29,7 @@
 		
 		<p>
 			<c:if test="${!empty requestScope.meilleureEnchere }">
-				Meilleure offre : ${requestScope.meilleureEnchere.getMontantEnchere() } pts par <a href="VueProfilVendeur?idAcheteur=${meilleurAcheteur.getNoUtilisateur() }">${requestScope.meilleurAcheteur.getPseudo() }</a> 
+				Meilleure offre : ${requestScope.meilleureEnchere.getMontantEnchere() } pts par <a href="VueProfilVendeur?noVendeur=${meilleurAcheteur.getNoUtilisateur() }">${requestScope.meilleurAcheteur.getPseudo() }</a> 
 			</c:if>
 			
 			<%-- <c:if test="${empty requestScope.meilleureEnchere }">
