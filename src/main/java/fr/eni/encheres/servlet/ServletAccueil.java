@@ -56,13 +56,13 @@ public class ServletAccueil extends HttpServlet {
 			request.setAttribute("listeCategories", listeCategories);
 			
 			//Récupération liste des articles à afficher en fonction des choix de l'utilisateur faits
-			List<Article> listeArticlesAAfficher = null;
+			List<Article> listeArticlesAAfficher = new ArrayList<>();	//initialisation d'une liste vide, puis en fonction des cases cochées sera ajoutée une liste avec la méthode addAll()
 			HttpSession session = request.getSession();
 			Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 			
 			if (choixAchatVente.equals("achat")) {	//l'utilisateur a selectionné le bouton radio achat
 				if (encheresOuvertes != null) {
-					listeArticlesAAfficher = articleManager.getListeArticlesEnVente(filtreNom, noCategorie);
+					listeArticlesAAfficher.addAll(articleManager.getListeArticlesEnVente(filtreNom, noCategorie));
 					
 				} else if (mesEncheresEnCours != null) {
 					//méthode DAL pas encore codée
@@ -73,17 +73,19 @@ public class ServletAccueil extends HttpServlet {
 				}
 			} else if (choixAchatVente.equals("vente"))	{  //l'utilisateur a selectionné le bouton radio vente
 				if (mesVentesEnCours != null) {
-					listeArticlesAAfficher = articleManager.getListeArticlesVenteEnCoursParUtilisateur(utilisateurConnecte, filtreNom, noCategorie);
-					
-				} else if (mesVentesNonDebutees != null) {
-					listeArticlesAAfficher = articleManager.getListeArticlesVenteNonDebuteeParUtilisateur(utilisateurConnecte, filtreNom, noCategorie);
-					
-				} else if (mesVentesTerminees != null) {
-					listeArticlesAAfficher = articleManager.getListeArticlesVenteTermineeParUtilisateur(utilisateurConnecte, filtreNom, noCategorie);
-					
+					listeArticlesAAfficher.addAll(articleManager.getListeArticlesVenteEnCoursParUtilisateur(utilisateurConnecte, filtreNom, noCategorie));
 				}
+				
+				if (mesVentesNonDebutees != null) {
+					listeArticlesAAfficher.addAll(articleManager.getListeArticlesVenteNonDebuteeParUtilisateur(utilisateurConnecte, filtreNom, noCategorie));	
+				}
+				
+				if (mesVentesTerminees != null) {
+					listeArticlesAAfficher.addAll(articleManager.getListeArticlesVenteTermineeParUtilisateur(utilisateurConnecte, filtreNom, noCategorie));	
+				}
+				
 			} else {  //requete générale mode non connecté
-				listeArticlesAAfficher = articleManager.getListeArticlesEnVente(filtreNom, noCategorie);
+				listeArticlesAAfficher.addAll(articleManager.getListeArticlesEnVente(filtreNom, noCategorie));
 			}
 			
 			request.setAttribute("listeArticlesAAfficher", listeArticlesAAfficher);
