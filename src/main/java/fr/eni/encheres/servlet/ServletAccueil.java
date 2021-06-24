@@ -61,17 +61,19 @@ public class ServletAccueil extends HttpServlet {
 			Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 			
 			if (choixAchatVente.equals("achat")) {	//l'utilisateur a selectionné le bouton radio achat
+				//on choisit de ne pas pouvoir cumuler les affichages (soit toutes les enchères en cours, soit les enchères en cours de l'utilisateur, soit les enchères remportées de l'utilisateur)
 				if (encheresOuvertes != null) {
 					listeArticlesAAfficher.addAll(articleManager.getListeArticlesEnVente(filtreNom, noCategorie));
 					
 				} else if (mesEncheresEnCours != null) {
-					//méthode DAL pas encore codée
+					listeArticlesAAfficher.addAll(articleManager.getListeArticlesAvecEnchereParUtilisateur(utilisateurConnecte, filtreNom, noCategorie));
 					
 				} else if (mesEncheresRemportees != null) {
-					//méthode DAL pas encore codée
+					listeArticlesAAfficher.addAll(articleManager.getListeArticlesAvecEnchereRemporteeParUtilisateur(utilisateurConnecte, filtreNom, noCategorie));
 					
 				}
 			} else if (choixAchatVente.equals("vente"))	{  //l'utilisateur a selectionné le bouton radio vente
+				//on peut cumuler les affichages des différents types de vente
 				if (mesVentesEnCours != null) {
 					listeArticlesAAfficher.addAll(articleManager.getListeArticlesVenteEnCoursParUtilisateur(utilisateurConnecte, filtreNom, noCategorie));
 				}

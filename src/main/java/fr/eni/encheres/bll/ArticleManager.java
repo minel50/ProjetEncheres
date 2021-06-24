@@ -92,6 +92,18 @@ public class ArticleManager {
 		return listeArticles;
 	}
 	
+	public List<Article> getListeArticlesAvecEnchereParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesAvecEnchereByUtilisateur(utilisateur, filtreNom, noCategorie);
+		return listeArticles;
+	}
+	
+	public List<Article> getListeArticlesAvecEnchereRemporteeParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesAvecEnchereRemporteeByUtilisateur(utilisateur, filtreNom, noCategorie);
+		return listeArticles;
+	}
+	
 	public void validerArticle(Article a, BusinessException exception) throws BusinessException {
 
 		if (a == null) {

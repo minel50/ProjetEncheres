@@ -49,6 +49,17 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 																				+ "FROM ARTICLES_VENDUS\r\n"
 																				+ "WHERE date_fin_encheres < CONVERT (datetime2, GETDATE()) AND no_utilisateur = ?";
 	
+	private static final String sqlSelectArticlesAvecEnchereByUtilisateur = "SELECT art.no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, art.no_utilisateur, no_categorie\r\n"
+																				+ "FROM ARTICLES_VENDUS art\r\n"
+																				+ "INNER JOIN ENCHERES e ON art.no_article = e.no_article\r\n"
+																				+ "WHERE date_debut_encheres <= CONVERT (datetime2, GETDATE()) AND date_fin_encheres >= CONVERT (datetime2, GETDATE()) AND e.no_utilisateur = ?";
+	
+	private static final String sqlSelectArticlesAvecEnchereRemporteeByUtilisateur = "SELECT art.no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, art.no_utilisateur, no_categorie\r\n"
+																						+ "FROM ARTICLES_VENDUS art\r\n"
+																						+ "INNER JOIN ENCHERES e ON art.no_article = e.no_article\r\n"
+																						+ "WHERE date_fin_encheres < CONVERT (datetime2, GETDATE()) AND e.no_utilisateur = ?\r\n"
+																						+ "AND e.montant_enchere = (SELECT MAX(montant_enchere) AS meilleureEnchere FROM ENCHERES max WHERE max.no_article = e.no_article GROUP BY no_article)";
+	
 	private UtilisateurDAO utilisateurDAO = DAOFactory.getUtilisateurDAO();
 	private CategorieDAO categorieDAO = DAOFactory.getCategorieDAO();
 	
@@ -667,4 +678,145 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		
 		return listeArticles;
 	}
+
+	
+	@Override
+	public List<Article> selectArticlesAvecEnchereByUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
+		List<Article> listeArticles = new ArrayList<>();
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		
+		//Construction de la requête en fonction des paramètres d'entrée
+		int index = 1; //pour pointer sur le bon "?" des requêtes préparées
+		StringBuilder requete = new StringBuilder();
+		requete.append(sqlSelectArticlesAvecEnchereByUtilisateur);
+		if (filtreNom != null) {
+			requete.append(sqlExtensionFiltreNom);
+		}
+		if (noCategorie != null && noCategorie != 0) {
+			requete.append(sqlExtensionFiltreCategorie);
+		}
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(requete.toString());
+			stmt.setInt(index, utilisateur.getNoUtilisateur());
+			index += 1;
+			if (filtreNom != null) {
+				stmt.setString(index, "%" + filtreNom + "%");
+				index += 1;
+			}
+			if (noCategorie != null  && noCategorie != 0) {
+				stmt.setInt(index, noCategorie);
+				index += 1;
+			}
+			
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				listeArticles.add(new Article(
+						rs.getInt("no_article"),
+						rs.getString("nom_article"),
+						rs.getString("description"),
+						rs.getDate("date_debut_encheres"),
+						rs.getDate("date_fin_encheres"),
+						rs.getInt("prix_initial"),
+						rs.getInt("prix_vente"),
+						"en cours",
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						categorieDAO.selectById(rs.getInt("no_categorie"))
+						));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (cnx != null) {
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return listeArticles;
+	}
+	
+	
+	@Override
+	public List<Article> selectArticlesAvecEnchereRemporteeByUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
+		List<Article> listeArticles = new ArrayList<>();
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		
+		//Construction de la requête en fonction des paramètres d'entrée
+		int index = 1; //pour pointer sur le bon "?" des requêtes préparées
+		StringBuilder requete = new StringBuilder();
+		requete.append(sqlSelectArticlesAvecEnchereRemporteeByUtilisateur);
+		if (filtreNom != null) {
+			requete.append(sqlExtensionFiltreNom);
+		}
+		if (noCategorie != null && noCategorie != 0) {
+			requete.append(sqlExtensionFiltreCategorie);
+		}
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(requete.toString());
+			stmt.setInt(index, utilisateur.getNoUtilisateur());
+			index += 1;
+			if (filtreNom != null) {
+				stmt.setString(index, "%" + filtreNom + "%");
+				index += 1;
+			}
+			if (noCategorie != null  && noCategorie != 0) {
+				stmt.setInt(index, noCategorie);
+				index += 1;
+			}
+			
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				listeArticles.add(new Article(
+						rs.getInt("no_article"),
+						rs.getString("nom_article"),
+						rs.getString("description"),
+						rs.getDate("date_debut_encheres"),
+						rs.getDate("date_fin_encheres"),
+						rs.getInt("prix_initial"),
+						rs.getInt("prix_vente"),
+						"remportée",
+						utilisateurDAO.selectById(rs.getInt("no_utilisateur")),
+						categorieDAO.selectById(rs.getInt("no_categorie"))
+						));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.READ_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (cnx != null) {
+					cnx.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return listeArticles;
+	}
+	
 }

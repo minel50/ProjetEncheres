@@ -18,4 +18,6 @@ public interface ArticleDAO {
 	public List<Article> selectArticlesVenteEnCoursByUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException;
 	public List<Article> selectArticlesVenteNonDebuteeByUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException;
 	public List<Article> selectArticlesVenteTermineeByUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException;
+	public List<Article> selectArticlesAvecEnchereByUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException;
+	public List<Article> selectArticlesAvecEnchereRemporteeByUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException;
 }
