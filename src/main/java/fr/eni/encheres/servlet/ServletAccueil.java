@@ -73,13 +73,13 @@ public class ServletAccueil extends HttpServlet {
 				}
 			} else if (choixAchatVente.equals("vente"))	{  //l'utilisateur a selectionné le bouton radio vente
 				if (mesVentesEnCours != null) {
-					listeArticlesAAfficher = articleManager.getListeArticlesVenteEnCoursParUtilisateur(utilisateurConnecte);
+					listeArticlesAAfficher = articleManager.getListeArticlesVenteEnCoursParUtilisateur(utilisateurConnecte, filtreNom, noCategorie);
 					
 				} else if (mesVentesNonDebutees != null) {
-					listeArticlesAAfficher = articleManager.getListeArticlesVenteNonDebuteeParUtilisateur(utilisateurConnecte);
+					listeArticlesAAfficher = articleManager.getListeArticlesVenteNonDebuteeParUtilisateur(utilisateurConnecte, filtreNom, noCategorie);
 					
 				} else if (mesVentesTerminees != null) {
-					listeArticlesAAfficher = articleManager.getListeArticlesVenteTermineeParUtilisateur(utilisateurConnecte);
+					listeArticlesAAfficher = articleManager.getListeArticlesVenteTermineeParUtilisateur(utilisateurConnecte, filtreNom, noCategorie);
 					
 				}
 			} else {  //requete générale mode non connecté

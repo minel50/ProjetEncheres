@@ -74,21 +74,21 @@ public class ArticleManager {
 		articleDAO.delete(article);
 	}
 	
-	public List<Article> getListeArticlesVenteEnCoursParUtilisateur(Utilisateur utilisateur) throws BusinessException {
+	public List<Article> getListeArticlesVenteEnCoursParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
 		List<Article> listeArticles = null;
-		listeArticles = articleDAO.selectArticlesVenteEnCoursByUtilisateur(utilisateur);
+		listeArticles = articleDAO.selectArticlesVenteEnCoursByUtilisateur(utilisateur, filtreNom, noCategorie);
 		return listeArticles;
 	}
 	
-	public List<Article> getListeArticlesVenteNonDebuteeParUtilisateur(Utilisateur utilisateur) throws BusinessException {
+	public List<Article> getListeArticlesVenteNonDebuteeParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
 		List<Article> listeArticles = null;
-		listeArticles = articleDAO.selectArticlesVenteNonDebuteeByUtilisateur(utilisateur);
+		listeArticles = articleDAO.selectArticlesVenteNonDebuteeByUtilisateur(utilisateur, filtreNom, noCategorie);
 		return listeArticles;
 	}
 	
-	public List<Article> getListeArticlesVenteTermineeParUtilisateur(Utilisateur utilisateur) throws BusinessException {
+	public List<Article> getListeArticlesVenteTermineeParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
 		List<Article> listeArticles = null;
-		listeArticles = articleDAO.selectArticlesVenteTermineeByUtilisateur(utilisateur);
+		listeArticles = articleDAO.selectArticlesVenteTermineeByUtilisateur(utilisateur, filtreNom, noCategorie);
 		return listeArticles;
 	}
 	
