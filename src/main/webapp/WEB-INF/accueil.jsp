@@ -32,7 +32,7 @@
 		<h2>Liste des enchères</h2>
 		<p>
 			<h3>Filtres :</h3>
-			<form name="filtres" action="/encheres/" method="POST">
+			<form name="filtres" action="accueil" method="POST">
 				<input type="text" name="filtreNom" value ="${requestScope.filtreNom }" placeholder="Le nom de l'article contient" />
 				<label for="filtreCategorie">Catégorie : </label>
 				<select name="filtreCategorie">
