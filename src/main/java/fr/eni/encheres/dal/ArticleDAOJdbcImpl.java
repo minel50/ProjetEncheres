@@ -22,7 +22,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String sqlSelectById = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS WHERE no_article = ?";
 	
 	private static final String sqlSelectArticlesEnVente = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie FROM ARTICLES_VENDUS\r\n"
-															+ "WHERE date_debut_encheres <= CONVERT (date, GETDATE()) AND date_fin_encheres >= CONVERT (date, GETDATE())";
+															+ "WHERE date_debut_encheres <= CONVERT (datetime2, GETDATE()) AND date_fin_encheres >= CONVERT (datetime2, GETDATE())";
 	private static final String sqlExtensionFiltreNom = " AND nom_article LIKE ? COLLATE French_CI_AI";
 	private static final String sqlExtensionFiltreCategorie = " AND no_categorie = ?";
 	
