@@ -39,8 +39,8 @@ public class VenteRemportee extends HttpServlet {
 		EnchereManager enchereManager = new EnchereManager();
 		UtilisateurManager utilisateurManager = new UtilisateurManager();
 		
-		//Integer noArticle = Integer.parseInt(request.getParameter("noArticle"));
-		Integer noArticle = 14;
+		Integer noArticle = Integer.parseInt(request.getParameter("noArticle"));
+		
 		Article article;
 		Retrait retrait;
 		Enchere meilleureEnchere;
