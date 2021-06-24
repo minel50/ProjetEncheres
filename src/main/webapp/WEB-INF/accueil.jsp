@@ -93,7 +93,7 @@
 						</c:if>
 						
 						<c:if test="${ !empty sessionScope.utilisateurConnecte && requestScope.choixAchatVente eq 'vente' && a.getEtatVente() eq 'vente terminée' }">
-							<a href="VenteTerminee?noArticle=${a.getNoArticle() }" title="accéder à la page vente terminée">${a.getNomArticle() }</a><br>
+							<a href="EnchereRemportee?noArticle=${a.getNoArticle() }" title="accéder à la page vente terminée">${a.getNomArticle() }</a><br>
 						</c:if>
 						
 						Prix : ${a.getPrixInitial() } pts<br>
