@@ -48,6 +48,7 @@ public class EnchereRemportee extends HttpServlet {
 		Enchere meilleureEnchere;
 		Utilisateur meilleurAcheteur = null;
 		
+		String pseudoMeilleurAcheteur = "";
 		
 		
 		try {
@@ -67,11 +68,12 @@ public class EnchereRemportee extends HttpServlet {
 			
 			if (meilleureEnchere != null) {
 				meilleurAcheteur = utilisateurManager.getUtilisateur(meilleureEnchere.getNoUtilisateur());
+				
+				//récupération nom du meilleur acheteur
+				pseudoMeilleurAcheteur = meilleurAcheteur.getPseudo();
 			}
-			request.setAttribute("meilleurAcheteur", meilleurAcheteur);
 			
-			//récupération nom du meilleur acheteur
-			String pseudoMeilleurAcheteur = meilleurAcheteur.getPseudo();
+			request.setAttribute("meilleurAcheteur", meilleurAcheteur);
 			request.setAttribute("pseudoMeilleurAcheteur", pseudoMeilleurAcheteur);
 			
 			//récupération date fin d'enchère

@@ -15,6 +15,12 @@
 	<title>Vente remportée</title>
 </head>
 <body>
+	<c:if test="${empty requestScope.meilleureEnchere }">
+		<p>Désolé personne n'en veut !</p>
+		<button onclick="location.href = 'accueil';">Retour</button>
+	</c:if>
+	
+	<c:if test="${!empty requestScope.meilleureEnchere }">
 	<h1> ${requestScope.pseudoMeilleurAcheteur } a remporté l'enchère</h1>
 		
 		<p>${requestScope.article.getNomArticle() }</p>
@@ -60,6 +66,7 @@
 		
 		
 		<button onclick="location.href = 'accueil';">Retrait effectué</button>
+	</c:if>
 		
 	
 	<footer>&copy; Claire - Thomas - Grégory - 2021</footer>

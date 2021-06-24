@@ -89,11 +89,11 @@
 						</c:if>
 						
 						<c:if test="${ !empty sessionScope.utilisateurConnecte && requestScope.mesEncheresRemportees eq 'on' }">
-							<a href="VenteRemportee?noArticle=${a.getNoArticle() }" title="accéder à la page enchère remportée">${a.getNomArticle() }</a><br>
+							<a href="venteRemportee?noArticle=${a.getNoArticle() }" title="accéder à la page enchère remportée">${a.getNomArticle() }</a><br>
 						</c:if>
 						
 						<c:if test="${ !empty sessionScope.utilisateurConnecte && requestScope.choixAchatVente eq 'vente' && a.getEtatVente() eq 'vente terminée' }">
-							<a href="EnchereRemportee?noArticle=${a.getNoArticle() }" title="accéder à la page vente terminée">${a.getNomArticle() }</a><br>
+							<a href="enchereRemportee?noArticle=${a.getNoArticle() }" title="accéder à la page vente terminée">${a.getNomArticle() }</a><br>
 						</c:if>
 						
 						Prix : ${a.getPrixInitial() } pts<br>
