@@ -5,6 +5,7 @@ import java.util.List;
 
 import fr.eni.encheres.BusinessException;
 import fr.eni.encheres.bo.Article;
+import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.ArticleDAO;
 import fr.eni.encheres.dal.DAOFactory;
 
@@ -71,6 +72,39 @@ public class ArticleManager {
 	
 	public void deleteArticle(Article article) throws BusinessException {
 		articleDAO.delete(article);
+	}
+	
+	public List<Article> getListeArticlesVenteEnCoursParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesVenteEnCoursByUtilisateur(utilisateur, filtreNom, noCategorie);
+		return listeArticles;
+	}
+	
+	public List<Article> getListeArticlesVenteNonDebuteeParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesVenteNonDebuteeByUtilisateur(utilisateur, filtreNom, noCategorie);
+		return listeArticles;
+	}
+	
+	public List<Article> getListeArticlesVenteTermineeParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesVenteTermineeByUtilisateur(utilisateur, filtreNom, noCategorie);
+		for (Article article : listeArticles) {
+			article.setEtatVente("vente terminée");
+		}
+		return listeArticles;
+	}
+	
+	public List<Article> getListeArticlesAvecEnchereParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesAvecEnchereByUtilisateur(utilisateur, filtreNom, noCategorie);
+		return listeArticles;
+	}
+	
+	public List<Article> getListeArticlesAvecEnchereRemporteeParUtilisateur(Utilisateur utilisateur, String filtreNom, Integer noCategorie) throws BusinessException {
+		List<Article> listeArticles = null;
+		listeArticles = articleDAO.selectArticlesAvecEnchereRemporteeByUtilisateur(utilisateur, filtreNom, noCategorie);
+		return listeArticles;
 	}
 	
 	public void validerArticle(Article a, BusinessException exception) throws BusinessException {

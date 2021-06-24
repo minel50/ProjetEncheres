@@ -50,7 +50,6 @@ public class PropositionEnchere extends HttpServlet {
 		Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		int ID_USER = utilisateurConnecte.getNoUtilisateur();		
 		
-		
 		Enchere enchere = new Enchere();
 		Date date = new Date();
 		DateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
@@ -69,7 +68,7 @@ public class PropositionEnchere extends HttpServlet {
 			Enchere meilleureEnchere = enchereManager.getMeilleureEnchereParArticle(noArticle);
 			Article art = articleManager.getArticle(noArticle);
 			
-			if(mtEnchere > art.getPrixInitial()) {
+			if(mtEnchere >= art.getPrixInitial()) {
 				
 				// Si l'enchère existe déjà : MAJ de l'enchère, sinon : création d'une nouvelle
 				if(meilleureEnchere == null) {
