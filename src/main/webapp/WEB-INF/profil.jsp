@@ -15,7 +15,7 @@
 <body>
 
 	<header>
-		<h1>ENI-Enchères</h1>
+		 <c:import url="/WEB-INF/back.jsp"/>
 	</header>
 
     <h2>Mon profil</h2>

@@ -16,7 +16,7 @@
 
 <body>
 	<header>
-		<h1>ENI - Enchères</h1>
+		<c:import url="/WEB-INF/back.jsp"/>
 		<c:if test="${ !empty sessionScope.utilisateurConnecte }">
 			<p>Vous êtes ${sessionScope.utilisateurConnecte.getPseudo() }</p>
 		</c:if>
