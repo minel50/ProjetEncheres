@@ -37,7 +37,8 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 			stmt = cnx.prepareStatement(sqlInsert);
 			stmt.setInt(1, enchere.getNoUtilisateur());
 			stmt.setInt(2, enchere.getNoArticle());
-			stmt.setDate(3, new Date(enchere.getDateEnchere().getTime()));
+			//stmt.setDate(3, new Date(enchere.getDateEnchere().getTime()));
+			stmt.setTimestamp(3, new Timestamp(enchere.getDateEnchere().getTime()));
 			stmt.setInt(4, enchere.getMontantEnchere());
 			stmt.executeUpdate();
 			
