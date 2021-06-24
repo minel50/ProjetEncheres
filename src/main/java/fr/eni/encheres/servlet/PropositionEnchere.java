@@ -47,6 +47,7 @@ public class PropositionEnchere extends HttpServlet {
 		Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateurConnecte");
 		int ID_USER = utilisateurConnecte.getNoUtilisateur();		
 		
+		
 		Enchere enchere = new Enchere();
 		Date date = new Date();
 		DateFormat formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss.SSS");
@@ -62,27 +63,35 @@ public class PropositionEnchere extends HttpServlet {
 		
 		try {
 			
+			Enchere meilleureEnchere = enchereManager.getMeilleureEnchereParArticle(noArticle);
+					
 			// Si l'enchère existe déjà : MAJ de l'enchère, sinon : création d'une nouvelle
-			if(enchereManager.getEnchere(ID_USER, noArticle) == null) {
+			if(meilleureEnchere == null) {
 				
 				System.out.println("Il n'y a pas d'enchere : 1ere enchère de l'utilisateur sur cet article");
 				Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
 				System.out.println("Crédit disponible : " + u.getCredit());
 				
-				int credit = u.getCredit() - mtEnchere;
-				u.setCredit(credit);
+				
+				u.setCredit(u.getCredit() - mtEnchere);
 				System.out.println("Crédit restant après enchere : " + u.getCredit());
 				
 				utilisateurManager.updateUtilisateur(u);
 				enchereManager.addEnchere(enchere);
 				
 			} else {
+				
 				System.out.println("Il y a déjà une enchere : ancienne enchère écrasée");
+				
+				//Re-créditer ancien meilleur enchérisseur
+				Utilisateur meilleurAcheteur = utilisateurManager.getUtilisateur(meilleureEnchere.getNoUtilisateur());
+				meilleurAcheteur.setCredit(meilleurAcheteur.getCredit() + meilleureEnchere.getMontantEnchere());
+				utilisateurManager.updateUtilisateur(meilleurAcheteur);
 				
 				Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
 				System.out.println("Crédit disponible : " + u.getCredit());
 				int ancienneEnchere = enchereManager.getEnchere(ID_USER, noArticle).getMontantEnchere();
-				int credit = u.getCredit() - (mtEnchere - ancienneEnchere);
+				int credit = u.getCredit() - mtEnchere;
 				System.out.println("Ancienne enchère : " + ancienneEnchere);
 				u.setCredit(credit);
 				System.out.println("Crédit restant après enchere : " + u.getCredit());
@@ -107,3 +116,35 @@ public class PropositionEnchere extends HttpServlet {
 	}
 
 }
+
+
+/* ANCIENNE VERSION
+//Si l'enchère existe déjà : MAJ de l'enchère, sinon : création d'une nouvelle
+			if(enchereManager.getEnchere(ID_USER, noArticle) == null) {
+				
+				System.out.println("Il n'y a pas d'enchere : 1ere enchère de l'utilisateur sur cet article");
+				Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
+				System.out.println("Crédit disponible : " + u.getCredit());
+				
+				int credit = u.getCredit() - mtEnchere;
+				u.setCredit(credit);
+				System.out.println("Crédit restant après enchere : " + u.getCredit());
+				
+				utilisateurManager.updateUtilisateur(u);
+				enchereManager.addEnchere(enchere);
+				
+			} else {
+				System.out.println("Il y a déjà une enchere : ancienne enchère écrasée");
+				
+				Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
+				System.out.println("Crédit disponible : " + u.getCredit());
+				int ancienneEnchere = enchereManager.getEnchere(ID_USER, noArticle).getMontantEnchere();
+				int credit = u.getCredit() - mtEnchere;
+				System.out.println("Ancienne enchère : " + ancienneEnchere);
+				u.setCredit(credit);
+				System.out.println("Crédit restant après enchere : " + u.getCredit());
+				
+				utilisateurManager.updateUtilisateur(u);
+				enchereManager.updateEnchere(enchere);
+			}
+*/

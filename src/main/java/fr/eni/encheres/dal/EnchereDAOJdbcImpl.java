@@ -6,15 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.encheres.BusinessException;
-import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Enchere;
-import fr.eni.encheres.bo.Utilisateur;
 
 public class EnchereDAOJdbcImpl implements EnchereDAO {
 	private static final String sqlInsert = "INSERT INTO ENCHERES (no_utilisateur, no_article, date_enchere, montant_enchere) VALUES (?, ?, ?, ?)";
@@ -202,13 +198,12 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
-				
 		try {
 			
 			
 			con = ConnectionProvider.getConnection();
 			pstmt = con.prepareStatement(sqlUpdate);
-			pstmt.setDate(1, new Date(enchere.getDateEnchere().getTime()));
+			pstmt.setTimestamp(1, new Timestamp(enchere.getDateEnchere().getTime()));
 			pstmt.setInt(2, enchere.getMontantEnchere());
 			pstmt.setInt(3, enchere.getNoUtilisateur());
 			pstmt.setInt(4, enchere.getNoArticle());
