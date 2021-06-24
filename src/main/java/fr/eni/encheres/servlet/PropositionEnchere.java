@@ -88,7 +88,6 @@ public class PropositionEnchere extends HttpServlet {
 				meilleurAcheteur.setCredit(meilleurAcheteur.getCredit() + meilleureEnchere.getMontantEnchere());
 				utilisateurManager.updateUtilisateur(meilleurAcheteur);
 				
-				
 				Utilisateur u = utilisateurManager.getUtilisateur(ID_USER);
 				System.out.println("Crédit disponible : " + u.getCredit());
 				int ancienneEnchere = enchereManager.getEnchere(ID_USER, noArticle).getMontantEnchere();

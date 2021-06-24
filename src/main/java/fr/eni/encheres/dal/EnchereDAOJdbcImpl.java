@@ -198,7 +198,6 @@ public class EnchereDAOJdbcImpl implements EnchereDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
-				
 		try {
 			
 			
