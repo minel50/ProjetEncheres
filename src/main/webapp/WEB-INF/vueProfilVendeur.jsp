@@ -10,71 +10,55 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil utilisateur</title>
+    <title>Profil du vendeur</title>
 </head>
 <body>
 	<header>
-		
 		<h1>ENI-Enchères</h1>
 	</header>
 	
-	<p> Pseudo : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getPseudo() }
-				</c:if>
-	</p>
-	
-	<p> Nom : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getNom() }
-				</c:if>
-	</p>
-	
-	<p> Prénom : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getPrenom() }
-				</c:if>
-	</p>
-	
-	<p> Email : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getEmail() }
-				</c:if>
-	</p>
-	
-	<p> Téléphone : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getTelephone() }
-				</c:if>
-	</p>
-	
-	<p> Rue : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getRue() }
-				</c:if>
-	</p>
-	
-	<p> Code postal : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getCodePostal() }
-				</c:if>
-	</p>
-	
-	<p> Ville : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getVille() }
-				</c:if>
-	</p>
-	
-	<p>Crédit : <c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					${sessionScope.utilisateurConnecte.getCredit() }
-				</c:if>
-	</p> 
-	
-	<form action="<%=request.getContextPath()%>/profil">
-    	<input type="submit" value="Modifier" />
-	</form>
-	
-	<form action="<%=request.getContextPath()%>/profil">
-    	<input type="submit" value="Retour" onclick ="history.back()"/>
-	</form>
-	
-	<form action="javascript:history.back()">
-    	<input type="submit" value="Retour" onclick ="history.back()"/>
-	</form>
-	
+	<main>
+		<c:if test="${ empty sessionScope.utilisateurConnecte }">
+			<p>
+				Merci de vous connecter pour accéder à cette page : <a href="Login" title="connexion">Se connecter</a>
+			</p>
+		</c:if>
+		
+		<c:if test="${ !empty sessionScope.utilisateurConnecte }">
+			<h2>Profil du vendeur</h2>
+			<p>
+				Pseudo : ${requestScope.vendeur.getPseudo() }
+			</p>
+			
+			<p>
+				Nom : ${requestScope.vendeur.getNom() }
+			</p>
+			
+			<p>
+				Prénom : ${requestScope.vendeur.getPrenom() }
+			</p>
+			
+			<p>
+				Email : ${requestScope.vendeur.getEmail() }
+			</p>
+			
+			<p>
+				Téléphone : ${requestScope.vendeur.getTelephone() }
+			</p>
+			
+			<p>
+				Rue : ${requestScope.vendeur.getRue() }
+			</p>
+			
+			<p>
+				Code postal : ${requestScope.vendeur.getCodePostal() }
+			</p>
+			
+			<p>
+				Ville : ${requestScope.vendeur.getVille() }
+			</p>
+		</c:if>
+	</main>
 	<!-- 
 	<a href ="javascript:history.back()">
 		Retour 2
