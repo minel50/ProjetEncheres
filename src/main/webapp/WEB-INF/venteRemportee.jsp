@@ -25,7 +25,7 @@
 			<c:if test="${!empty requestScope.meilleureEnchere }">
 				Meilleure offre : ${requestScope.meilleureEnchere.getMontantEnchere() } pts par ${requestScope.meilleurAcheteur.getPseudo() }
 			</c:if>
-			s
+			
 			<%-- <c:if test="${empty requestScope.meilleureEnchere }">
 				Aucune offre n'a été faite pour le moment ...
 			</c:if> --%>
