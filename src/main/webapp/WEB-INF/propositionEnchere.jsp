@@ -3,13 +3,25 @@
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<form action="<%=request.getContextPath()%>/PropositionEnchere" method="post">
-      <label for="mtEnchere">Ma proposition</label>
-      <input type="number" id="mtEnchere" name="mtEnchere" 
-      min="${empty requestScope.meilleureEnchere ? requestScope.article.getPrixInitial() + 1 : requestScope.meilleureEnchere.getMontantEnchere() + 1}"
-      max="${sessionScope.utilisateurConnecte.getCredit() }"
-      value="${empty requestScope.meilleureEnchere ? requestScope.article.getPrixInitial() + 1 : requestScope.meilleureEnchere.getMontantEnchere() + 1}">
-      <input type="submit" value="Enchérir" <c:if test="${sessionScope.utilisateurConnecte.getCredit() <= requestScope.article.getPrixVente() }">disabled</c:if>>
-      <c:if test="${sessionScope.utilisateurConnecte.getCredit() <= requestScope.article.getPrixVente() }"><span style="color: red">Vous n'avez que ${sessionScope.utilisateurConnecte.getCredit() } points !</span></c:if>
-      <input name="noArticle" type="hidden" value="${requestScope.article.getNoArticle()}">
-</form>
+<div>
+	<form class="text-center" action="<%=request.getContextPath()%>/PropositionEnchere" method="post">
+	      
+	      <label for="mtEnchere">Ma proposition</label>
+	     
+	     <br>
+	     
+	      <input class="col-3" type="number" id="mtEnchere" name="mtEnchere" size="50"
+	      min="${empty requestScope.meilleureEnchere ? requestScope.article.getPrixInitial() + 1 : requestScope.meilleureEnchere.getMontantEnchere() + 1}"
+	      max="${sessionScope.utilisateurConnecte.getCredit() }"
+	      value="${empty requestScope.meilleureEnchere ? requestScope.article.getPrixInitial() + 1 : requestScope.meilleureEnchere.getMontantEnchere() + 1}">
+	      <br>
+	      <br>
+	      	<input class="btn-primary btn" type="submit" value="Enchérir"  <c:if test="${sessionScope.utilisateurConnecte.getCredit() <= requestScope.article.getPrixVente() }">disabled</c:if>>
+	      <c:if test="${sessionScope.utilisateurConnecte.getCredit() <= requestScope.article.getPrixVente() }"><span style="color: red">Vous n'avez que ${sessionScope.utilisateurConnecte.getCredit() } points !</span></c:if>
+	      
+	      	<input name="noArticle" type="hidden" value="${requestScope.article.getNoArticle()}">
+	      
+	      
+	      
+	</form>
+</div>

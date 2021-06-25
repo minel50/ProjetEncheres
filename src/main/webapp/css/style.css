@@ -1,0 +1,75 @@
+@charset "UTF-8";
+.container{
+	background-color: white;
+}
+
+.titre-centre{
+	text-align: center;
+}
+
+/* detail vente */
+
+.titre-produit {
+	font-size: 25px;
+	margin-top: 10px;
+} 
+
+/* proposition enchere */
+
+.boite{
+	display: flex;
+}
+
+/* profil */
+.mdp1{
+	margin-top: 0px;
+}
+
+.mdp2{
+	margin-top: 10px;
+}
+	
+.mdp3{
+	padding-top: 10px;
+}
+
+/* login */
+.remember-login{
+	padding-top: 10px;
+	text-align: center;
+}
+
+/* inscription */
+.myButton {
+	box-shadow:inset 0px 1px 0px 0px #080707;
+	background-color:#141311;
+	border-radius:3px;
+	border:1px solid #0f0e0d;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:16px;
+	padding:11px 28px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #171414;
+}
+.myButton:hover {
+	background-color:#0f0e0e;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+
+/* _____responsive custom_____ */
+
+/* responsive custom */
+@media screen and (min-width: 768px) {  
+   .titre-produit {
+   		font-size: 30px;
+   		padding-top: 20px;
+   } 
+   .titre-profil {padding-bottom: 30px;} 
+}
