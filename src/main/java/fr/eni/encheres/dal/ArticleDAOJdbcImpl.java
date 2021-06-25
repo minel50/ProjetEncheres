@@ -35,6 +35,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	private static final String sqlUpdate = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, no_utilisateur = ?, no_categorie = ? WHERE no_article = ?";
 	
+	private static final String sqlUpdatePrixVente = "UPDATE ARTICLES_VENDUS SET prix_vente = ? WHERE no_article = ?";
+	
 	private static final String sqlDelete = "DELETE FROM ARTICLES_VENDUS WHERE no_article = ?";
 	
 	private static final String sqlSelectArticlesVenteEnCoursByUtilisateur = "SELECT no_article, nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie\r\n"
@@ -817,6 +819,41 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		}
 		
 		return listeArticles;
+	}
+	
+	@Override
+	public void updatePrixVente(Article article) throws BusinessException {		
+		Connection cnx = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			cnx = ConnectionProvider.getConnection();
+			stmt = cnx.prepareStatement(sqlUpdatePrixVente);
+			stmt.setInt(1, article.getPrixVente());
+			stmt.setInt(2, article.getNoArticle());
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.UDPATE_DATA_ECHEC);
+			throw businessException;
+			
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+				
+				if (cnx != null) {
+					cnx.close();
+				}	
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
 	}
 	
 }

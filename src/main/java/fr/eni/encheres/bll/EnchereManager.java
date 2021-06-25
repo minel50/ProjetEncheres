@@ -45,9 +45,12 @@ public class EnchereManager {
 	public void addEnchere(Enchere enchere) throws BusinessException {
 		BusinessException exception = new BusinessException();
 		this.validerEnchere(enchere, exception);
+		ArticleManager articleManager = new ArticleManager();
 		
 		if (!exception.hasErreurs()) {
-			enchereDAO.insert(enchere);	
+			enchereDAO.insert(enchere);
+			articleManager.setPrixVenteArticle(enchere.getNoArticle(), enchere.getMontantEnchere());
+			
 		} else {
 			throw exception;
 		}
