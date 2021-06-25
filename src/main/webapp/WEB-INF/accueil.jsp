@@ -1,88 +1,151 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Enchères</title>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<link href ="https://bootswatch.com/4/lux/bootstrap.min.css" rel ="stylesheet">
+ 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<link href="style.css" rel =stylesheet type="text/css" >
 	
 </head>
-
 <body>
-	<header>
-		<h1>ENI - Enchères</h1>
-		<nav>
-			<c:if test="${ empty sessionScope.utilisateurConnecte }">
-				<a href="Login" title="connexion">S'inscrire - Se connecter</a>
-			</c:if>
-			
-			<c:if test="${ !empty sessionScope.utilisateurConnecte }">
-				<a href="vente" title="vendre un article">Vendre un article</a>
-				<a href="profil" title="afficher mon profil">Mon profil</a>
-				<a href="Logout" title="se déconnecter">Déconnexion</a>
-			</c:if>
-		</nav>
-	</header>
-	<main>
-		<h2>Liste des enchères</h2>
-		<p>
-			<h3>Filtres :</h3>
-			<form name="filtres" action="accueil" method="POST">
-				<input type="text" name="filtreNom" value ="${requestScope.filtreNom }" placeholder="Le nom de l'article contient" />
-				<label for="filtreCategorie">Catégorie : </label>
-				<select name="filtreCategorie">
-					<option value="0">Toutes</option>
-					<c:forEach var = "cat" items="${requestScope.listeCategories }">
-						<option value="${cat.getNoCategorie() }" <c:if test="${requestScope.noCategorie == cat.getNoCategorie() }">selected</c:if>>${cat.getLibelle() }</option>
-					</c:forEach>
-				</select>
-				
-				<c:if test="${ !empty sessionScope.utilisateurConnecte }">
-					<div id="formulaireAchat">
-						<input type="radio" id ="btnRadioAchat" name="choixAchatVente" value="achat" onclick="basculerSurAchat()" <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">checked</c:if>/>
-						<label for="achat">Achats</label><br>
-						
-						<input type="checkbox" class="checkboxAchat" id="cbAchatDefaut" name="encheresOuvertes" onclick="clicSurEncheresOuvertes()" <c:if test="${requestScope.encheresOuvertes eq 'on' || empty requestScope.choixAchatVente }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />
-						<label for="encheresOuvertes">enchères ouvertes</label><br>
-						
-						<input type="checkbox" class="checkboxAchat" id = "cbAchatMesEncheresEnCours" name="mesEncheresEnCours" onclick="clicSurEncheresEnCours()" <c:if test="${requestScope.mesEncheresEnCours eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />
-						<label for="mesEncheresEnCours">mes enchères en cours</label><br>
-						
-						<input type="checkbox" class="checkboxAchat" id = "cbAchatMesEncheresRemportees" name="mesEncheresRemportees" onclick="clicSurEncheresRemportees()" <c:if test="${requestScope.mesEncheresRemportees eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />
-						<label for="mesEncheresRemportees">mes enchères remportées</label><br>
-					</div>
-					
-					<div id="formulaireVente">
-						<input type="radio" id ="btnRadioVente" name="choixAchatVente" value="vente" onclick="basculerSurVente()" <c:if test="${requestScope.choixAchatVente eq 'vente' }">checked</c:if>/>
-						<label for="vente">Mes ventes</label><br>
-						
-						<input type="checkbox" class="checkboxVente" name="mesVentesEnCours" <c:if test="${requestScope.mesVentesEnCours eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">disabled</c:if> />
-						<label for="mesVentesEnCours">mes ventes en cours</label><br>
-						
-						<input type="checkbox" class="checkboxVente" id="cbVenteDefaut" name="mesVentesNonDebutees" <c:if test="${requestScope.mesVentesNonDebutees eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">disabled</c:if> />
-						<label for="mesVentesNonDebutees">mes ventes non débutées</label><br>
-						
-						<input type="checkbox" class="checkboxVente" name="mesVentesTerminees" <c:if test="${requestScope.mesVentesTerminees eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">disabled</c:if> />
-						<label for="mesVentesTerminees">mes ventes terminées</label><br>
-					</div>
-				</c:if>
-				
-				<button type="submit">Rechercher</button>
-			</form>
-		</p>
+
+
+<c:if test="${ empty sessionScope.utilisateurConnecte }">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+	  <div class="container-fluid">
+	    <a class="navbar-brand" href="#"></a>
+	            <span class="visually-hidden"></span></a>
+	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+	      <span class="navbar-toggler-icon"></span>
+	    </button>
+	
+	    <div class="collapse navbar-collapse" id="navbarColor01">
+	      <ul class="navbar-nav me-auto">
+	        <li class="nav-item">
+	          <a class="nav-link active" href="Login">S'inscrire-Se connecter</a>
+	            <span class="visually-hidden"></span>
+	        </li>
+	         </ul>
+	          	
+	          </div>
+	 	</div>
+	</nav>
+</c:if>
+    
+<c:if test="${ !empty sessionScope.utilisateurConnecte }">	
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+	  	<div class="container-fluid">
+	    	<a class="navbar-brand" href="#"></a>
+	    	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+	      	<span class="navbar-toggler-icon"></span>
+	    	</button>
+	
+	    	<div class="collapse navbar-collapse" id="navbarColor01">
+	      	<ul class="navbar-nav me-auto">
+	        	<li class="nav-item ">
+	          	<a class="nav-link active" href="vente">Vendre un article</a>
+	           
+	        	</li>
+	        	<li class="nav-item ">
+	          	<a class="nav-link active" href="profil">Mon profil</a>
+	            
+	        	<li class="nav-item dopdown">
+	          	<a class="nav-link active" href="Logout"> Déconnexion</a>
+	           
+	        	</li>
+	         </ul>
+	          </div>
+	          	
+	 		</div>
+	</nav>
+</c:if>	
+<main>
+<h3 class="text-center mt-3">Liste des enchères</h3>
+<h4 class = "ml-5">Filtres :</h4>
+	<form name="filtres" action="accueil" method="POST">
+	
+      	 
+ 	<div class="form-group w-25">
+      	<input type="text" name="filtreNom" class = "form-control" value ="${requestScope.filtreNom }" placeholder="Le nom de l'article contient" />
+		<label for="filtreCategorie" class ="ml-5 h4">Catégorie : </label>
+	
+ 	
+     
+      <select class="form-select" id="exampleSelect1" name ="filtreCategorie" >
+        <option value ="0">Toutes</option>
+        <c:forEach var = "cat" items="${requestScope.listeCategories }">
+        <option value="${cat.getNoCategorie() }" <c:if test="${requestScope.noCategorie == cat.getNoCategorie() }">selected</c:if>>${cat.getLibelle() }</option>
+        	</c:forEach>
+      </select>
+   	<button type="submit" class="btn btn-primary">Rechercher</button>
+
+	</div>
+	
+	
+	<c:if test="${ !empty sessionScope.utilisateurConnecte }">
+	<div id="formulaire">
+	<div id="formulaireAchat">
 		
-		<ul>
-			<c:forEach var="a" items="${requestScope.listeArticlesAAfficher}">
-				<li>
-					<p>
-						<c:if test="${ empty sessionScope.utilisateurConnecte }">
-							${a.getNomArticle() }<br>
-						</c:if>
+	
+	<label for="achat form-check-label">
+    <input type="radio" id ="btnRadioAchat" name="choixAchatVente" value="achat" onclick="basculerSurAchat()" <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">checked</c:if>/> Achats</label><br>
+ 	<label for="encheresOuvertes">
+	<input type="checkbox" class="checkboxAchat" id="cbAchatDefaut" name="encheresOuvertes" onclick="clicSurEncheresOuvertes()" <c:if test="${requestScope.encheresOuvertes eq 'on' || empty requestScope.choixAchatVente }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if>/>enchères ouvertes</label><br>
+
+	
+	<label for="mesEncheresEnCours">					
+	<input type="checkbox" class="checkboxAchat" id = "cbAchatMesEncheresEnCours" name="mesEncheresEnCours" onclick="clicSurEncheresEnCours()" <c:if test="${requestScope.mesEncheresEnCours eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />mes enchères en cours</label><br>
+	
+	<label for="mesEncheresRemportees">				
+	<input type="checkbox" class="checkboxAchat" id = "cbAchatMesEncheresRemportees" name="mesEncheresRemportees" onclick="clicSurEncheresRemportees()" <c:if test="${requestScope.mesEncheresRemportees eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'vente' }">disabled</c:if> />	mes enchères remportées</label><br>		
+	
+    </div>
+	<div id="formulaireVente">
+	<label for="vente">
+	<input type="radio" id ="btnRadioVente" name="choixAchatVente" value="vente" onclick="basculerSurVente()" <c:if test="${requestScope.choixAchatVente eq 'vente' }">checked</c:if>/>Mes ventes</label><br>
+						
+
+	<label for="mesVentesEnCours">				
+	<input type="checkbox" class="checkboxVente" name="mesVentesEnCours" <c:if test="${requestScope.mesVentesEnCours eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">disabled</c:if> />mes ventes en cours</label><br>
+	
+	
+	<label for="mesVentesNonDebutees">				
+	<input type="checkbox" class="checkboxVente" id="cbVenteDefaut" name="mesVentesNonDebutees" <c:if test="${requestScope.mesVentesNonDebutees eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">disabled</c:if> />mes ventes non débutées</label><br>
+
+	<label for="mesVentesTerminees">				
+	<input type="checkbox" class="checkboxVente" name="mesVentesTerminees" <c:if test="${requestScope.mesVentesTerminees eq 'on' }">checked</c:if> <c:if test="${requestScope.choixAchatVente eq 'achat' || empty requestScope.choixAchatVente }">disabled</c:if> />mes ventes terminées</label><br>
+	
+</div>	
+</div>
+	
+	
+</c:if>
+	</form>
+	
+<div class =" col-12  " >
+
+<ul >
+	<c:forEach var="a" items="${requestScope.listeArticlesAAfficher}">
+
+
+<div class = "col-3 col-sm-3 col-md-13 col-lg-3  ">
+<div class="card text-black bg-white mb-3 "   style="max-width: 20rem;">
+	<c:if test="${ empty sessionScope.utilisateurConnecte }">
+ 	 	<div class="card-header" >	${a.getNomArticle() }</div>
+ 	 </c:if>
+ 	 
+  	<div class="card-body" > 
+  		<li>
+					<p> 
+					
 			
 						<c:if test="${ !empty sessionScope.utilisateurConnecte && empty requestScope.mesEncheresRemportees && a.getEtatVente() ne 'vente terminée'}">
 							<a href="detailVente?noArticle=${a.getNoArticle() }" title="accéder à la vente de cet article">${a.getNomArticle() }</a><br>
@@ -98,7 +161,7 @@
 						
 						Prix : ${a.getPrixInitial() } pts<br>
 						
-						Fin de l'enchère ${formatDate.format(a.getDateFinEncheres()) }<br>
+						Fin de l'enchère : ${formatDate.format(a.getDateFinEncheres()) }<br>
 						
 						<c:if test="${ empty sessionScope.utilisateurConnecte }">
 							Vendeur : ${a.getUtilisateur().getPseudo() }<br>
@@ -109,9 +172,23 @@
 						</c:if>
 					</p>
 				</li>
-			</c:forEach>
-		</ul>
-	</main>
+	
+	
+  
+  
+  
+  
+   
+  </div>
+</div>
+</div>
+</c:forEach>			
+ 
+</ul>
+</div>
+
+
+ 	</main>
 	<footer>&copy; Claire - Thomas - Grégory - 2021</footer>
 	
 	<script  type="text/javascript">
@@ -161,6 +238,45 @@
 			document.getElementById("cbAchatMesEncheresEnCours").checked = false;			
 		}
 		
-	</script>
+	</script>      
+	
+	
+	
 </body>
 </html>
+	
+	
+	
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
