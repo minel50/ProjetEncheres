@@ -32,7 +32,7 @@ public class SupprimerProfil extends HttpServlet {
 		
 		try {
 			
-			Utilisateur u = utilisateurManager.getUtilisateur(9);
+			Utilisateur u = utilisateurManager.getUtilisateur(((Utilisateur)request.getSession().getAttribute("utilisateurConnecte")).getNoUtilisateur());
 			utilisateurManager.deleteUtilisateur(u);
 			RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/WEB-INF/accueil.jsp");
 			rd.forward(request, response);
