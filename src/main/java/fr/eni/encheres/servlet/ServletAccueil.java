@@ -33,7 +33,7 @@ public class ServletAccueil extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Format date pour le transmettre à la JSP
-		SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatDate = new SimpleDateFormat("'le' dd/MM/yyyy 'à' HH:mm");
 		request.setAttribute("formatDate", formatDate);
 		
 		String filtreNom = "";

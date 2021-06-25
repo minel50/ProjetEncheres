@@ -98,7 +98,7 @@
 						
 						Prix : ${a.getPrixInitial() } pts<br>
 						
-						Fin de l'enchère : ${formatDate.format(a.getDateFinEncheres()) }<br>
+						Fin de l'enchère ${formatDate.format(a.getDateFinEncheres()) }<br>
 						
 						<c:if test="${ empty sessionScope.utilisateurConnecte }">
 							Vendeur : ${a.getUtilisateur().getPseudo() }<br>

@@ -78,7 +78,7 @@ public class EnchereRemportee extends HttpServlet {
 			
 			//récupération date fin d'enchère
 			Date date = article.getDateFinEncheres();
-			DateFormat dateFinEnchere = new SimpleDateFormat("dd/MM/yyyy");
+			DateFormat dateFinEnchere = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 			String finEnchere = dateFinEnchere.format(date);
 			
 			request.setAttribute("finEnchere", finEnchere);
